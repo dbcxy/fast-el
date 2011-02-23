@@ -6,9 +6,9 @@ import java.util.Map;
 import com.greenpineyu.fel.common.Callback;
 import com.greenpineyu.fel.function.Function;
 
-public abstract class AbstractContext implements ScriptContext {
+public abstract class AbstractContext implements FelContext {
 
-	private ScriptContext parent;
+	private FelContext parent;
 
 	private Callback cb;
 
@@ -91,7 +91,7 @@ public abstract class AbstractContext implements ScriptContext {
 		return null;
 	}
 
-	public ScriptContext getParent() {
+	public FelContext getParent() {
 		return this.parent;
 	}
 
@@ -114,14 +114,14 @@ public abstract class AbstractContext implements ScriptContext {
 	}
 	
 
-	public void setParent(ScriptContext context) {
+	public void setParent(FelContext context) {
 		this.parent = context;
 	}
 
 	public void setCallback(Callback cb) {
 		this.cb = cb;
 		//循环向上设置callback
-		ScriptContext parent = this.parent;
+		FelContext parent = this.parent;
 		if (parent != null) {
 			parent.setCallback(cb);
 		}

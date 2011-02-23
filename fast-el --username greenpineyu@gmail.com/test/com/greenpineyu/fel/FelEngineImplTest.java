@@ -9,16 +9,16 @@ import java.util.GregorianCalendar;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
-public class ScriptEngineImplTest {
+public class FelEngineImplTest {
 
 	/**
 	 * @testng.data-provider name = "eval"
 	 */
 	public Object[][] evalData() {
-		ScriptEngineImpl engine = new ScriptEngineImpl();
-		ScriptContext jc = engine.getContext();
+		FelEngineImpl engine = new FelEngineImpl();
+		FelContext jc = engine.getContext();
 
 		// 构建一个循环的foo
 		Foo header = new Foo("header");
@@ -145,7 +145,7 @@ public class ScriptEngineImplTest {
 	/**
 	 * @testng.test dataProvider="eval" group = "script"
 	 */
-	protected void testEval(ScriptEngine engine, String expression,
+	protected void testEval(FelEngine engine, String expression,
 				Object expected) {
 		Object actual = engine.eval(expression);
 		if (actual instanceof Object[]) {
@@ -163,7 +163,7 @@ public class ScriptEngineImplTest {
 	}
 
 
-	private void assertColon(ScriptEngine engine, String cellArea, Object[] result) {
+	private void assertColon(FelEngine engine, String cellArea, Object[] result) {
 		Object eval = engine.eval(cellArea);
 		assert eval.getClass().isArray();
 		assert Arrays.equals((Object[]) eval, result);
@@ -191,7 +191,7 @@ public class ScriptEngineImplTest {
 	 */
 	protected void testParse(String expression,
 				String expected) {
-		ScriptEngine engine = new ScriptEngineImpl();
+		FelEngine engine = new FelEngineImpl();
 		boolean isPassed = true;
 		try {
 			engine.parse(expression);

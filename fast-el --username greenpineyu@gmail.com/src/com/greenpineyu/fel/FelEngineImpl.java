@@ -13,7 +13,7 @@ import com.greenpineyu.fel.antlr.AstNode;
 import com.greenpineyu.fel.antlr.ErLexer;
 import com.greenpineyu.fel.antlr.ErParser;
 import com.greenpineyu.fel.context.AbstractContext;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.ParseException;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.FunctionFactory;
@@ -21,15 +21,15 @@ import com.greenpineyu.fel.function.FunctionFactory;
 /**
  * @uml.dependency supplier="com.datanew.excel.script.antlr.ErParser"
  */
-public class ScriptEngineImpl implements ScriptEngine {
+public class FelEngineImpl implements FelEngine {
 
-	private ScriptContext context;
+	private FelContext context;
 
-	public ScriptEngineImpl(ScriptContext context) {
+	public FelEngineImpl(FelContext context) {
 		this.context = context;
 	}
 
-	public ScriptEngineImpl() {
+	public FelEngineImpl() {
 		this(new AbstractContext() {
 			@Override
 			protected Object getObject(Object name) {
@@ -83,16 +83,16 @@ public class ScriptEngineImpl implements ScriptEngine {
 	}
 
 	public String toString() {
-		return "ScriptEngine[ANTLR]";
+		return "FelEngine[ANTLR]";
 	}
 
 	public static void main(String[] args) {
-		ScriptEngine engine = new ScriptEngineImpl();
+		FelEngine engine = new FelEngineImpl();
 		Object eval = engine.eval("1+2");
 		System.out.println(eval);
 	}
 
-	public ScriptContext getContext() {
+	public FelContext getContext() {
 		return this.context;
 	}
 

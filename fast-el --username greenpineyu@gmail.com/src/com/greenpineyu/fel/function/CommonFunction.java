@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.antlr.AstNode;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 /**
  * 普通函数
@@ -21,14 +21,14 @@ public abstract class CommonFunction extends TolerantFunction {
 	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.antlr.AstNode,
 	 *      com.datanew.excel.script.context.ScriptContext)
 	 */
-	protected Object callFun(AstNode node, ScriptContext context) {
+	protected Object callFun(AstNode node, FelContext context) {
 		// 如果参数中包含表达式，执行表达式。将表达式替换成表达式执行结果。
 		Object[] children = evalArgs(node, context);
 		return call(children);
 	}
 
 
-	public static Object[] evalArgs(AstNode node, ScriptContext context) {
+	public static Object[] evalArgs(AstNode node, FelContext context) {
 		Object[] returnMe = null;
 		Object[] children = node.getChildrenArray();
 		int size = children.length;

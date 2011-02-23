@@ -1,7 +1,7 @@
 package com.greenpineyu.fel.function.operator;
 
 import com.greenpineyu.fel.antlr.AstNode;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 
 /**
@@ -11,7 +11,7 @@ import com.greenpineyu.fel.function.Function;
  */
 public class Colon implements Function {
 
-	public Object call(AstNode node, ScriptContext context) {
+	public Object call(AstNode node, FelContext context) {
 		throw new UnsupportedOperationException("还没有实现");
 		//		List children = node.getChildren();
 		//		if (children != null && children.size() == 2) {

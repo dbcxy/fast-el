@@ -12,7 +12,7 @@ import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.antlr.AstNode;
 import com.greenpineyu.fel.antlr.AstNodeImpl;
 import com.greenpineyu.fel.antlr.FunAstNode;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 
@@ -37,7 +37,7 @@ public class Dot implements Function {
 		return DOT;
 	}
 
-	public Object call(AstNode node, ScriptContext context) {
+	public Object call(AstNode node, FelContext context) {
 		//		System.out.println("call dot:" + node.toString());
 		Object returnMe = null;
 		List children = node.getChildren();
@@ -67,7 +67,7 @@ public class Dot implements Function {
 		return primitive == null ? clz : primitive;
 	}
 
-	private static Object callMethod(Object obj,AstNode node,ScriptContext context){
+	private static Object callMethod(Object obj,AstNode node,FelContext context){
 		Class[] argsType = null;
 		Method method = null;
 		Object[] args = null;
