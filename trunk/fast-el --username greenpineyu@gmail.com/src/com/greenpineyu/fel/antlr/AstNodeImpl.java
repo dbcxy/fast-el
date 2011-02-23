@@ -8,7 +8,7 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 
@@ -23,7 +23,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 			return false;
 		};
 
-		public Object interpret(ScriptContext context, AstNode node) {
+		public Object interpret(FelContext context, AstNode node) {
 			return null;
 		};
 
@@ -36,7 +36,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 			return false;
 		};
 		
-		public Object interpret(ScriptContext context, AstNode node) {
+		public Object interpret(FelContext context, AstNode node) {
 			return Boolean.TRUE;
 		};
 
@@ -87,7 +87,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 
 
 
-	public Object eval(ScriptContext context) {
+	public Object eval(FelContext context) {
 		return interpreter.interpret(context, this);
 		//		if (cached) {
 		//			return cacheValue;
@@ -100,7 +100,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 		//		return eval;
 	}
 
-	//	abstract public Object evalWithoutCache(ScriptContext context);
+	//	abstract public Object evalWithoutCache(FelContext context);
 
 
 	public static List getNodes(AstNode node) {
@@ -155,7 +155,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 		this.interpreter = this;
 	}
 
-	public Object interpret(ScriptContext context, AstNode node) {
+	public Object interpret(FelContext context, AstNode node) {
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
 	}
 

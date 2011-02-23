@@ -2,7 +2,7 @@ package com.greenpineyu.fel.antlr;
 
 import org.antlr.runtime.Token;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 /**
  * 常量节点
@@ -18,7 +18,7 @@ public class ConstAstNode extends AstNodeImpl {
 		this.value = value;
 	}
 
-	public Object interpret(ScriptContext context, AstNode node) {
+	public Object interpret(FelContext context, AstNode node) {
 		return value;
 	}
 

@@ -3,7 +3,7 @@ package com.greenpineyu.fel.antlr;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
 
@@ -21,7 +21,7 @@ public class FunAstNode extends AstNodeImpl {
 			throw new UnsupportedOperationException("还没有实现[2011-1-11]");
 		}
 
-		public Object call(AstNode node, ScriptContext context) {
+		public Object call(AstNode node, FelContext context) {
 			throw new EvalException("找不到函数[" + node.getText() + "]");
 		}
 	};
@@ -34,7 +34,7 @@ public class FunAstNode extends AstNodeImpl {
 		super(token);
 	}
 
-	public Object interpret(ScriptContext context, AstNode node) {
+	public Object interpret(FelContext context, AstNode node) {
 		if (fun != null) {
 			return fun.call(this, context);
 		} else {

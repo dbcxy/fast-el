@@ -2,7 +2,7 @@ package com.greenpineyu.fel.antlr;
 
 import org.antlr.runtime.Token;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 public class VarAstNode extends AstNodeImpl {
 	private String text;
@@ -16,7 +16,7 @@ public class VarAstNode extends AstNodeImpl {
 		return this.text;
 	}
 
-	public Object interpret(ScriptContext context, AstNode node) {
+	public Object interpret(FelContext context, AstNode node) {
 		return context.get(text);
 	}
 

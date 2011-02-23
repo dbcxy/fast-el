@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import com.greenpineyu.fel.antlr.AstNode;
 import com.greenpineyu.fel.common.FunctionUtil;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.TolerantFunction;
 
@@ -38,7 +38,7 @@ public class LogicalOperator extends TolerantFunction {
 		OR2 = new LogicalOperator(OR2_STR);
 	}
 	
-	public Object callFun(AstNode node, ScriptContext context) {
+	public Object callFun(AstNode node, FelContext context) {
 			Object[] children = node.getChildrenArray();
 			if (children != null && children.length == 2) {
 				if (this == AND || this == AND2) {
@@ -57,7 +57,7 @@ public class LogicalOperator extends TolerantFunction {
 	 * @param right
 	 * @return
 	 */
-	private Boolean and(ScriptContext context, Object[] children) {
+	private Boolean and(FelContext context, Object[] children) {
 		Boolean leftValue = toBoolean(context, children[0]);
 		if (!leftValue.booleanValue()) {
 			return leftValue;
@@ -65,7 +65,7 @@ public class LogicalOperator extends TolerantFunction {
 		return toBoolean(context, children[1]);
 	}
 
-	private Boolean or(ScriptContext context, Object[] children) {
+	private Boolean or(FelContext context, Object[] children) {
 		Boolean leftValue = toBoolean(context, children[0]);
 		if (leftValue.booleanValue()) {
 			return leftValue;
@@ -73,7 +73,7 @@ public class LogicalOperator extends TolerantFunction {
 		return toBoolean(context, children[1]);
 	}
 
-	private Boolean toBoolean(ScriptContext context, Object left) {
+	private Boolean toBoolean(FelContext context, Object left) {
 		left = eval(context, left);
 		Boolean leftValue = FunctionUtil.toBooleanObj(left);
 		return leftValue;

@@ -1,6 +1,6 @@
 package com.greenpineyu.fel;
 
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 public interface Expression {
 	/**
@@ -8,5 +8,5 @@ public interface Expression {
 	 * @param arguments
 	 * @return
 	 */
-	Object eval(ScriptContext context);
+	Object eval(FelContext context);
 }

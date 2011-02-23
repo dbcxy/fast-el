@@ -1,7 +1,7 @@
 package com.greenpineyu.fel.function;
 
 import com.greenpineyu.fel.antlr.AstNode;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 
 /**
  * @uml.dependency   supplier="com.datanew.excel.script.context.ScriptContext"
@@ -19,6 +19,6 @@ public interface Function {
 	 * @param arguments
 	 * @return
 	 */
-	Object call(AstNode node, ScriptContext context);
+	Object call(AstNode node, FelContext context);
 
 }

@@ -3,7 +3,7 @@ package com.greenpineyu.fel.function.operator;
 import java.util.Iterator;
 
 import com.greenpineyu.fel.antlr.AstNode;
-import com.greenpineyu.fel.context.ScriptContext;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 
 public class Add implements Function {
@@ -19,7 +19,7 @@ public class Add implements Function {
 	/* (non-Javadoc)
 	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.AstNode, com.datanew.excel.script.context.ScriptContext)
 	 */
-	public Object call(AstNode node, ScriptContext context) {
+	public Object call(AstNode node, FelContext context) {
 		Object returnMe = null;
 		boolean isAdd = node.getText().equals("+");
 		for (Iterator iterator = node.getChildren().iterator(); iterator.hasNext();) {
