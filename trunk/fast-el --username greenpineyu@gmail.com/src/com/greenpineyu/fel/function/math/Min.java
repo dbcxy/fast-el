@@ -1,0 +1,60 @@
+/**
+ * 
+ */
+package com.greenpineyu.fel.function.math;
+
+import org.apache.commons.lang.ArrayUtils;
+
+import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.function.operator.RelationalOperator;
+
+/**
+ * @author Administrator
+ *
+ */
+public class Min extends CommonFunction {
+
+	/* (non-Javadoc)
+	 * @see com.datanew.excel.script.function.CommonFunction#call(java.lang.Object[])
+	 */
+	public Object call(Object[] arguments) {
+		Object result = null;
+		boolean isFrist = true;
+		if (!ArrayUtils.isEmpty(arguments)) {
+			for (int i = 0; i < arguments.length; i++) {
+				Object arg = arguments[i];
+				if(arg == null){
+					continue ;
+				}else{
+					try {
+						arg = FunctionUtil.toBigDecimal(arg);
+					} catch (Exception e) {
+						continue ;
+					}
+				}
+				if(isFrist){
+					result = arg;
+					isFrist = false;
+					continue ;
+				}
+				boolean g = RelationalOperator.greaterThan(result, arg);
+				if(g){
+					result = arg;
+				}
+			}
+		}
+		if(result instanceof String){
+			result = new Double((String)result);
+		}
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.datanew.excel.script.function.Function#getName()
+	 */
+	public String getName() {
+		return "min";
+	}
+
+}

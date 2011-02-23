@@ -1,0 +1,52 @@
+package com.greenpineyu.fel.function;
+
+import com.greenpineyu.fel.antlr.AstNode;
+
+/**
+ * 包名				com.datanew.excel.script.function
+ * 类名				ERRORVALUE.java
+ * 创建日期				Oct 27, 20108:56:26 AM
+ * 作者				张鑫
+ * 版权				杭州数新软件
+ */
+public class ErrorValue {
+
+	/**
+	 * 错误节点
+	 */
+	private AstNode node;
+
+	/**
+	 * 错误信息
+	 */
+	private String errorMsg;
+
+	public ErrorValue(AstNode node,String errorMsg){
+		this.node = node;
+		this.errorMsg = errorMsg;
+	}
+	
+	public AstNode getNode() {
+		return node;
+	}
+
+	public void setNode(AstNode node) {
+		this.node = node;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
+	public String toString() {
+		if (errorMsg != null) {
+			return errorMsg;
+		}
+		return "执行脚本出错";
+	}
+
+}
