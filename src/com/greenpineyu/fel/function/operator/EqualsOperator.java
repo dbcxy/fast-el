@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import java.math.BigDecimal;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.common.FunctionUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
@@ -41,7 +41,7 @@ public class EqualsOperator implements Function {
 	}
 
 
-	public Object call(AstNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		Object[] children = node.getChildrenArray();
 		if (children != null && children.length == 2) {
 			Object left = TolerantFunction.eval(context, children[0]);

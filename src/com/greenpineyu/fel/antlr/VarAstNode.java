@@ -4,7 +4,7 @@ import org.antlr.runtime.Token;
 
 import com.greenpineyu.fel.context.FelContext;
 
-public class VarAstNode extends AstNodeImpl {
+public class VarAstNode extends FelNodeImpl {
 	private String text;
 
 	public VarAstNode(Token token) {
@@ -16,7 +16,7 @@ public class VarAstNode extends AstNodeImpl {
 		return this.text;
 	}
 
-	public Object interpret(FelContext context, AstNode node) {
+	public Object interpret(FelContext context, FelNode node) {
 		return context.get(text);
 	}
 

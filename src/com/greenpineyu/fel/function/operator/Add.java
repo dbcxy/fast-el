@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import java.util.Iterator;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 
@@ -19,13 +19,13 @@ public class Add implements Function {
 	/* (non-Javadoc)
 	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.AstNode, com.datanew.excel.script.context.ScriptContext)
 	 */
-	public Object call(AstNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		Object returnMe = null;
 		boolean isAdd = node.getText().equals("+");
 		for (Iterator iterator = node.getChildren().iterator(); iterator.hasNext();) {
 			Object child = (Object) iterator.next();
-			if (child instanceof AstNode) {
-				AstNode childNode = (AstNode) child;
+			if (child instanceof FelNode) {
+				FelNode childNode = (FelNode) child;
 				child = childNode.eval(context);
 			}
 			if (child instanceof String) {

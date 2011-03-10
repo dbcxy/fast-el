@@ -16,7 +16,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.TreeAdaptor;
 
-public class ErParser extends AbstErParser {
+public class ErParser extends AbstFelParser {
 	public static final String[] tokenNames = new String[] {
 			"<invalid>", "<EOR>", "<DOWN>", "<UP>", "Logical", "Equals", "Relational", "LikeIn", "Additive",
 			"Multiplicative", "Identifier", "Dot", "Cell", "Colon", "FloatingPointLiteral", "CharacterLiteral",
@@ -281,7 +281,7 @@ public class ErParser extends AbstErParser {
 				if (state.backtracking == 0) {
 
 					if (conditionalExpression5 == null) {
-						root_0.addChild(com.greenpineyu.fel.antlr.AstNodeImpl.NULL_NODE);
+						root_0.addChild(com.greenpineyu.fel.antlr.FelNodeImpl.NULL_NODE);
 					}
 
 				}
@@ -330,7 +330,7 @@ public class ErParser extends AbstErParser {
 							if (state.backtracking == 0) {
 
 								if (conditionalExpression7 == null) {
-									root_0.addChild(com.greenpineyu.fel.antlr.AstNodeImpl.NULL_NODE);
+									root_0.addChild(com.greenpineyu.fel.antlr.FelNodeImpl.NULL_NODE);
 								} else {
 									conditionalExpression7 = null;
 								}

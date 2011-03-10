@@ -9,8 +9,8 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.greenpineyu.fel.Expression;
-import com.greenpineyu.fel.antlr.AstNode;
-import com.greenpineyu.fel.antlr.AstNodeImpl;
+import com.greenpineyu.fel.antlr.FelNode;
+import com.greenpineyu.fel.antlr.FelNodeImpl;
 import com.greenpineyu.fel.antlr.FunAstNode;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
@@ -37,7 +37,7 @@ public class Dot implements Function {
 		return DOT;
 	}
 
-	public Object call(AstNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		//		System.out.println("call dot:" + node.toString());
 		Object returnMe = null;
 		List children = node.getChildren();
@@ -49,8 +49,8 @@ public class Dot implements Function {
 			context.setCbEnabled(true);
 		}
 		Object right = children.get(1);
-		if (right instanceof AstNode) {
-			AstNode exp = (AstNode) right;
+		if (right instanceof FelNode) {
+			FelNode exp = (FelNode) right;
 			if (exp instanceof FunAstNode) {
 				//是函数，调用left中的方法
 				returnMe = callMethod(left, exp, context);
@@ -67,11 +67,11 @@ public class Dot implements Function {
 		return primitive == null ? clz : primitive;
 	}
 
-	private static Object callMethod(Object obj,AstNode node,FelContext context){
+	private static Object callMethod(Object obj,FelNode node,FelContext context){
 		Class[] argsType = null;
 		Method method = null;
 		Object[] args = null;
-		if (node.getChildCount() == 1 && node.getChildren().get(0) == AstNodeImpl.NULL_NODE) {
+		if (node.getChildCount() == 1 && node.getChildren().get(0) == FelNodeImpl.NULL_NODE) {
 
 		} else {
 			args = CommonFunction.evalArgs(node, context);

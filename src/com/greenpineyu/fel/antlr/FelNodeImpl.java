@@ -10,7 +10,7 @@ import org.antlr.runtime.tree.Tree;
 
 import com.greenpineyu.fel.context.FelContext;
 
-public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
+public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
 
 	/**
 	 * 解析器,用于解析节点的值
@@ -18,12 +18,12 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 	protected Interpreter interpreter;
 
 
-	public static final AstNodeImpl NULL_NODE = new AstNodeImpl() {
+	public static final FelNodeImpl NULL_NODE = new FelNodeImpl() {
 		public boolean isNil() {
 			return false;
 		};
 
-		public Object interpret(FelContext context, AstNode node) {
+		public Object interpret(FelContext context, FelNode node) {
 			return null;
 		};
 
@@ -31,23 +31,23 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 		public String toString() {return "NULL_NODE";};
 	};
 	
-	public static final AstNode TRUE_NODE = new AstNodeImpl(){
+	public static final FelNode TRUE_NODE = new FelNodeImpl(){
 		public boolean isNil() {
 			return false;
 		};
 		
-		public Object interpret(FelContext context, AstNode node) {
+		public Object interpret(FelContext context, FelNode node) {
 			return Boolean.TRUE;
 		};
 
 	};
 
 
-	public AstNodeImpl(Token token) {
+	public FelNodeImpl(Token token) {
 		super(token);
 	}
 
-	public AstNodeImpl() {
+	public FelNodeImpl() {
 
 	}
 
@@ -57,7 +57,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 	}
 
 
-	public AstNodeImpl(CommonTree node) {
+	public FelNodeImpl(CommonTree node) {
 		super(node);
 		if (node.getChildren() != null) {
 			this.children = new ArrayList(node.getChildren());
@@ -76,7 +76,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 
 
 
-	public void setChild(int index, AstNode node) {
+	public void setChild(int index, FelNode node) {
 		if (node instanceof Tree) {
 			super.setChild(index, (Tree) node);
 		} else {
@@ -103,20 +103,20 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 	//	abstract public Object evalWithoutCache(FelContext context);
 
 
-	public static List getNodes(AstNode node) {
+	public static List getNodes(FelNode node) {
 		List returnMe = new ArrayList();
 		getNodes(node, returnMe);
 		return returnMe;
 	}
 
-	public static void getNodes(AstNode node, List returnMe) {
+	public static void getNodes(FelNode node, List returnMe) {
 		if (node != null) {
 			returnMe.add(node);
 			List nodeChildren = node.getChildren();
 			if (nodeChildren != null) {
 				for (Iterator iterator = nodeChildren.iterator(); iterator.hasNext();) {
 					try {
-						AstNode child = (AstNode) iterator.next();
+						FelNode child = (FelNode) iterator.next();
 						getNodes(child, returnMe);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -155,7 +155,7 @@ public class AstNodeImpl extends CommonTree implements AstNode, Interpreter {
 		this.interpreter = this;
 	}
 
-	public Object interpret(FelContext context, AstNode node) {
+	public Object interpret(FelContext context, FelNode node) {
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
 	}
 

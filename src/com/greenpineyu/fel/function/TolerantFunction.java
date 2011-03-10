@@ -1,7 +1,7 @@
 package com.greenpineyu.fel.function;
 
 import com.greenpineyu.fel.Expression;
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -19,7 +19,7 @@ public abstract class TolerantFunction implements Function {
 	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.antlr.AstNode,
 	 *      com.datanew.excel.script.context.ScriptContext)
 	 */
-	public Object call(AstNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		// 如果参数中包含表达式，执行表达式。将表达式替换成表达式执行结果。
 		Object result = null;
 			result = callFun(node, context);
@@ -38,6 +38,6 @@ public abstract class TolerantFunction implements Function {
 	 * @param context
 	 * @return
 	 */
-	protected abstract Object callFun(AstNode node, FelContext context);
+	protected abstract Object callFun(FelNode node, FelContext context);
 
 }

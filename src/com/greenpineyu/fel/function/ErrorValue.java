@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 
 /**
  * 包名				com.datanew.excel.script.function
@@ -14,23 +14,23 @@ public class ErrorValue {
 	/**
 	 * 错误节点
 	 */
-	private AstNode node;
+	private FelNode node;
 
 	/**
 	 * 错误信息
 	 */
 	private String errorMsg;
 
-	public ErrorValue(AstNode node,String errorMsg){
+	public ErrorValue(FelNode node,String errorMsg){
 		this.node = node;
 		this.errorMsg = errorMsg;
 	}
 	
-	public AstNode getNode() {
+	public FelNode getNode() {
 		return node;
 	}
 
-	public void setNode(AstNode node) {
+	public void setNode(FelNode node) {
 		this.node = node;
 	}
 

@@ -8,16 +8,16 @@ import org.antlr.runtime.TokenStream;
 
 import com.greenpineyu.fel.exception.ParseException;
 
-public abstract class AbstErParser extends Parser {
+public abstract class AbstFelParser extends Parser {
 	public void emitErrorMessage(String msg) {
 		throw new ParseException(msg);
 	}
 
-	public AbstErParser(TokenStream input) {
+	public AbstFelParser(TokenStream input) {
 		super(input);
 	}
 
-	public AbstErParser(TokenStream input, RecognizerSharedState state) {
+	public AbstFelParser(TokenStream input, RecognizerSharedState state) {
 		super(input, state);
 	}
 

@@ -1,6 +1,6 @@
 package com.greenpineyu.fel;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -17,7 +17,7 @@ public interface FelEngine {
 	 */
 	Object eval(String exp);
 
-	AstNode parse(String exp);
+	FelNode parse(String exp);
 
 	FelContext getContext();
 
