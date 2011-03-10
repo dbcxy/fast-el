@@ -11,27 +11,19 @@ import com.greenpineyu.fel.parser.FelNode;
 public interface FelEngine {
 
 	/**
-	 * 执行脚本，获取结果
+	 * 执行表达式，获取结果
 	 * @param exp
 	 * @return
 	 */
 	Object eval(String exp);
 
+	/**
+	 * 解析表达式为节点
+	 * @param exp
+	 * @return
+	 */
 	FelNode parse(String exp);
 
 	FelContext getContext();
-
-	//	/**
-	//	 * 添加函数
-	//	 * @param function
-	//	 */
-	//	void addFunction(Function function);
-	//
-	//	/**
-	//	 * 获取函数
-	//	 * @param name
-	//	 * @return
-	//	 */
-	//	Function getFunction(String name);
 
 }

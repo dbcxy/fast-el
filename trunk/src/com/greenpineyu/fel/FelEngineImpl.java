@@ -17,13 +17,15 @@ import com.greenpineyu.fel.parser.FelParser;
 import com.greenpineyu.fel.parser.NodeAdaptor;
 
 /**
- * @uml.dependency supplier="com.datanew.excel.script.antlr.ErParser"
+ * 执行引擎
+ * @author yqs
+ *
  */
 public class FelEngineImpl implements FelEngine {
 
 	private FelContext context;
 
-	public FelEngineImpl(FelContext context) {
+	FelEngineImpl(FelContext context) {
 		this.context = context;
 	}
 
@@ -34,13 +36,15 @@ public class FelEngineImpl implements FelEngine {
 				return null;
 			}
 		});
-		
 	}
 
 
 	public Object eval(String exp) {
-
 		return parse(exp).eval(this.context);
+	}
+
+	public Object eval(String exp, FelContext ctx) {
+		return parse(exp).eval(ctx);
 	}
 
 	public FelNode parse(String exp) {
