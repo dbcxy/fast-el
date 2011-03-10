@@ -1,4 +1,4 @@
-package com.greenpineyu.fel.antlr;
+package com.greenpineyu.fel.parser;
 
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
