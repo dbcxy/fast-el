@@ -13,7 +13,7 @@ import com.greenpineyu.fel.function.FunctionFactory;
  * @author yqs
  *
  */
-public class FunAstNode extends FelNodeImpl {
+public class FunNode extends FelNodeImpl {
 	private Function fun;
 
 	private static final Function NOT_FOUND_FUN = new Function() {
@@ -27,11 +27,11 @@ public class FunAstNode extends FelNodeImpl {
 		}
 	};
 
-	public FunAstNode(CommonTree node) {
+	public FunNode(CommonTree node) {
 		super(node);
 	}
 
-	public FunAstNode(Token token) {
+	public FunNode(Token token) {
 		super(token);
 
 	}

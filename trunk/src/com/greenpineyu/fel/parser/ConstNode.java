@@ -9,11 +9,11 @@ import com.greenpineyu.fel.context.FelContext;
  * @author yqs
  *
  */
-public class ConstAstNode extends FelNodeImpl {
+public class ConstNode extends FelNodeImpl {
 
 	private Object value;
 
-	public ConstAstNode(Token token, Object value) {
+	public ConstNode(Token token, Object value) {
 		super(token);
 		this.value = value;
 	}

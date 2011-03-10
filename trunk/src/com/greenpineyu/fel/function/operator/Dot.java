@@ -14,7 +14,7 @@ import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.FelNodeImpl;
-import com.greenpineyu.fel.parser.FunAstNode;
+import com.greenpineyu.fel.parser.FunNode;
 
 public class Dot implements Function {
 
@@ -51,7 +51,7 @@ public class Dot implements Function {
 		Object right = children.get(1);
 		if (right instanceof FelNode) {
 			FelNode exp = (FelNode) right;
-			if (exp instanceof FunAstNode) {
+			if (exp instanceof FunNode) {
 				//是函数，调用left中的方法
 				returnMe = callMethod(left, exp, context);
 			} else {
