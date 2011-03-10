@@ -8,19 +8,21 @@ import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
 /**
- * @uml.dependency   supplier="com.datanew.excel.script.function.Function"
- * @uml.dependency   supplier="com.datanew.excel.script.context.ScriptContext"
+ * 解析后的节点，组成表达式的元素都会被解析成节点。
+ * @author yqs
+ *
  */
 public interface FelNode extends Expression, Tree {
 
-
+	/**
+	 * 获取子节点
+	 */
+	List<FelNode> getChildren();
 
 	Object[] getChildrenArray();
 
-	List getChildren();
-
 	/**
-	 * 清空缓存结果
+	 * 重置解释器
 	 * @return
 	 */
 
@@ -29,19 +31,6 @@ public interface FelNode extends Expression, Tree {
 	Interpreter getInterpreter();
 
 	void setInterpreter(Interpreter interpreter);
-
-
-
-	//	void setType(int type);
-
-	/**
-	 * 慎用此方法,此方法会修改节点内容
-	 * @param text
-	 */
-
-	void setChild(int index, FelNode node);
-	
-
 
 
 }
