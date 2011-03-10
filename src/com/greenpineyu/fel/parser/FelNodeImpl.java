@@ -9,6 +9,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.interpreter.Interpreter;
 
 public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
 
