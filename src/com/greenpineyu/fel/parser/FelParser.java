@@ -1201,7 +1201,7 @@ public class FelParser extends AbstFelParser {
 						//      com.datanew.excel.script.antlr.AstNode p= ( com.datanew.excel.script.antlr.AstNode)root_0;
 						if ((arguments31 != null ? input.toString(arguments31.start, arguments31.stop) : null) != null) {
 							//    	p.setType(com.datanew.excel.script.antlr.AstNode.FUNCTION);
-							root_0 = new com.greenpineyu.fel.parser.FunAstNode(root_0);
+							root_0 = new com.greenpineyu.fel.parser.FunNode(root_0);
 						}
 
 					}
@@ -1379,7 +1379,7 @@ public class FelParser extends AbstFelParser {
 					//      com.datanew.excel.script.antlr.AstNode p= ( com.datanew.excel.script.antlr.AstNode)root_0;
 					if ((arguments39 != null ? input.toString(arguments39.start, arguments39.stop) : null) != null) {
 						//    	p.setType(com.datanew.excel.script.antlr.AstNode.FUNCTION);
-						root_0 = new com.greenpineyu.fel.parser.FunAstNode(root_0);
+						root_0 = new com.greenpineyu.fel.parser.FunNode(root_0);
 					}
 
 				}

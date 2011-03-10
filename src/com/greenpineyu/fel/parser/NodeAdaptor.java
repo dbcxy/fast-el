@@ -46,7 +46,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 			case FelParser.LikeIn://like in
 			case FelParser.Relational://>、<、>=、<=
 			case FelParser.Logical://AND、OR
-				returnMe = new FunAstNode(token);
+				returnMe = new FunNode(token);
 				break;
 			/* 函数、操作符 结束 */
 
@@ -89,7 +89,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		if (returnMe instanceof CommonTree) {
 			return returnMe;
 		}
-		return new ConstAstNode(token, returnMe);
+		return new ConstNode(token, returnMe);
 	}
 
 
