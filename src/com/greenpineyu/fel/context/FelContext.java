@@ -1,14 +1,9 @@
 package com.greenpineyu.fel.context;
 
 import com.greenpineyu.fel.common.Callback;
-import com.greenpineyu.fel.function.Function;
 
 public interface FelContext {
 
-	/**
-	 * 顶级上下文名称
-	 */
-	String ROOT_CONTEXT_NAME = "FelContext";
 
 	/**
 	 * Gets the value of a variable.
@@ -45,9 +40,6 @@ public interface FelContext {
 	 */
 	void setParent(FelContext context);
 
-	Function getFunction(String name);
-
-	void addFunction(Function name);
 
 	void setCallback(Callback cb);
 

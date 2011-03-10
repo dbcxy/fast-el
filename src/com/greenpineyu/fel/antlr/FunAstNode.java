@@ -6,6 +6,7 @@ import org.antlr.runtime.tree.CommonTree;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
+import com.greenpineyu.fel.function.FunctionFactory;
 
 /**
  * 函数节点
@@ -18,11 +19,11 @@ public class FunAstNode extends FelNodeImpl {
 	private static final Function NOT_FOUND_FUN = new Function() {
 
 		public String getName() {
-			throw new UnsupportedOperationException("还没有实现[2011-1-11]");
+			return "未知函数";
 		}
 
 		public Object call(FelNode node, FelContext context) {
-			throw new EvalException("找不到函数[" + node.getText() + "]");
+			throw new EvalException("找不到函数[" + node.getText() + "]", null);
 		}
 	};
 
@@ -32,17 +33,22 @@ public class FunAstNode extends FelNodeImpl {
 
 	public FunAstNode(Token token) {
 		super(token);
+
+	}
+
+	{
+		initFun();
 	}
 
 	public Object interpret(FelContext context, FelNode node) {
-		if (fun != null) {
-			return fun.call(this, context);
-		} else {
-			fun = context.getFunction(getText());
-			if (fun == null) {
-				fun = NOT_FOUND_FUN;
-			}
-			return fun.call(this, context);
+		return fun.call(this, context);
+	}
+
+
+	private void initFun() {
+		fun = FunctionFactory.getInstance().getFun(getText());
+		if (fun == null) {
+			fun = NOT_FOUND_FUN;
 		}
 	}
 }
