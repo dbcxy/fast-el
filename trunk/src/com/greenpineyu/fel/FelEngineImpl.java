@@ -10,8 +10,8 @@ import org.antlr.runtime.RecognitionException;
 
 import com.greenpineyu.fel.antlr.NodeAdaptor;
 import com.greenpineyu.fel.antlr.FelNode;
-import com.greenpineyu.fel.antlr.ErLexer;
-import com.greenpineyu.fel.antlr.ErParser;
+import com.greenpineyu.fel.antlr.FelLexer;
+import com.greenpineyu.fel.antlr.FelParser;
 import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.ParseException;
@@ -62,9 +62,9 @@ public class FelEngineImpl implements FelEngine {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ErLexer lexer = new ErLexer(input);
+		FelLexer lexer = new FelLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		ErParser parser = new ErParser(tokens);
+		FelParser parser = new FelParser(tokens);
 		parser.setTreeAdaptor(new NodeAdaptor());
 		ParserRuleReturnScope r = null;
 		try {
