@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -37,7 +37,7 @@ public class Find extends CommonFunction {
 				Object find = arguments[1];
 				Object in = arguments[0];
 				Object start = arguments[2];
-				int i = FunctionUtil.toInteger(start);
+				int i = NumberUtil.toInteger(start);
 				if(i < 1){
 					i = 1;
 				}
@@ -50,15 +50,15 @@ public class Find extends CommonFunction {
 	}
 	
 	private int indexOf(Object find,Object in){
-		String str = FunctionUtil.toString(find);
-		String s = FunctionUtil.toString(in);
+		String str = NumberUtil.toString(find);
+		String s = NumberUtil.toString(in);
 		return str.indexOf(s);
 	}
 	
 	private int indexOf(Object find,Object in,int start){
 		try {
-			String str = FunctionUtil.toString(find);
-			String s = FunctionUtil.toString(in);
+			String str = NumberUtil.toString(find);
+			String s = NumberUtil.toString(in);
 			return str.indexOf(s, start-1);
 		} catch (Exception e) {
 		}

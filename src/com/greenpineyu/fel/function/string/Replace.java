@@ -3,7 +3,7 @@ package com.greenpineyu.fel.function.string;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -30,15 +30,15 @@ public class Replace extends CommonFunction {
 	public Object call(Object[] arguments) {
 		if(arguments != null){
 			if(arguments.length == 3){
-				String str = FunctionUtil.toString(arguments[0]);
-				String oldStr = FunctionUtil.toString(arguments[1]);
-				String newStr = FunctionUtil.toString(arguments[2]);
+				String str = NumberUtil.toString(arguments[0]);
+				String oldStr = NumberUtil.toString(arguments[1]);
+				String newStr = NumberUtil.toString(arguments[2]);
 				return str.replaceAll(oldStr, newStr);
 			}else if(arguments.length == 4){
-				String str = FunctionUtil.toString(arguments[0]);
-				String oldStr = FunctionUtil.toString(arguments[1]);
-				String newStr = FunctionUtil.toString(arguments[2]);
-				int n = FunctionUtil.toInteger(arguments[3]);
+				String str = NumberUtil.toString(arguments[0]);
+				String oldStr = NumberUtil.toString(arguments[1]);
+				String newStr = NumberUtil.toString(arguments[2]);
+				int n = NumberUtil.toInteger(arguments[3]);
 				return replacePosition(str, oldStr, newStr, n);
 			}
 		}

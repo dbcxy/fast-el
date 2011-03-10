@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.math;
 
-import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.NumberUtils;
 import com.greenpineyu.fel.function.CommonFunction;
 
 
@@ -49,10 +49,10 @@ public class Round extends CommonFunction {
 			}
 			if (i != 0) {
 				//return new Double(-d3);
-				return NumberUtil.parseNumber(-d3);
+				return NumberUtils.parseNumber(-d3);
 			}
 			//return new Double(d3);
-			return NumberUtil.parseNumber(d3);
+			return NumberUtils.parseNumber(d3);
 		}
 		return new Integer(0);
 	}

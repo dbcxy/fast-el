@@ -5,7 +5,7 @@ package com.greenpineyu.fel.function.math;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.operator.RelationalOperator;
 
@@ -28,7 +28,7 @@ public class Max extends CommonFunction {
 					continue ;
 				}else{
 					try {
-						arg = FunctionUtil.toBigDecimal(arg);
+						arg = NumberUtil.toBigDecimal(arg);
 					} catch (Exception e) {
 						continue ;
 					}

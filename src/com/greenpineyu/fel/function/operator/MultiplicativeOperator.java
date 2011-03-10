@@ -3,7 +3,7 @@ package com.greenpineyu.fel.function.operator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
 
@@ -75,25 +75,25 @@ public class MultiplicativeOperator extends CommonFunction {
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
 			
-			if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-			    double l = FunctionUtil.toDouble(left);
-			    double r = FunctionUtil.toDouble(right);
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+			    double l = NumberUtil.toDouble(left);
+			    double r = NumberUtil.toDouble(right);
 			    return new Double(l * r);
 			}
 			if (left instanceof BigInteger && right instanceof BigInteger) {
-			    BigInteger l = FunctionUtil.toBigInteger(left);
-			    BigInteger r = FunctionUtil.toBigInteger(right);
+			    BigInteger l = NumberUtil.toBigInteger(left);
+			    BigInteger r = NumberUtil.toBigInteger(right);
 			    return l.multiply(r);
 			}
 			if (left instanceof BigDecimal || right instanceof BigDecimal) {
-			    BigDecimal l = FunctionUtil.toBigDecimal(left);
-			    BigDecimal r = FunctionUtil.toBigDecimal(right);
+			    BigDecimal l = NumberUtil.toBigDecimal(left);
+			    BigDecimal r = NumberUtil.toBigDecimal(right);
 			    return l.multiply(r);
 			}
-			BigInteger l = FunctionUtil.toBigInteger(left);
-			BigInteger r = FunctionUtil.toBigInteger(right);
+			BigInteger l = NumberUtil.toBigInteger(left);
+			BigInteger r = NumberUtil.toBigInteger(right);
 			BigInteger result = l.multiply(r);
-			return FunctionUtil.narrowBigInteger(left, right, result);
+			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
 			throw new NumberFormatException("调用multiply()方法出错！,原因：解析参数对象出错！");
 		}
@@ -120,9 +120,9 @@ public class MultiplicativeOperator extends CommonFunction {
 				return "∞";
 			}
         	
-			if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-			    double l = FunctionUtil.toDouble(left);
-			    double r = FunctionUtil.toDouble(right);
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+			    double l = NumberUtil.toDouble(left);
+			    double r = NumberUtil.toDouble(right);
 			    if (r == 0.0) {
 //			        throw new ArithmeticException("/");
 					return "∞"; // 被除数是零时返回无穷大
@@ -138,22 +138,22 @@ public class MultiplicativeOperator extends CommonFunction {
 				return new Double(l.doubleValue() / r.intValue());
 			}
 			if (left instanceof BigInteger && right instanceof BigInteger) {
-			    BigInteger l = FunctionUtil.toBigInteger(left);
-			    BigInteger r = FunctionUtil.toBigInteger(right);
+			    BigInteger l = NumberUtil.toBigInteger(left);
+			    BigInteger r = NumberUtil.toBigInteger(right);
 			    return l.divide(r);
 			}
 			//默认使用浮点运算,使用整型运算会导致略去小数位的问题
 			//			if (left instanceof BigDecimal || right instanceof BigDecimal) {
-			    BigDecimal l = FunctionUtil.toBigDecimal(left);
-			    BigDecimal r = FunctionUtil.toBigDecimal(right);
+			    BigDecimal l = NumberUtil.toBigDecimal(left);
+			    BigDecimal r = NumberUtil.toBigDecimal(right);
 			    BigDecimal d = l.divide(r,8,BigDecimal.ROUND_DOWN);
 			    return d;
 			//			}
-			//			BigInteger l = FunctionUtil.toBigInteger(left);
-			//			BigInteger r = FunctionUtil.toBigInteger(right);
+			//			BigInteger l = NumberUtil.toBigInteger(left);
+			//			BigInteger r = NumberUtil.toBigInteger(right);
 
 			//			BigInteger result = l.divide(r);
-			//			return FunctionUtil.narrowBigInteger(left, right, result);
+			//			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
 			throw new EvalException(left + "/" + right + "运算出错", e);
 		}
@@ -179,29 +179,29 @@ public class MultiplicativeOperator extends CommonFunction {
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
 			
-			if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-			    double l = FunctionUtil.toDouble(left);
-			    double r = FunctionUtil.toDouble(right);
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+			    double l = NumberUtil.toDouble(left);
+			    double r = NumberUtil.toDouble(right);
 			    if (r == 0.0) {
 			        throw new ArithmeticException("%");
 			    }
 			    return new Double(l % r);
 			}
 			if (left instanceof BigInteger && right instanceof BigInteger) {
-			    BigInteger l = FunctionUtil.toBigInteger(left);
-			    BigInteger r = FunctionUtil.toBigInteger(right);
+			    BigInteger l = NumberUtil.toBigInteger(left);
+			    BigInteger r = NumberUtil.toBigInteger(right);
 			    return l.mod(r);
 			}
 			if (left instanceof BigDecimal || right instanceof BigDecimal) {
-			    BigDecimal l = FunctionUtil.toBigDecimal(left);
-			    BigDecimal r = FunctionUtil.toBigDecimal(right);
+			    BigDecimal l = NumberUtil.toBigDecimal(left);
+			    BigDecimal r = NumberUtil.toBigDecimal(right);
 			    BigDecimal remainder = l.subtract(l.divide(r,BigDecimal.ROUND_DOWN).multiply(r));
 			    return remainder;
 			}
-			BigInteger l = FunctionUtil.toBigInteger(left);
-			BigInteger r = FunctionUtil.toBigInteger(right);
+			BigInteger l = NumberUtil.toBigInteger(left);
+			BigInteger r = NumberUtil.toBigInteger(right);
 			BigInteger result = l.mod(r);
-			return FunctionUtil.narrowBigInteger(left, right, result);
+			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
 			throw new NumberFormatException("调用mod()方法出错！,原因：解析参数对象出错！");
 		}

@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -26,7 +26,7 @@ public class Ltrim extends CommonFunction {
 	
 	public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 1){
-			String str = FunctionUtil.toString(arguments[0]);
+			String str = NumberUtil.toString(arguments[0]);
 			int len = str.length();
 			int st = 0;
 			char[] cs = str.toCharArray();

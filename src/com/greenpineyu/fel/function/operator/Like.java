@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -32,8 +32,8 @@ public class Like extends CommonFunction {
 	
 	public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 2){
-			String value = FunctionUtil.toString(arguments[0]);
-			String pattern = FunctionUtil.toString(arguments[1]);
+			String value = NumberUtil.toString(arguments[0]);
+			String pattern = NumberUtil.toString(arguments[1]);
 			return like(value,pattern);
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");

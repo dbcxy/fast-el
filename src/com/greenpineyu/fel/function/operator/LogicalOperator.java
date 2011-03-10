@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.operator;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.TolerantFunction;
@@ -75,7 +75,7 @@ public class LogicalOperator extends TolerantFunction {
 
 	private Boolean toBoolean(FelContext context, Object left) {
 		left = eval(context, left);
-		Boolean leftValue = FunctionUtil.toBooleanObj(left);
+		Boolean leftValue = NumberUtil.toBooleanObj(left);
 		return leftValue;
 	}
 
@@ -86,11 +86,11 @@ public class LogicalOperator extends TolerantFunction {
 	 * @return
 	 */
 	private boolean and(Object left, Object right){
-		boolean l = FunctionUtil.toBoolean(left);
+		boolean l = NumberUtil.toBoolean(left);
 		if(!l){
 			return false;
 		}
-		boolean r = FunctionUtil.toBoolean(right);
+		boolean r = NumberUtil.toBoolean(right);
 		if(!r){
 			return false;
 		}
@@ -104,11 +104,11 @@ public class LogicalOperator extends TolerantFunction {
 	 * @return
 	 */
 	private boolean or(Object left, Object right){
-		boolean l = FunctionUtil.toBoolean(left);
+		boolean l = NumberUtil.toBoolean(left);
 		if(l){
 			return true;
 		}
-		boolean r = FunctionUtil.toBoolean(right);
+		boolean r = NumberUtil.toBoolean(right);
 		if(r){
 			return true;
 		}

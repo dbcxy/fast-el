@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import java.math.BigDecimal;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -66,17 +66,17 @@ public class RelationalOperator extends CommonFunction {
     public static boolean lessThan(Object left, Object right) {
     	if ((left == right) || (left == null) || (right == null)) {
 		    return false;
-		} else if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-		    double leftDouble = FunctionUtil.toDouble(left);
-		    double rightDouble = FunctionUtil.toDouble(right);
+		} else if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+		    double leftDouble = NumberUtil.toDouble(left);
+		    double rightDouble = NumberUtil.toDouble(right);
 		    return leftDouble < rightDouble;
 		} else if (left instanceof BigDecimal || right instanceof BigDecimal) {
-			BigDecimal l  = FunctionUtil.toBigDecimal(left);
-			BigDecimal r  = FunctionUtil.toBigDecimal(right);
+			BigDecimal l  = NumberUtil.toBigDecimal(left);
+			BigDecimal r  = NumberUtil.toBigDecimal(right);
 			return l.compareTo(r) < 0;
-		} else if (FunctionUtil.isNumberable(left) || FunctionUtil.isNumberable(right)) {
-		    long leftLong = FunctionUtil.toLong(left);
-		    long rightLong = FunctionUtil.toLong(right);
+		} else if (NumberUtil.isNumberable(left) || NumberUtil.isNumberable(right)) {
+		    long leftLong = NumberUtil.toLong(left);
+		    long rightLong = NumberUtil.toLong(right);
 		    return leftLong < rightLong;
 		} else if (left instanceof String || right instanceof String) {
             String leftString = left.toString();

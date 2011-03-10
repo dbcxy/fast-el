@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -26,8 +26,8 @@ public class Split extends CommonFunction {
 	
 	public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 2){
-			String str = FunctionUtil.toString(arguments[0]);
-			String s = FunctionUtil.toString(arguments[1]);
+			String str = NumberUtil.toString(arguments[0]);
+			String s = NumberUtil.toString(arguments[1]);
 			return str.split(s);
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");

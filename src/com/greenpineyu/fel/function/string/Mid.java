@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -27,13 +27,13 @@ public class Mid extends CommonFunction {
 	public Object call(Object[] arguments) {
 		if(arguments != null){
 			if(arguments.length == 2){
-				String str = FunctionUtil.toString(arguments[0]);
-				int start = FunctionUtil.toInteger(arguments[1]);
+				String str = NumberUtil.toString(arguments[0]);
+				int start = NumberUtil.toInteger(arguments[1]);
 				return str.substring(start-1);
 			}else if(arguments.length == 3){
-				String str = FunctionUtil.toString(arguments[0]);
-				int start = FunctionUtil.toInteger(arguments[1]);
-				int end = FunctionUtil.toInteger(arguments[2]);
+				String str = NumberUtil.toString(arguments[0]);
+				int start = NumberUtil.toInteger(arguments[1]);
+				int end = NumberUtil.toInteger(arguments[2]);
 				int endIndex = start+end-1;
 				if (endIndex >= str.length()) {
 					return str.substring(start-1);

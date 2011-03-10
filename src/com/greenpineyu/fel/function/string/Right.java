@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -26,8 +26,8 @@ public class Right extends CommonFunction {
 	
 	public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 2){
-			String str = FunctionUtil.toString(arguments[0]);
-			int n = FunctionUtil.toInteger(arguments[1]);
+			String str = NumberUtil.toString(arguments[0]);
+			int n = NumberUtil.toInteger(arguments[1]);
 			if(n >= str.length()){
 				return str;
 			}else{
