@@ -18,6 +18,14 @@ public interface FelEngine {
 	Object eval(String exp);
 
 	/**
+	 * 使用指定的引擎上下文执行表达式，获取结果
+	 * @param exp 
+	 * @param ctx 引擎上下文
+	 * @return
+	 */
+	Object eval(String exp, FelContext ctx);
+
+	/**
 	 * 解析表达式为节点
 	 * @param exp
 	 * @return
