@@ -6,7 +6,6 @@ import com.greenpineyu.fel.function.CommonFunction;
 /**
  * 平方根函数
  * 
- * @author 钟杰
  */
 public class Sqrt extends CommonFunction {
 
