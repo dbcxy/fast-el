@@ -101,15 +101,6 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "num < bint", Boolean.TRUE };
 
 		/** **************** Dot operator start **************** */
-		// object[i++] = new Object[] { engine, "a", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a()", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b()", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b.c", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b.c()", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b().c", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b().c()", Boolean.TRUE };
-		// object[i++] = new Object[] { engine, "a.b(1).c(2)", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "foo.name", header.get("name") };
 		object[i++] = new Object[] { engine, "foo.foo", footer };
 		object[i++] = new Object[] { engine, "foo.getCount()",
@@ -125,16 +116,6 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "foo.convertBoolean(true)",
 					header.convertBoolean(true) };
 		/** **************** Dot operator end **************** */
-
-
-		object[i++] = new Object[] { engine, "list(1,3,5,7,9)", new String("1,3,5,7,9") };
-		object[i++] = new Object[] { engine, "list(list(1,3),\"a\",\"b\",\"c\")", new String("1,3,a,b,c") };
-		//			object[i++] = new Object[] { engine, "sublist(list(1,3,5,7,9),1,2)",new String("3,5")};
-		//			object[i++] = new Object[] { engine, "sublist(select(ds1,id),1,2)",new String("4,5")};
-		object[i++] = new Object[] { engine, "to(1,5)", new String("1,2,3,4,5") };
-		object[i++] = new Object[] { engine, "to(1,5,2)", new String("1,3,5") };
-		//			object[i++] = new Object[] { engine, "to(-5,-10,-2)",new String("(-5,-7,-9")};
-		//			object[i++] = new Object[] { engine, "to(-10,-8)",new String("-10,-9,-8")};
 
 		object[i++] = new Object[] { engine, "1==2 and (1>2 or 2>1)", Boolean.FALSE };
 		object[i++] = new Object[] { engine, "1==1 and (1>2 or 2>1)", Boolean.TRUE };
