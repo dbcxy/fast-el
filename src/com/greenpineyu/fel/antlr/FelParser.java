@@ -16,7 +16,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 import org.antlr.runtime.tree.TreeAdaptor;
 
-public class ErParser extends AbstFelParser {
+public class FelParser extends AbstFelParser {
 	public static final String[] tokenNames = new String[] {
 			"<invalid>", "<EOR>", "<DOWN>", "<UP>", "Logical", "Equals", "Relational", "LikeIn", "Additive",
 			"Multiplicative", "Identifier", "Dot", "Cell", "Colon", "FloatingPointLiteral", "CharacterLiteral",
@@ -61,11 +61,11 @@ public class ErParser extends AbstFelParser {
 	// delegates
 	// delegators
 
-	public ErParser(TokenStream input) {
+	public FelParser(TokenStream input) {
 		this(input, new RecognizerSharedState());
 	}
 
-	public ErParser(TokenStream input, RecognizerSharedState state) {
+	public FelParser(TokenStream input, RecognizerSharedState state) {
 		super(input, state);
 		this.state.ruleMemo = new HashMap[39 + 1];
 
@@ -82,7 +82,7 @@ public class ErParser extends AbstFelParser {
 	}
 
 	public String[] getTokenNames() {
-		return ErParser.tokenNames;
+		return FelParser.tokenNames;
 	}
 
 	public String getGrammarFileName() {
@@ -99,13 +99,13 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "program"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:12:1: program : conditionalExpression ;
-	public final ErParser.program_return program() throws RecognitionException {
-		ErParser.program_return retval = new ErParser.program_return();
+	public final FelParser.program_return program() throws RecognitionException {
+		FelParser.program_return retval = new FelParser.program_return();
 		retval.start = input.LT(1);
 		int program_StartIndex = input.index();
 		CommonTree root_0 = null;
 
-		ErParser.conditionalExpression_return conditionalExpression1 = null;
+		FelParser.conditionalExpression_return conditionalExpression1 = null;
 
 		try {
 			if (state.backtracking > 0 && alreadyParsedRule(input, 1)) {
@@ -159,15 +159,15 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "parExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:14:1: parExpression : '(' expressionList ')' ;
-	public final ErParser.parExpression_return parExpression() throws RecognitionException {
-		ErParser.parExpression_return retval = new ErParser.parExpression_return();
+	public final FelParser.parExpression_return parExpression() throws RecognitionException {
+		FelParser.parExpression_return retval = new FelParser.parExpression_return();
 		retval.start = input.LT(1);
 		int parExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token char_literal2 = null;
 		Token char_literal4 = null;
-		ErParser.expressionList_return expressionList3 = null;
+		FelParser.expressionList_return expressionList3 = null;
 
 		CommonTree char_literal2_tree = null;
 		CommonTree char_literal4_tree = null;
@@ -230,16 +230,16 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "expressionList"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:18:1: expressionList : ( conditionalExpression )? ( ',' ( conditionalExpression )? )* ;
-	public final ErParser.expressionList_return expressionList() throws RecognitionException {
-		ErParser.expressionList_return retval = new ErParser.expressionList_return();
+	public final FelParser.expressionList_return expressionList() throws RecognitionException {
+		FelParser.expressionList_return retval = new FelParser.expressionList_return();
 		retval.start = input.LT(1);
 		int expressionList_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token char_literal6 = null;
-		ErParser.conditionalExpression_return conditionalExpression5 = null;
+		FelParser.conditionalExpression_return conditionalExpression5 = null;
 
-		ErParser.conditionalExpression_return conditionalExpression7 = null;
+		FelParser.conditionalExpression_return conditionalExpression7 = null;
 
 		CommonTree char_literal6_tree = null;
 
@@ -379,16 +379,16 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "conditionalExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:39:1: conditionalExpression : equalityExpression ( Logical equalityExpression )* ;
-	public final ErParser.conditionalExpression_return conditionalExpression() throws RecognitionException {
-		ErParser.conditionalExpression_return retval = new ErParser.conditionalExpression_return();
+	public final FelParser.conditionalExpression_return conditionalExpression() throws RecognitionException {
+		FelParser.conditionalExpression_return retval = new FelParser.conditionalExpression_return();
 		retval.start = input.LT(1);
 		int conditionalExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Logical9 = null;
-		ErParser.equalityExpression_return equalityExpression8 = null;
+		FelParser.equalityExpression_return equalityExpression8 = null;
 
-		ErParser.equalityExpression_return equalityExpression10 = null;
+		FelParser.equalityExpression_return equalityExpression10 = null;
 
 		CommonTree Logical9_tree = null;
 
@@ -480,16 +480,16 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "equalityExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:43:1: equalityExpression : relationalExpression ( Equals relationalExpression )* ;
-	public final ErParser.equalityExpression_return equalityExpression() throws RecognitionException {
-		ErParser.equalityExpression_return retval = new ErParser.equalityExpression_return();
+	public final FelParser.equalityExpression_return equalityExpression() throws RecognitionException {
+		FelParser.equalityExpression_return retval = new FelParser.equalityExpression_return();
 		retval.start = input.LT(1);
 		int equalityExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Equals12 = null;
-		ErParser.relationalExpression_return relationalExpression11 = null;
+		FelParser.relationalExpression_return relationalExpression11 = null;
 
-		ErParser.relationalExpression_return relationalExpression13 = null;
+		FelParser.relationalExpression_return relationalExpression13 = null;
 
 		CommonTree Equals12_tree = null;
 
@@ -581,17 +581,17 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "relationalExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:47:1: relationalExpression : additiveExpression ( ( Relational | LikeIn ) additiveExpression )* ;
-	public final ErParser.relationalExpression_return relationalExpression() throws RecognitionException {
-		ErParser.relationalExpression_return retval = new ErParser.relationalExpression_return();
+	public final FelParser.relationalExpression_return relationalExpression() throws RecognitionException {
+		FelParser.relationalExpression_return retval = new FelParser.relationalExpression_return();
 		retval.start = input.LT(1);
 		int relationalExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Relational15 = null;
 		Token LikeIn16 = null;
-		ErParser.additiveExpression_return additiveExpression14 = null;
+		FelParser.additiveExpression_return additiveExpression14 = null;
 
-		ErParser.additiveExpression_return additiveExpression17 = null;
+		FelParser.additiveExpression_return additiveExpression17 = null;
 
 		CommonTree Relational15_tree = null;
 		CommonTree LikeIn16_tree = null;
@@ -725,16 +725,16 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "additiveExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:51:1: additiveExpression : multiplicativeExpression ( Additive multiplicativeExpression )* ;
-	public final ErParser.additiveExpression_return additiveExpression() throws RecognitionException {
-		ErParser.additiveExpression_return retval = new ErParser.additiveExpression_return();
+	public final FelParser.additiveExpression_return additiveExpression() throws RecognitionException {
+		FelParser.additiveExpression_return retval = new FelParser.additiveExpression_return();
 		retval.start = input.LT(1);
 		int additiveExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Additive19 = null;
-		ErParser.multiplicativeExpression_return multiplicativeExpression18 = null;
+		FelParser.multiplicativeExpression_return multiplicativeExpression18 = null;
 
-		ErParser.multiplicativeExpression_return multiplicativeExpression20 = null;
+		FelParser.multiplicativeExpression_return multiplicativeExpression20 = null;
 
 		CommonTree Additive19_tree = null;
 
@@ -826,16 +826,16 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "multiplicativeExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:55:1: multiplicativeExpression : unaryExpression ( Multiplicative unaryExpression )* ;
-	public final ErParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
-		ErParser.multiplicativeExpression_return retval = new ErParser.multiplicativeExpression_return();
+	public final FelParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
+		FelParser.multiplicativeExpression_return retval = new FelParser.multiplicativeExpression_return();
 		retval.start = input.LT(1);
 		int multiplicativeExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Multiplicative22 = null;
-		ErParser.unaryExpression_return unaryExpression21 = null;
+		FelParser.unaryExpression_return unaryExpression21 = null;
 
-		ErParser.unaryExpression_return unaryExpression23 = null;
+		FelParser.unaryExpression_return unaryExpression23 = null;
 
 		CommonTree Multiplicative22_tree = null;
 
@@ -928,13 +928,13 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "unaryExpression"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:59:1: unaryExpression : primary ;
-	public final ErParser.unaryExpression_return unaryExpression() throws RecognitionException {
-		ErParser.unaryExpression_return retval = new ErParser.unaryExpression_return();
+	public final FelParser.unaryExpression_return unaryExpression() throws RecognitionException {
+		FelParser.unaryExpression_return retval = new FelParser.unaryExpression_return();
 		retval.start = input.LT(1);
 		int unaryExpression_StartIndex = input.index();
 		CommonTree root_0 = null;
 
-		ErParser.primary_return primary24 = null;
+		FelParser.primary_return primary24 = null;
 
 		try {
 			if (state.backtracking > 0 && alreadyParsedRule(input, 9)) {
@@ -988,8 +988,8 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "primary"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:63:1: primary : ( parExpression | literal | Identifier ( Dot selector )* | Identifier arguments | Cell Colon Cell | Cell ( Dot selector )* );
-	public final ErParser.primary_return primary() throws RecognitionException {
-		ErParser.primary_return retval = new ErParser.primary_return();
+	public final FelParser.primary_return primary() throws RecognitionException {
+		FelParser.primary_return retval = new FelParser.primary_return();
 		retval.start = input.LT(1);
 		int primary_StartIndex = input.index();
 		CommonTree root_0 = null;
@@ -1002,15 +1002,15 @@ public class ErParser extends AbstFelParser {
 		Token Cell34 = null;
 		Token Cell35 = null;
 		Token Dot36 = null;
-		ErParser.parExpression_return parExpression25 = null;
+		FelParser.parExpression_return parExpression25 = null;
 
-		ErParser.literal_return literal26 = null;
+		FelParser.literal_return literal26 = null;
 
-		ErParser.selector_return selector29 = null;
+		FelParser.selector_return selector29 = null;
 
-		ErParser.arguments_return arguments31 = null;
+		FelParser.arguments_return arguments31 = null;
 
-		ErParser.selector_return selector37 = null;
+		FelParser.selector_return selector37 = null;
 
 		CommonTree Identifier27_tree = null;
 		CommonTree Dot28_tree = null;
@@ -1322,14 +1322,14 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "selector"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:88:1: selector : Identifier ( arguments )? ;
-	public final ErParser.selector_return selector() throws RecognitionException {
-		ErParser.selector_return retval = new ErParser.selector_return();
+	public final FelParser.selector_return selector() throws RecognitionException {
+		FelParser.selector_return retval = new FelParser.selector_return();
 		retval.start = input.LT(1);
 		int selector_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token Identifier38 = null;
-		ErParser.arguments_return arguments39 = null;
+		FelParser.arguments_return arguments39 = null;
 
 		CommonTree Identifier38_tree = null;
 
@@ -1418,15 +1418,15 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "arguments"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:101:1: arguments : '(' ( expressionList )? ')' ;
-	public final ErParser.arguments_return arguments() throws RecognitionException {
-		ErParser.arguments_return retval = new ErParser.arguments_return();
+	public final FelParser.arguments_return arguments() throws RecognitionException {
+		FelParser.arguments_return retval = new FelParser.arguments_return();
 		retval.start = input.LT(1);
 		int arguments_StartIndex = input.index();
 		CommonTree root_0 = null;
 
 		Token char_literal40 = null;
 		Token char_literal42 = null;
-		ErParser.expressionList_return expressionList41 = null;
+		FelParser.expressionList_return expressionList41 = null;
 
 		CommonTree char_literal40_tree = null;
 		CommonTree char_literal42_tree = null;
@@ -1513,8 +1513,8 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "literal"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:105:1: literal : ( ( Additive )? ( integerLiteral | FloatingPointLiteral ) | CharacterLiteral | StringLiteral | BooleanLiteral );
-	public final ErParser.literal_return literal() throws RecognitionException {
-		ErParser.literal_return retval = new ErParser.literal_return();
+	public final FelParser.literal_return literal() throws RecognitionException {
+		FelParser.literal_return retval = new FelParser.literal_return();
 		retval.start = input.LT(1);
 		int literal_StartIndex = input.index();
 		CommonTree root_0 = null;
@@ -1524,7 +1524,7 @@ public class ErParser extends AbstFelParser {
 		Token CharacterLiteral46 = null;
 		Token StringLiteral47 = null;
 		Token BooleanLiteral48 = null;
-		ErParser.integerLiteral_return integerLiteral44 = null;
+		FelParser.integerLiteral_return integerLiteral44 = null;
 
 		CommonTree Additive43_tree = null;
 		CommonTree FloatingPointLiteral45_tree = null;
@@ -1731,8 +1731,8 @@ public class ErParser extends AbstFelParser {
 
 	// $ANTLR start "integerLiteral"
 	// D:\\HappyBI\\trunk\\ExcelReport\\docs\\antlr\\Er.g:112:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
-	public final ErParser.integerLiteral_return integerLiteral() throws RecognitionException {
-		ErParser.integerLiteral_return retval = new ErParser.integerLiteral_return();
+	public final FelParser.integerLiteral_return integerLiteral() throws RecognitionException {
+		FelParser.integerLiteral_return retval = new FelParser.integerLiteral_return();
 		retval.start = input.LT(1);
 		int integerLiteral_StartIndex = input.index();
 		CommonTree root_0 = null;

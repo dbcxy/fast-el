@@ -12,7 +12,7 @@ import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 
-public class ErLexer extends Lexer {
+public class FelLexer extends Lexer {
     public static final int HexLiteral=18;
     public static final int Cell=12;
     public static final int Multiplicative=9;
@@ -50,11 +50,11 @@ public class ErLexer extends Lexer {
     // delegates
     // delegators
 
-    public ErLexer() {;} 
-    public ErLexer(CharStream input) {
+    public FelLexer() {;} 
+    public FelLexer(CharStream input) {
         this(input, new RecognizerSharedState());
     }
-    public ErLexer(CharStream input, RecognizerSharedState state) {
+    public FelLexer(CharStream input, RecognizerSharedState state) {
         super(input,state);
 
     }
