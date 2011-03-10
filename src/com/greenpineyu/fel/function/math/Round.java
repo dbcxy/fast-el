@@ -3,11 +3,7 @@ package com.greenpineyu.fel.function.math;
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
-/**
- * 对数据在指定位置上进行截取，剩余部分四舍五入
- * 
- * @author 钟杰
- */
+
 public class Round extends CommonFunction {
 
 	public Object call(Object[] arguments) {

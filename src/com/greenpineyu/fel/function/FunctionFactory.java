@@ -3,18 +3,6 @@ package com.greenpineyu.fel.function;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.greenpineyu.fel.function.collection.List;
-import com.greenpineyu.fel.function.collection.SubList;
-import com.greenpineyu.fel.function.collection.To;
-import com.greenpineyu.fel.function.datetime.DateTime;
-import com.greenpineyu.fel.function.datetime.Day;
-import com.greenpineyu.fel.function.datetime.DaysBetween;
-import com.greenpineyu.fel.function.datetime.FormatDatetime;
-import com.greenpineyu.fel.function.datetime.Month;
-import com.greenpineyu.fel.function.datetime.Now;
-import com.greenpineyu.fel.function.datetime.Weekday;
-import com.greenpineyu.fel.function.datetime.Year;
-import com.greenpineyu.fel.function.logic.If;
 import com.greenpineyu.fel.function.math.Abs;
 import com.greenpineyu.fel.function.math.Avg;
 import com.greenpineyu.fel.function.math.Cos;
@@ -97,19 +85,7 @@ public class FunctionFactory {
 		funcMap.put(LogicalOperator.OR2_STR, LogicalOperator.OR2);// ||
 		funcMap.put(Like.getInstance().getName(), Like.getInstance());// like
 		funcMap.put(In.getInstance().getName(), In.getInstance());// in
-		funcMap.put(If.getInstance().getName(), If.getInstance());//if
 		
-		// 日期时间函数
-		funcMap.put("datetime", new DateTime());
-		funcMap.put("day", new Day());
-		funcMap.put("daysbetween", new DaysBetween());
-		funcMap.put("formatdatetime", new FormatDatetime());
-		funcMap.put("month", new Month());
-		funcMap.put("now", new Now());
-		//date函数和now函数的功能是一样的，都是返回日期对象
-		funcMap.put("date", new Now());
-		funcMap.put("weekday", new Weekday());
-		funcMap.put("year", new Year());
 		
 		//字符串函数
 		funcMap.put("find", Find.getInstance());
@@ -136,11 +112,6 @@ public class FunctionFactory {
 		funcMap.put("sqrt", new Sqrt());
 		//		funcMap.put("number", new com.datanew.excel.script.function.math.Number());
 		
-		// 普通函数
-		// 集合类
-		funcMap.put("list", new List());
-		funcMap.put("sublist", new SubList());
-		funcMap.put("to", new To());
 
 	}
 
