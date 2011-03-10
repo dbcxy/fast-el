@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.operator;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.common.FunctionUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
@@ -38,7 +38,7 @@ public class LogicalOperator extends TolerantFunction {
 		OR2 = new LogicalOperator(OR2_STR);
 	}
 	
-	public Object callFun(AstNode node, FelContext context) {
+	public Object callFun(FelNode node, FelContext context) {
 			Object[] children = node.getChildrenArray();
 			if (children != null && children.length == 2) {
 				if (this == AND || this == AND2) {

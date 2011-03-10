@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function;
 
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -19,6 +19,6 @@ public interface Function {
 	 * @param arguments
 	 * @return
 	 */
-	Object call(AstNode node, FelContext context);
+	Object call(FelNode node, FelContext context);
 
 }

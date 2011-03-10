@@ -12,7 +12,7 @@ import com.greenpineyu.fel.function.Function;
  * @author yqs
  *
  */
-public class FunAstNode extends AstNodeImpl {
+public class FunAstNode extends FelNodeImpl {
 	private Function fun;
 
 	private static final Function NOT_FOUND_FUN = new Function() {
@@ -21,7 +21,7 @@ public class FunAstNode extends AstNodeImpl {
 			throw new UnsupportedOperationException("还没有实现[2011-1-11]");
 		}
 
-		public Object call(AstNode node, FelContext context) {
+		public Object call(FelNode node, FelContext context) {
 			throw new EvalException("找不到函数[" + node.getText() + "]");
 		}
 	};
@@ -34,7 +34,7 @@ public class FunAstNode extends AstNodeImpl {
 		super(token);
 	}
 
-	public Object interpret(FelContext context, AstNode node) {
+	public Object interpret(FelContext context, FelNode node) {
 		if (fun != null) {
 			return fun.call(this, context);
 		} else {

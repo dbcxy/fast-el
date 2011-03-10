@@ -8,8 +8,8 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
 
-import com.greenpineyu.fel.antlr.AstAdaptor;
-import com.greenpineyu.fel.antlr.AstNode;
+import com.greenpineyu.fel.antlr.NodeAdaptor;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.antlr.ErLexer;
 import com.greenpineyu.fel.antlr.ErParser;
 import com.greenpineyu.fel.context.AbstractContext;
@@ -51,7 +51,7 @@ public class FelEngineImpl implements FelEngine {
 		return parse(exp).eval(this.context);
 	}
 
-	public AstNode parse(String exp) {
+	public FelNode parse(String exp) {
 		if (exp == null || "".equals(exp)) {
 			return null;
 		}
@@ -65,7 +65,7 @@ public class FelEngineImpl implements FelEngine {
 		ErLexer lexer = new ErLexer(input);
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		ErParser parser = new ErParser(tokens);
-		parser.setTreeAdaptor(new AstAdaptor());
+		parser.setTreeAdaptor(new NodeAdaptor());
 		ParserRuleReturnScope r = null;
 		try {
 			r = parser.program();
@@ -74,8 +74,8 @@ public class FelEngineImpl implements FelEngine {
 		}
 		if (r != null) {
 			Object tree = r.getTree();
-			if (tree instanceof AstNode) {
-				return (AstNode) tree;
+			if (tree instanceof FelNode) {
+				return (FelNode) tree;
 			}
 		}
 		return null;

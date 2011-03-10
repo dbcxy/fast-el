@@ -10,7 +10,7 @@ import com.greenpineyu.fel.Expression;
  * @uml.dependency   supplier="com.datanew.excel.script.function.Function"
  * @uml.dependency   supplier="com.datanew.excel.script.context.ScriptContext"
  */
-public interface AstNode extends Expression, Tree {
+public interface FelNode extends Expression, Tree {
 
 
 
@@ -38,7 +38,7 @@ public interface AstNode extends Expression, Tree {
 	 * @param text
 	 */
 
-	void setChild(int index, AstNode node);
+	void setChild(int index, FelNode node);
 	
 
 

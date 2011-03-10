@@ -9,7 +9,7 @@ import com.greenpineyu.fel.context.FelContext;
  * @author yqs
  *
  */
-public class ConstAstNode extends AstNodeImpl {
+public class ConstAstNode extends FelNodeImpl {
 
 	private Object value;
 
@@ -18,7 +18,7 @@ public class ConstAstNode extends AstNodeImpl {
 		this.value = value;
 	}
 
-	public Object interpret(FelContext context, AstNode node) {
+	public Object interpret(FelContext context, FelNode node) {
 		return value;
 	}
 

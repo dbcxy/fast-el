@@ -13,6 +13,6 @@ public interface Interpreter {
 	 * @param context
 	 * @return
 	 */
-	Object interpret(FelContext context, AstNode node);
+	Object interpret(FelContext context, FelNode node);
 
 }
