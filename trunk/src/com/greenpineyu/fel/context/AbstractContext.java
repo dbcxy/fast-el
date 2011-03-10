@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.greenpineyu.fel.common.Callback;
-import com.greenpineyu.fel.function.Function;
 
 public abstract class AbstractContext implements FelContext {
 
@@ -32,12 +31,6 @@ public abstract class AbstractContext implements FelContext {
 		cbEnabled = true;
 	}
 
-	public void addFunction(Function name) {
-		if (this.parent != null) {
-			this.parent.addFunction(name);
-		}
-		throw new UnsupportedOperationException("不支持添加函数:" + name);
-	}
 
 	public Object get(Object name) {
 		isFound = false;
@@ -75,21 +68,6 @@ public abstract class AbstractContext implements FelContext {
 		return var == null ? null : var.toString();
 	}
 
-	/*
-		Object getObject(Object name) {
-			if (name instanceof String) {
-				String strName = (String) name;
-				return getObject(strName);
-			} else
-				return null;
-		}*/
-
-	public Function getFunction(String name) {
-		if (this.parent != null) {
-			return this.parent.getFunction(name);
-		}
-		return null;
-	}
 
 	public FelContext getParent() {
 		return this.parent;

@@ -8,15 +8,13 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
 
-import com.greenpineyu.fel.antlr.NodeAdaptor;
-import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.antlr.FelLexer;
+import com.greenpineyu.fel.antlr.FelNode;
 import com.greenpineyu.fel.antlr.FelParser;
+import com.greenpineyu.fel.antlr.NodeAdaptor;
 import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.ParseException;
-import com.greenpineyu.fel.function.Function;
-import com.greenpineyu.fel.function.FunctionFactory;
 
 /**
  * @uml.dependency supplier="com.datanew.excel.script.antlr.ErParser"
@@ -35,12 +33,6 @@ public class FelEngineImpl implements FelEngine {
 			protected Object getObject(Object name) {
 				return null;
 			}
-
-			@Override
-			public Function getFunction(String name) {
-				return FunctionFactory.getInstance().getFun(name);
-			}
-
 		});
 		
 	}
