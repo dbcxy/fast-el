@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -87,21 +87,21 @@ public class AdditiveOperator extends CommonFunction {
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
 			
-			if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-				double l = FunctionUtil.toDouble(left);
-				double r = FunctionUtil.toDouble(right);
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+				double l = NumberUtil.toDouble(left);
+				double r = NumberUtil.toDouble(right);
 				return new Double(l + r);
 			}
 			
 			if(left instanceof BigInteger && right instanceof BigInteger){
-				BigInteger l = FunctionUtil.toBigInteger(left);
-				BigInteger r = FunctionUtil.toBigInteger(right);
+				BigInteger l = NumberUtil.toBigInteger(left);
+				BigInteger r = NumberUtil.toBigInteger(right);
 				return l.add(r);
 			}
 			
 			if(left instanceof BigDecimal || right instanceof BigDecimal){
-				BigDecimal l = FunctionUtil.toBigDecimal(left);
-				BigDecimal r = FunctionUtil.toBigDecimal(right);
+				BigDecimal l = NumberUtil.toBigDecimal(left);
+				BigDecimal r = NumberUtil.toBigDecimal(right);
 				return l.add(r);
 			}
 			
@@ -111,12 +111,12 @@ public class AdditiveOperator extends CommonFunction {
 				return DATE_FORMAT.format((Date) left) + right;
 			}
 
-			BigInteger l = FunctionUtil.toBigInteger(left);
-			BigInteger r = FunctionUtil.toBigInteger(right);
+			BigInteger l = NumberUtil.toBigInteger(left);
+			BigInteger r = NumberUtil.toBigInteger(right);
 			BigInteger result = l.add(r);
-			return FunctionUtil.narrowBigInteger(left, right, result);
+			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
-			return FunctionUtil.toString(left).concat(FunctionUtil.toString(right));
+			return NumberUtil.toString(left).concat(NumberUtil.toString(right));
 		}
 	}
 
@@ -160,28 +160,28 @@ public class AdditiveOperator extends CommonFunction {
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
 			
-			if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-				double l = FunctionUtil.toDouble(left);
-				double r = FunctionUtil.toDouble(right);
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+				double l = NumberUtil.toDouble(left);
+				double r = NumberUtil.toDouble(right);
 				return new Double(l - r);
 			}
 			
 			if(left instanceof BigInteger && right instanceof BigInteger){
-				BigInteger l = FunctionUtil.toBigInteger(left);
-				BigInteger r = FunctionUtil.toBigInteger(right);
+				BigInteger l = NumberUtil.toBigInteger(left);
+				BigInteger r = NumberUtil.toBigInteger(right);
 				return l.subtract(r);
 			}
 			
 			if(left instanceof BigDecimal || right instanceof BigDecimal){
-				BigDecimal l = FunctionUtil.toBigDecimal(left);
-				BigDecimal r = FunctionUtil.toBigDecimal(right);
+				BigDecimal l = NumberUtil.toBigDecimal(left);
+				BigDecimal r = NumberUtil.toBigDecimal(right);
 				return l.subtract(r);
 			}
 			
-			BigInteger l = FunctionUtil.toBigInteger(left);
-			BigInteger r = FunctionUtil.toBigInteger(right);
+			BigInteger l = NumberUtil.toBigInteger(left);
+			BigInteger r = NumberUtil.toBigInteger(right);
 			BigInteger result = l.subtract(r);
-			return FunctionUtil.narrowBigInteger(left, right, result);
+			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
 			throw new NumberFormatException("调用sub()方法出错！,原因：解析参数对象出错！");
 		}

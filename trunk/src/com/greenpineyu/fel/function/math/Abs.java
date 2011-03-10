@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.math;
 
-import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.NumberUtils;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -16,7 +16,7 @@ public class Abs extends CommonFunction {
 		}
 		Object obj = arguments[0];
 		if (obj instanceof Number) {
-			return NumberUtil.parseNumber(Math.abs(((Number) obj).doubleValue()));
+			return NumberUtils.parseNumber(Math.abs(((Number) obj).doubleValue()));
 		}
 		return new Integer(0);
 	}

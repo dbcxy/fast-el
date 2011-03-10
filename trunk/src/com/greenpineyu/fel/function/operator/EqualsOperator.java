@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import java.math.BigDecimal;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.TolerantFunction;
@@ -63,14 +63,14 @@ public class EqualsOperator implements Function {
 		}else if(left.getClass().equals(right.getClass())){
 			return left.equals(right);
 		}else if(left instanceof BigDecimal || right instanceof BigDecimal){
-			return FunctionUtil.toBigDecimal(left).compareTo(FunctionUtil.toBigDecimal(right)) == 0;
-		} else if (FunctionUtil.isFloatingPointNumber(left) || FunctionUtil.isFloatingPointNumber(right)) {
-			return FunctionUtil.toDouble(left) == FunctionUtil.toDouble(right);
+			return NumberUtil.toBigDecimal(left).compareTo(NumberUtil.toBigDecimal(right)) == 0;
+		} else if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+			return NumberUtil.toDouble(left) == NumberUtil.toDouble(right);
 		}else if(left instanceof Number || right instanceof Number || left instanceof Character
 	            || right instanceof Character){
-			return FunctionUtil.toLong(left) == FunctionUtil.toLong(right);
+			return NumberUtil.toLong(left) == NumberUtil.toLong(right);
 		}else if(left instanceof Boolean || right instanceof Boolean){
-			return FunctionUtil.toBoolean(left) == FunctionUtil.toBoolean(right);
+			return NumberUtil.toBoolean(left) == NumberUtil.toBoolean(right);
 		}else if(left instanceof String || right instanceof String){
 			return left.toString().equals(right.toString());
 		}

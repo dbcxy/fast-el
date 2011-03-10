@@ -14,7 +14,7 @@ public abstract class AbstractContext implements FelContext {
 	/**
 	 * 保存脚本上下文的变量
 	 */
-	private Map property;
+	private Map<Object, Object> property;
 
 	/**
 	 * 是否找到某个变量
@@ -27,7 +27,7 @@ public abstract class AbstractContext implements FelContext {
 	private boolean cbEnabled;
 
 	public AbstractContext(){
-		this.property = new HashMap();
+		this.property = new HashMap<Object, Object>();
 		cbEnabled = true;
 	}
 

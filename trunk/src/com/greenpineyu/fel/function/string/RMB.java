@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.string;
 
-import com.greenpineyu.fel.common.FunctionUtil;
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
@@ -26,7 +26,7 @@ public class RMB extends CommonFunction {
 	
 	public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 1){
-			double num = FunctionUtil.toDouble(arguments[0]);
+			double num = NumberUtil.toDouble(arguments[0]);
 			return cleanZero(splitNum(roundString(num+"")));
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");
