@@ -55,7 +55,10 @@ public class Example {
 		System.out.println("所有费用：" + allCost);
 	}
 
-	public static void fastVar() {
+	/**
+	 * 自定义 解释器
+	 */
+	public static void userInterpreter() {
 		String costStr = "成本";
 		FelContext rootContext = fel.getContext();
 		rootContext.set(costStr, "60000");
