@@ -33,17 +33,14 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		String text = token.getText();
 		switch (type) {
 			case FelParser.Identifier:
-			case FelParser.Cell:
 				returnMe = new VarAstNode(token);
 				break;
 
 			/* 函数、操作符 开始 */
 			case FelParser.Dot://.
-			case FelParser.Colon://:
 			case FelParser.Additive:// +、-
 			case FelParser.Multiplicative:// *、/
 			case FelParser.Equals:// ==、!=
-			case FelParser.LikeIn://like in
 			case FelParser.Relational://>、<、>=、<=
 			case FelParser.Logical://AND、OR
 				returnMe = new FunNode(token);
