@@ -110,7 +110,7 @@ public class FunctionFactory {
 		funcMap.put("round", new Round());
 		funcMap.put("pi", new Pi());
 		funcMap.put("sqrt", new Sqrt());
-		//		funcMap.put("number", new com.datanew.excel.script.function.math.Number());
+		//		funcMap.put("number", new .script.function.math.Number());
 		
 
 	}

@@ -16,8 +16,8 @@ public abstract class TolerantFunction implements Function {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.antlr.AstNode,
-	 *      com.datanew.excel.script.context.ScriptContext)
+	 * @see .script.function.Function#call(.script.antlr.AstNode,
+	 *      .script.context.ScriptContext)
 	 */
 	public Object call(FelNode node, FelContext context) {
 		// 如果参数中包含表达式，执行表达式。将表达式替换成表达式执行结果。

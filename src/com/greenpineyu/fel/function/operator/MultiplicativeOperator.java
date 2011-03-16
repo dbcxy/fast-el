@@ -8,11 +8,11 @@ import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
- * 包名				com.datanew.excel.script.function.operator
+ * 包名				.script.function.operator
  * 类名				MultiplicativeOperator.java
  * 创建日期				Oct 26, 20102:47:15 PM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class MultiplicativeOperator extends CommonFunction {
 

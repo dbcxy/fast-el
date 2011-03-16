@@ -6,7 +6,7 @@ import com.greenpineyu.fel.function.CommonFunction;
 /**
  * 余弦函数
  * 
- * @author 钟杰
+ * @author 
  */
 public class Cos extends CommonFunction {
 

@@ -4,7 +4,7 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * @uml.dependency   supplier="com.datanew.excel.script.context.ScriptContext"
+ * @uml.dependency   supplier=".script.context.ScriptContext"
  */
 public interface Function {
 

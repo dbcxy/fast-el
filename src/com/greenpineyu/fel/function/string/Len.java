@@ -4,11 +4,11 @@ import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
- * 包名				com.datanew.excel.script.function.string
+ * 包名				
  * 类名				Len.java
  * 创建日期				Oct 28, 201010:58:23 AM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class Len extends CommonFunction {
 

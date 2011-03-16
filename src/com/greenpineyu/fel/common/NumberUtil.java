@@ -7,11 +7,11 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
 
 /**
- * 包名				com.datanew.excel.common
+ * 包名				.common
  * 类名				NumberUtil.java
  * 创建日期				Oct 26, 20109:14:28 AM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class NumberUtil {
 	

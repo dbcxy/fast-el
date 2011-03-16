@@ -12,7 +12,7 @@ import com.greenpineyu.fel.function.CommonFunction;
 public class Count extends CommonFunction {
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.CommonFunction#call(java.lang.Object[])
+	 * @see .script.function.CommonFunction#call(java.lang.Object[])
 	 */
 	public Object call(Object[] arguments) {
 		if(arguments != null){
@@ -22,7 +22,7 @@ public class Count extends CommonFunction {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.Function#getName()
+	 * @see .script.function.Function#getName()
 	 */
 	public String getName() {
 		return "count";

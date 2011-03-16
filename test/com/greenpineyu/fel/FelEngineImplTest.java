@@ -158,11 +158,6 @@ public class FelEngineImplTest {
 		int i = 0;
 		//算术运算
 		object[i++] = new Object[] { "a.b()", "true" };
-		object[i++] = new Object[] { "^", "true" };
-		object[i++] = new Object[] { "|^", "true" };
-		object[i++] = new Object[] { "^|", "true" };
-		object[i++] = new Object[] { "^|^", "true" };
-		object[i++] = new Object[] { "^|^", "true" };
 		object[i++] = new Object[] { "new Date()", "false" };
 		return (Object[][]) ArrayUtils.subarray(object, 0, i);
 	}

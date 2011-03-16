@@ -13,7 +13,7 @@ import com.greenpineyu.fel.function.operator.MultiplicativeOperator;
 public class Avg extends CommonFunction {
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.CommonFunction#call(java.lang.Object[])
+	 * @see .script.function.CommonFunction#call(java.lang.Object[])
 	 */
 	public Object call(Object[] arguments) {
 		Object result = new Double(0);
@@ -32,7 +32,7 @@ public class Avg extends CommonFunction {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.Function#getName()
+	 * @see .script.function.Function#getName()
 	 */
 	public String getName() {
 		return "avg";
