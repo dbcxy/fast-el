@@ -118,9 +118,22 @@ public class Example {
 		}
 	}
 
+	public static void testSpeed() {
+		String exp = "40.52334+60*(21.8144+17*32.663)";
+		FelNode node = fel.parse(exp);
+		int times = 100 * 1000 * 1000;
+		long s1 = System.currentTimeMillis();
+		for (int i = 0; i < times; i++) {
+			double j = 40.52334 + 60 * (21.8144 + 17 * 32.663);
+			//			node.eval(null);
+		}
+		long s2 = System.currentTimeMillis();
+		System.out.println("花费的时间:" + (s2 - s1));
+	}
+
 
 	public static void main(String[] args) {
-		userInterpreterX();
+		testSpeed();
 	}
 
 }

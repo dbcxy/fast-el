@@ -3,8 +3,8 @@ package com.greenpineyu.fel.function.operator;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
- * 包名 com.datanew.excel.script.function.operator 类名 In.java 创建日期 Nov 4,
- * 20101:36:45 PM 作者 张鑫 版权 杭州数新软件
+ * 包名 .script.function.operator 类名 In.java 创建日期 Nov 4,
+ * 20101:36:45 PM 作者  版权 
  */
 public class In extends CommonFunction {
 

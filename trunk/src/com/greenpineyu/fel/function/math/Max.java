@@ -16,7 +16,7 @@ import com.greenpineyu.fel.function.operator.RelationalOperator;
 public class Max extends CommonFunction {
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.CommonFunction#call(java.lang.Object[])
+	 * @see .script.function.CommonFunction#call(java.lang.Object[])
 	 */
 	public Object call(Object[] arguments) {
 		Object result = null;
@@ -51,7 +51,7 @@ public class Max extends CommonFunction {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.Function#getName()
+	 * @see .script.function.Function#getName()
 	 */
 	public String getName() {
 		return "max";

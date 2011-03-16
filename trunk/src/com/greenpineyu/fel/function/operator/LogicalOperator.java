@@ -7,11 +7,11 @@ import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * 包名				com.datanew.excel.script.function.operator
+ * 包名				.script.function.operator
  * 类名				LogicalOperator.java
  * 创建日期				Oct 26, 20103:20:20 PM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class LogicalOperator extends TolerantFunction {
 

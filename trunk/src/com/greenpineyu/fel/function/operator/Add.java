@@ -17,7 +17,7 @@ public class Add implements Function {
 	
 
 	/* (non-Javadoc)
-	 * @see com.datanew.excel.script.function.Function#call(com.datanew.excel.script.AstNode, com.datanew.excel.script.context.ScriptContext)
+	 * @see .script.function.Function#call(.script.AstNode, .script.context.ScriptContext)
 	 */
 	public Object call(FelNode node, FelContext context) {
 		Object returnMe = null;

@@ -6,7 +6,7 @@ import com.greenpineyu.fel.function.CommonFunction;
 /**
  * 绝对值函数
  * 
- * @author 钟杰
+ * @author 
  */
 public class Abs extends CommonFunction {
 

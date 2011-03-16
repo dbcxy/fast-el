@@ -11,11 +11,11 @@ import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.function.CommonFunction;
 
 /**
- * 包名				com.datanew.excel.script.function.operator
+ * 包名				.script.function.operator
  * 类名				AdditiveOperator.java
  * 创建日期				Oct 26, 201011:07:12 AM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class AdditiveOperator extends CommonFunction {
 

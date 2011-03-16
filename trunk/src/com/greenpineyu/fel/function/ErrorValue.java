@@ -3,11 +3,11 @@ package com.greenpineyu.fel.function;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * 包名				com.datanew.excel.script.function
+ * 包名				.script.function
  * 类名				ERRORVALUE.java
  * 创建日期				Oct 27, 20108:56:26 AM
- * 作者				张鑫
- * 版权				杭州数新软件
+ * 作者				
+ * 版权				
  */
 public class ErrorValue {
 

@@ -6,7 +6,7 @@ import com.greenpineyu.fel.parser.FelNode;
 /**
  * 脚本引擎
  * @author       yqs
- * @uml.dependency   supplier="com.datanew.excel.script.function.Function"
+ * @uml.dependency   supplier=".script.function.Function"
  */
 public interface FelEngine {
 
