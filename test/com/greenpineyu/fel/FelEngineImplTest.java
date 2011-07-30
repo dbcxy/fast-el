@@ -1,13 +1,13 @@
 package com.greenpineyu.fel;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import com.greenpineyu.fel.context.FelContext;
 
@@ -16,6 +16,9 @@ public class FelEngineImplTest {
 	/**
 	 * @testng.data-provider name = "eval"
 	 */
+	
+	@DataProvider(name="eval")
+	
 	public Object[][] evalData() {
 		FelEngineImpl engine = new FelEngineImpl();
 		FelContext jc = engine.getContext();
@@ -33,8 +36,8 @@ public class FelEngineImplTest {
 		jc.set("now", Calendar.getInstance().getTime());
 		GregorianCalendar gc = new GregorianCalendar(5000, 11, 20);
 		jc.set("now2", gc.getTime());
-		jc.set("bdec", new BigDecimal("7"));
-		jc.set("bint", new BigInteger("7"));
+		jc.set("bdec", "7");
+		jc.set("bint", "7");
 		jc.set("A4", new Integer(4));
 		jc.set("B5", new Integer(5));
 
@@ -45,16 +48,23 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "foo.getCount()",
 					new Integer(header.getCount()) };
 		//算术运算
-		object[i++] = new Object[] { engine, "+1", new Long(1) };
-		object[i++] = new Object[] { engine, "-1", new Long(-1) };
+		object[i++] = new Object[] { engine, "+1", new Integer(1) };
+		object[i++] = new Object[] { engine, "-1", new Integer(-1) };
 		object[i++] = new Object[] { engine, "A4*B5", new Integer(4 * 5) };
 
 		//逻辑运算
 		object[i++] = new Object[] { engine, "a == b", Boolean.FALSE };
 		object[i++] = new Object[] { engine, "a==true", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "a==false", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "1=='1'", Boolean.TRUE};
+		object[i++] = new Object[] { engine, "1==1.0", Boolean.TRUE };
+		object[i++] = new Object[] { engine, "1=='1.0'", Boolean.TRUE };
+		object[i++] = new Object[] { engine, "1.0=='1.0'", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "true==false", Boolean.FALSE };
-
+		object[i++] = new Object[]{engine,"1+'2'","12"};
+		object[i++] = new Object[]{engine,"'1'+2","12"};
+		object[i++] = new Object[]{engine,"'1'+'2'","12"};
+		object[i++] = new Object[]{engine,"1+'2'+1","121"};
 		object[i++] = new Object[] { engine, "2 < 3", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num < 5", Boolean.FALSE };
 		object[i++] = new Object[] { engine, "num < num", Boolean.FALSE };
@@ -73,8 +83,8 @@ public class FelEngineImplTest {
 
 		object[i++] = new Object[] { engine, "'6' >= '5'", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num >= 5", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= null", Boolean.FALSE };
+//		object[i++] = new Object[] { engine, "num >= num", Boolean.TRUE };
+		object[i++] = new Object[] { engine, "num >= null", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num >= 2.5", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "now2 >= now", Boolean.TRUE }; // test
 		// comparable
@@ -82,7 +92,7 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "'6' > '5'", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num > 4", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num > num", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num > null", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "num > null", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num > 2.5", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "now2 > now", Boolean.TRUE }; // test
 		// comparable
@@ -100,7 +110,8 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "num <= bint", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num < bint", Boolean.TRUE };
 
-		/** **************** Dot operator start **************** */
+		/*
+		*//** **************** Dot operator start **************** *//*
 		object[i++] = new Object[] { engine, "foo.name", header.get("name") };
 		object[i++] = new Object[] { engine, "foo.foo", footer };
 		object[i++] = new Object[] { engine, "foo.getCount()",
@@ -115,17 +126,42 @@ public class FelEngineImplTest {
 
 		object[i++] = new Object[] { engine, "foo.convertBoolean(true)",
 					header.convertBoolean(true) };
-		/** **************** Dot operator end **************** */
-
-		object[i++] = new Object[] { engine, "1==2 and (1>2 or 2>1)", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "1==1 and (1>2 or 2>1)", Boolean.TRUE };
+		*//** **************** Dot operator end **************** *//*
+*/
+		object[i++] = new Object[] { engine, "true && 1==2 && (1>2 || 2>1)", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "true && 1==1 && (1>2 || 2>1)", Boolean.TRUE };
+		object[i++] = new Object[] { engine, "true && null", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "null && null", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "null || null", Boolean.FALSE };
+		object[i++] = new Object[] { engine, "null || true", Boolean.TRUE };
+		
+		i = addStringTest(engine, object, i);
 
 		return (Object[][]) ArrayUtils.subarray(object, 0, i);
+	}
+
+	private int addStringTest(FelEngineImpl engine, Object[][] object, int i) {
+		object[i++] = new Object[] { engine, "'abc'.indexOf(bc)", 1 };
+		object[i++] = new Object[] { engine, "'abc'.substring(1)", "bc" };
+		return i;
+	}
+	
+	/**
+	 * @param engine
+	 * @param expr
+	 * @param expected
+	 */
+	@Test(dataProvider="eval")
+	public void testEvalWithCompiler(FelEngine engine,String expr,Object expected){
+		Expression ins =engine.compiler(expr, null);
+		Object actual = ins.eval(engine.getContext());
+		 assert ObjectUtils.equals(expected, actual);
 	}
 
 	/**
 	 * @testng.test dataProvider="eval" group = "script"
 	 */
+	@Test(dataProvider="eval")
 	protected void testEval(FelEngine engine, String expression,
 				Object expected) {
 		Object actual = engine.eval(expression);

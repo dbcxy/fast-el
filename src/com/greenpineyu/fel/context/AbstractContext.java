@@ -63,6 +63,14 @@ public abstract class AbstractContext implements FelContext {
 	 * @return
 	 */
 	abstract protected Object getObject(Object name);
+	
+	public Class<?> getValueType(String varName) {
+		Object var = this.get(varName);
+		if(var != null){
+			return var.getClass();
+		}
+		return Object.class;
+	}
 
 	public static String toString(Object var) {
 		return var == null ? null : var.toString();

@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.parser.FelNode;
 
 /**
  * 包名				.script.function.operator
@@ -209,6 +212,13 @@ public class MultiplicativeOperator extends CommonFunction {
 
 	public String getName() {
 		return this.operator;
+	}
+
+	public FelMethod toMethod(FelNode node, FelContext ctx) {
+		String code = "";
+		code = "("+node.getChildren().get(0).toMethod(ctx).getCode()+")"+this.operator+"("+node.getChildren().get(1).toMethod(ctx).getCode()+")";
+		FelMethod m = new FelMethod(Number.class, code);
+		return m;
 	}
 
 }

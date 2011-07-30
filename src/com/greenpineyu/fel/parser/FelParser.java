@@ -249,7 +249,7 @@ public class FelParser extends AbstFelParser {
             if ( state.backtracking==0 ) {
 
                   	if(conditionalExpression5 == null){
-                   	    root_0.addChild(com.greenpineyu.fel.parser.FelNodeImpl.NULL_NODE);
+                   	    root_0.addChild(com.greenpineyu.fel.parser.AbstFelNode.NULL_NODE);
                   	}
                   
             }
@@ -295,7 +295,7 @@ public class FelParser extends AbstFelParser {
             	    if ( state.backtracking==0 ) {
 
             	            	if(conditionalExpression7 == null){
-            	           		root_0.addChild(com.greenpineyu.fel.parser.FelNodeImpl.NULL_NODE);
+            	           		root_0.addChild(com.greenpineyu.fel.parser.AbstFelNode.NULL_NODE);
             	          	}else{
             	          	   conditionalExpression7= null;
             	          	}

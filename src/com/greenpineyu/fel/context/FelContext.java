@@ -56,5 +56,12 @@ public interface FelContext {
 	 * @param cbEnabled
 	 */
 	void setCbEnabled(boolean cbEnabled);
+	
+	/**
+	 * 获取某个变量的类型
+	 * @param varName
+	 * @return
+	 */
+	Class<?> getValueType(String varName);
 
 }

@@ -8,7 +8,10 @@ import java.util.Date;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.parser.FelNode;
 
 /**
  * 包名				.script.function.operator
@@ -189,6 +192,10 @@ public class AdditiveOperator extends CommonFunction {
 
 	public String getName() {
 		return this.operator;
+	}
+
+	public FelMethod toMethod(FelNode node, FelContext ctx) {
+		return null;
 	}
 
 }
