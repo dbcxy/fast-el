@@ -141,7 +141,7 @@ public class FelEngineImplTest {
 	}
 
 	private int addStringTest(FelEngineImpl engine, Object[][] object, int i) {
-		object[i++] = new Object[] { engine, "'abc'.indexOf(bc)", 1 };
+		object[i++] = new Object[] { engine, "'abc'.indexOf('bc')", 1 };
 		object[i++] = new Object[] { engine, "'abc'.substring(1)", "bc" };
 		return i;
 	}

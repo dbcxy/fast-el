@@ -4,6 +4,7 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 
@@ -16,7 +17,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 					return null;
 				}};
 		}
-		System.out.println(token.getText());
+//		System.out.println(token.getText());
 
 		/*
 		Dot
@@ -61,15 +62,15 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 			/* 常量开始 */
 			case FelParser.DecimalLiteral:
 				// 数字-10进制
-				returnMe = new Long(text);
+				returnMe = NumberUtil.parseNumber(new Long(text));
 				break;
 			case FelParser.HexLiteral:
 				// 数字-16进制
-				returnMe = new Long(Long.parseLong(text, 16));
+				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(text, 16)));
 				break;
 			case FelParser.OctalLiteral:
 				// 数字-8进制
-				returnMe = new Long(Long.parseLong(text, 8));
+				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(text, 8)));
 				break;
 
 			case FelParser.FloatingPointLiteral:

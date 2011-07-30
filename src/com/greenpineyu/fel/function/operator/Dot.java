@@ -258,12 +258,34 @@ public class Dot implements Function {
 		text = "-1";
 		text = "+1";
 		text = "\"foo\" + \"bar\" == \"foobar\"";
-		text = "\"abc\".indexOf(\"bc\")";
+		text = "foo.getCount()";
+		text = "\"abc\".indexOf('bc')";
+		text = "\"abc\".substring(1)";
+		FelNode parse = e.parse(text);
 		Object result = e.eval(text);
 		System.out.println(result);
 		Expression exp = e.compiler(text, null);
 		Object eval = exp.eval(ctx);
 		System.out.println(eval);
+		testEff();
+	}
+	
+	static public void testEff(){
+		String str = "40.52334+60*(21.8144+17*32.663)";
+			FelEngine e = new FelEngineImpl();
+			double d = 40.52334+60*(21.8144+17*32.663);
+			System.out.println(d);
+			
+			long start = System.currentTimeMillis();
+		Expression compiler = e.compiler(str, null);
+		System.out.println(compiler.eval(null));
+		int count =100*1000*1000;
+		for(int i = 0;i<count;i++){
+			compiler.eval(null);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("cost:"+(end - start));
+		
 	}
 	
 
