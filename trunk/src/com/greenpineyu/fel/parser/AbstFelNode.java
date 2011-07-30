@@ -7,11 +7,13 @@ import java.util.List;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
+import org.apache.commons.lang.ObjectUtils.Null;
 
+import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
-public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
+public abstract class AbstFelNode extends CommonTree implements FelNode, Interpreter {
 
 	/**
 	 * 解析器,用于解析节点的值
@@ -19,7 +21,7 @@ public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
 	protected Interpreter interpreter;
 
 
-	public static final FelNodeImpl NULL_NODE = new FelNodeImpl() {
+	public static final AbstFelNode NULL_NODE = new AbstFelNode() {
 		public boolean isNil() {
 			return false;
 		};
@@ -29,26 +31,36 @@ public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
 		};
 
 
-		public String toString() {return "NULL_NODE";};
+		public String toString() {return "NULL_NODE";}
+
+		public FelMethod toMethod(FelContext ctx) {
+			return new FelMethod(Null.class, "null");
+		}
+
 	};
 	
-	public static final FelNode TRUE_NODE = new FelNodeImpl(){
+	public static final FelNode TRUE_NODE = new AbstFelNode(){
 		public boolean isNil() {
 			return false;
 		};
 		
 		public Object interpret(FelContext context, FelNode node) {
 			return Boolean.TRUE;
-		};
+		}
+
+		public FelMethod toMethod(FelContext ctx) {
+			return new FelMethod(Boolean.class, "true");
+		}
+
 
 	};
 
 
-	public FelNodeImpl(Token token) {
+	public AbstFelNode(Token token) {
 		super(token);
 	}
 
-	public FelNodeImpl() {
+	public AbstFelNode() {
 
 	}
 
@@ -58,7 +70,7 @@ public class FelNodeImpl extends CommonTree implements FelNode, Interpreter {
 	}
 
 
-	public FelNodeImpl(CommonTree node) {
+	public AbstFelNode(CommonTree node) {
 		super(node);
 		if (node.getChildren() != null) {
 			this.children = new ArrayList(node.getChildren());

@@ -339,13 +339,13 @@ public class NumberUtil {
 	 * @param i
 	 * @return
 	 */
-	public static Object parseNumber(int i) {
+/*	public static Object parseNumber(int i) {
 		short s = (short) i;
 		if (s == i) {
 			return new Short(s);
 		}
 		return new Integer(i);
-	}
+	}*/
 
 	/**
 	 * @see parseNumber
@@ -353,27 +353,17 @@ public class NumberUtil {
 	public static Object parseNumber(long l) {
 		int i = (int) l;
 		if (i == l) {
-			return parseNumber(i);
+			return new Integer(i);
 		}
 		return new Long(l);
 	}
 
-	/**
-	 * @see parseNumber
-	 */
-	public static Object parseNumber(float f) {
-		int i = (int) f;
-		if (i == f) {
-			return parseNumber(i);
-		}
-		return new Float(f);
-	}
 
 	/**
 	 * @see parseNumber
 	 */
 	public static Object parseNumber(double d) {
-		float f = (float) d;
+		long f = (long) d;
 		if (f == d) {
 			return parseNumber(f);
 		}
@@ -394,6 +384,14 @@ public class NumberUtil {
 			}
 		}
 		return null;
+	}
+	
+	
+	public static int compare(Comparable a,Comparable b){
+		if(a != null&& b!=null){
+			return a.compareTo(b);
+		}
+		return a==null?-1:1;
 	}
 	
 }

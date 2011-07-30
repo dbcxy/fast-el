@@ -1,5 +1,6 @@
 package com.greenpineyu.fel.function;
 
+import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -20,5 +21,11 @@ public interface Function {
 	 * @return
 	 */
 	Object call(FelNode node, FelContext context);
+	
+	
+	
+	FelMethod toMethod(FelNode node,FelContext ctx);
+	
+	
 
 }

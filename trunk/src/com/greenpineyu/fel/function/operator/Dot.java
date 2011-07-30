@@ -9,18 +9,23 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 
 import com.greenpineyu.fel.Expression;
+import com.greenpineyu.fel.FelEngine;
+import com.greenpineyu.fel.FelEngineImpl;
+import com.greenpineyu.fel.Foo;
+import com.greenpineyu.fel.common.ReflectUtil;
+import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
+import com.greenpineyu.fel.parser.AbstFelNode;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.FelNodeImpl;
 import com.greenpineyu.fel.parser.FunNode;
 
 public class Dot implements Function {
 
-	static final Map PRIMITIVE_TYPES;
+	static final Map<Class<?>,Class<?>> PRIMITIVE_TYPES;
 	static {
-		PRIMITIVE_TYPES = new HashMap();
+		PRIMITIVE_TYPES = new HashMap<Class<?>,Class<?>>();
 		PRIMITIVE_TYPES.put(Boolean.class, Boolean.TYPE);
 		PRIMITIVE_TYPES.put(Byte.class, Byte.TYPE);
 		PRIMITIVE_TYPES.put(Character.class, Character.TYPE);
@@ -71,7 +76,7 @@ public class Dot implements Function {
 		Class[] argsType = null;
 		Method method = null;
 		Object[] args = null;
-		if (node.getChildCount() == 1 && node.getChildren().get(0) == FelNodeImpl.NULL_NODE) {
+		if (node.getChildCount() == 1 && node.getChildren().get(0) == AbstFelNode.NULL_NODE) {
 
 		} else {
 			args = CommonFunction.evalArgs(node, context);
@@ -99,10 +104,22 @@ public class Dot implements Function {
 			return null;
 		}
 		
-		//查找方法的顺序 :getProperty->isProperty->get
-		Class clz = obj.getClass();
-		Method get = null;
+		Method get = getMethod(obj, property);
+		
+		if (get == null) {
+			return null;
+		}
 		Object[] args = null;
+		if(get.getName().equals("get")){
+			args = new Object[] { property };
+		}
+		return invoke(obj, get, args);
+	}
+
+	private static Method getMethod(Object obj, String property) {
+		//查找方法的顺序 :getProperty->isProperty->get
+		Class<?> clz = obj.getClass();
+		Method get = null;
 		String firstUpper = property.substring(0,1).toUpperCase()+property.substring(1);
 		//获取getPrpperty
 		get = getMethod(clz, "get"+firstUpper, null);
@@ -114,15 +131,10 @@ public class Dot implements Function {
 		if(get == null){
 			//获取get
 			String name = "get";
-			Class[] parameterTypes = new Class[] { String.class };
+			Class<String>[] parameterTypes = new Class[] { String.class };
 			get = getMethod(clz, name, parameterTypes);
-			args = new Object[] { property };
 		}
-		
-		if (get == null) {
-			return null;
-		}
-		return invoke(obj, get, args);
+		return get;
 	}
 
 	/**
@@ -163,5 +175,96 @@ public class Dot implements Function {
 		}
 		return get;
 	}
+	
+	
+
+	public FelMethod toMethod(FelNode node, FelContext context) {
+		
+		StringBuilder sb = new StringBuilder();
+		List<FelNode> children = node.getChildren();
+		FelNode l = children.get(0);
+		FelMethod leftMethod = l.toMethod(context);
+		Class<?> cls = leftMethod.getReturnType();
+		String objType = "";
+		if(cls !=null){
+			objType = cls.getName();
+		}
+		sb.append("(");
+		sb.append(leftMethod.getCode());
+		sb.append(").");
+		FelNode rightNode = children.get(1);
+		Method method = ReflectUtil.findMethod(cls, rightNode.getText());
+		String rightMethod = rightNode.getText();
+		if(method!=null){
+			rightMethod = method.getName();
+		}
+		String rightMethodParam = "";
+		List<FelNode> params = rightNode.getChildren();
+		if(params!= null && !params.isEmpty()&&method.getParameterTypes().length>0){
+			for (FelNode n : params) {
+				FelMethod paramMethod = n.toMethod(context);
+				rightMethodParam+=paramMethod.getCode()+",";
+			}
+		}
+		if(rightMethodParam.endsWith(",")){
+			rightMethodParam =rightMethodParam.substring(0,rightMethodParam.length()-1);
+		}
+		rightMethod+="("+rightMethodParam+")";
+		
+		sb.append(rightMethod);
+		
+		
+		
+		/*
+		Object returnMe = null;
+		List children = child; 
+		Object left = children.get(0);
+		if (left instanceof Expression) {
+			Expression exp = (Expression) left;
+			context.setCbEnabled(false);
+			left = exp.eval(context);
+			context.setCbEnabled(true);
+		}
+		Object right = children.get(1);
+		if (right instanceof FelNode) {
+			FelNode exp = (FelNode) right;
+			if (exp instanceof FunNode) {
+				//是函数，调用left中的方法
+				returnMe = callMethod(left, exp, context);
+			} else {
+				//是属性，调用left中的属性
+				returnMe = callGet(left, exp.getText());
+			}
+		}*/
+		FelMethod returnMe = new FelMethod( method == null?null:method.getReturnType(), sb.toString());
+		return returnMe;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		FelEngine e = new FelEngineImpl();
+		String a = "abcd";
+		FelContext ctx = e.getContext();
+		ctx.set("a", a);
+		Foo foo = new Foo("aFoo");
+		ctx.set("foo", foo);
+		ctx.set("A", 2);
+		ctx.set("B", 3);
+		String text = "a.substring(1).substring(1)";
+		text = "foo.getCount()";
+		text = "A*B";
+		text = "1+'2'+1";
+		text = "-1";
+		text = "+1";
+		text = "\"foo\" + \"bar\" == \"foobar\"";
+		text = "\"abc\".indexOf(\"bc\")";
+		Object result = e.eval(text);
+		System.out.println(result);
+		Expression exp = e.compiler(text, null);
+		Object eval = exp.eval(ctx);
+		System.out.println(eval);
+	}
+	
 
 }

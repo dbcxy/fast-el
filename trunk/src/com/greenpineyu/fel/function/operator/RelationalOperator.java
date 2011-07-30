@@ -2,8 +2,16 @@ package com.greenpineyu.fel.function.operator;
 
 import java.math.BigDecimal;
 
+import java.util.Date;
+import java.util.List;
+
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ReflectUtil;
+import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.parser.FelNode;
+import static com.greenpineyu.fel.function.operator.EqualsOperator.*;
 
 /**
  * 包名				.script.function.operator
@@ -64,33 +72,68 @@ public class RelationalOperator extends CommonFunction {
 	 * @return
 	 */
     public static boolean lessThan(Object left, Object right) {
-    	if ((left == right) || (left == null) || (right == null)) {
-		    return false;
-		} else if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
-		    double leftDouble = NumberUtil.toDouble(left);
-		    double rightDouble = NumberUtil.toDouble(right);
-		    return leftDouble < rightDouble;
-		} else if (left instanceof BigDecimal || right instanceof BigDecimal) {
-			BigDecimal l  = NumberUtil.toBigDecimal(left);
-			BigDecimal r  = NumberUtil.toBigDecimal(right);
-			return l.compareTo(r) < 0;
-		} else if (NumberUtil.isNumberable(left) || NumberUtil.isNumberable(right)) {
-		    long leftLong = NumberUtil.toLong(left);
-		    long rightLong = NumberUtil.toLong(right);
-		    return leftLong < rightLong;
-		} else if (left instanceof String || right instanceof String) {
-            String leftString = left.toString();
-            String rightString = right.toString();
-            return leftString.compareTo(rightString) < 0;
-        } else if (left instanceof Comparable) {
-            final Comparable comparable = (Comparable) left;
-            return comparable.compareTo(right) < 0;
-        } else if (right instanceof Comparable) {
-            final Comparable comparable = (Comparable) right;
-            return comparable.compareTo(left) > 0;
-        }
+    	if(left != null && right != null){
+    		if ((left == right)) {
+    			return false;
+    		} else if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+    			double leftDouble = NumberUtil.toDouble(left);
+    			double rightDouble = NumberUtil.toDouble(right);
+    			return leftDouble < rightDouble;
+    		} else if (left instanceof BigDecimal || right instanceof BigDecimal) {
+    			BigDecimal l  = NumberUtil.toBigDecimal(left);
+    			BigDecimal r  = NumberUtil.toBigDecimal(right);
+    			return l.compareTo(r) < 0;
+    		} else if (NumberUtil.isNumberable(left) || NumberUtil.isNumberable(right)) {
+    			long leftLong = NumberUtil.toLong(left);
+    			long rightLong = NumberUtil.toLong(right);
+    			return leftLong < rightLong;
+    		} else if (left instanceof String || right instanceof String) {
+    			String leftString = left.toString();
+    			String rightString = right.toString();
+    			return leftString.compareTo(rightString) < 0;
+    		} else if (left instanceof Comparable) {
+    			final Comparable comparable = (Comparable) left;
+    			return comparable.compareTo(right) < 0;
+    		} else if (right instanceof Comparable) {
+    			final Comparable comparable = (Comparable) right;
+    			return comparable.compareTo(left) > 0;
+    		}
+    	}else{
+    		return left == null?true:false;
+    	}
 		return false;
     }
+    
+    public static StringBuilder buildRelationExpr(FelNode node, FelContext ctx,
+			String operator) {
+		List<FelNode> child = node.getChildren();
+		FelNode leftNode = child.get(0);
+		FelNode rightNode = child.get(1);
+		FelMethod leftM = leftNode.toMethod(ctx);
+		FelMethod rightM = rightNode.toMethod(ctx);
+		Class<?> leftType = leftM.getReturnType();
+		Class<?> rightType = rightM.getReturnType();
+		String left = "(" + leftM.getCode() + ")";
+		String right = "(" +rightM.getCode() + ")";
+
+		StringBuilder sb = new StringBuilder();
+		// 只要有一个是数值型，就将另一个也转成值型。
+		if (Number.class.isAssignableFrom(leftType)) {
+			sb.append(left);
+			sb.append(operator);
+			appendNumber(rightType, right, sb);
+		} else if (Number.class.isAssignableFrom(rightType)) {
+			appendNumber(leftType, left, sb);
+			sb.append(operator);
+			sb.append(right);
+		}  else if (Comparable.class.isAssignableFrom(leftType)&&Comparable.class.isAssignableFrom(rightType)) {
+			sb.append("NumberUtil.compare(" + left + ","+ right + ")"+operator+"0");
+			NumberUtil.compare(new Date(), new Date());
+		} else {
+			throw new UnsupportedOperationException("类型"+leftType+"与类型"+rightType+"不支持比较操作。");
+		}
+		return sb;
+	}
 
 	/**
 	 * 大于 >
@@ -99,10 +142,10 @@ public class RelationalOperator extends CommonFunction {
 	 * @return
 	 */
     public static boolean greaterThan(Object left, Object right) {
-        if (left == null || right == null) {
-            return false;
+        if (left != null && right != null) {
+            return !EqualsOperator.equals(left, right) && !lessThan(left, right);
         }
-        return !EqualsOperator.equals(left, right) && !lessThan(left, right);
+        return left == null?false:true;
     }
 
 	/**
@@ -127,6 +170,11 @@ public class RelationalOperator extends CommonFunction {
 	
 	public String getName() {
 		return this.operator;
+	}
+
+	public FelMethod toMethod(FelNode node, FelContext ctx) {
+		StringBuilder code = buildRelationExpr(node, ctx, this.getName());
+		return new FelMethod(Boolean.class, code.toString());
 	}
 
 }

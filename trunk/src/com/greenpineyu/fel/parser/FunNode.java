@@ -3,6 +3,7 @@ package com.greenpineyu.fel.parser;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
+import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
@@ -13,7 +14,7 @@ import com.greenpineyu.fel.function.FunctionFactory;
  * @author yqs
  *
  */
-public class FunNode extends FelNodeImpl {
+public  class FunNode extends AbstFelNode {
 	private Function fun;
 
 	private static final Function NOT_FOUND_FUN = new Function() {
@@ -24,6 +25,10 @@ public class FunNode extends FelNodeImpl {
 
 		public Object call(FelNode node, FelContext context) {
 			throw new EvalException("找不到函数[" + node.getText() + "]", null);
+		}
+
+		public FelMethod toMethod(FelNode node, FelContext ctx) {
+			return null;
 		}
 	};
 
@@ -50,5 +55,9 @@ public class FunNode extends FelNodeImpl {
 		if (fun == null) {
 			fun = NOT_FOUND_FUN;
 		}
+	}
+	
+	public FelMethod toMethod(FelContext ctx) {
+		return this.fun.toMethod(this,ctx);
 	}
 }

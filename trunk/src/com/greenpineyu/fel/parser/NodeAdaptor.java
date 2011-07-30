@@ -4,12 +4,19 @@ import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 
+import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.context.FelContext;
+
 public class NodeAdaptor extends CommonTreeAdaptor {
 	public Object create(Token token) {
-
 		if (token == null) {
-			return new FelNodeImpl(token);
+			return new AbstFelNode(token){
+
+				public FelMethod toMethod(FelContext ctx) {
+					return null;
+				}};
 		}
+		System.out.println(token.getText());
 
 		/*
 		Dot
@@ -33,7 +40,11 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		String text = token.getText();
 		switch (type) {
 			case FelParser.Identifier:
-				returnMe = new VarAstNode(token);
+				if("null".equals(text)){
+					returnMe = AbstFelNode.NULL_NODE;
+				}else{
+					returnMe = new VarAstNode(token);
+				}
 				break;
 
 			/* 函数、操作符 开始 */

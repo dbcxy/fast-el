@@ -5,6 +5,8 @@ import java.util.List;
 import org.antlr.runtime.tree.Tree;
 
 import com.greenpineyu.fel.Expression;
+import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
 /**
@@ -31,6 +33,8 @@ public interface FelNode extends Expression, Tree {
 	Interpreter getInterpreter();
 
 	void setInterpreter(Interpreter interpreter);
+	
+	FelMethod toMethod(FelContext ctx);
 
 
 }

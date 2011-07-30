@@ -1,5 +1,6 @@
 package com.greenpineyu.fel;
 
+import com.greenpineyu.fel.compile.FelCompiler;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -31,7 +32,12 @@ public interface FelEngine {
 	 * @return
 	 */
 	FelNode parse(String exp);
+	
+	Expression compiler(String exp,FelContext ctx);
 
 	FelContext getContext();
+	
+	
+	FelCompiler getCompiler();
 
 }
