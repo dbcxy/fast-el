@@ -68,14 +68,14 @@ public class Sub implements Function {
 			FelNode right = children.get(1);
 			Object rightValue = right.eval(context);
 			if (leftValue instanceof Number && rightValue instanceof Number) {
-				if (NumberUtil.isFloatingPoint(left)
-						|| NumberUtil.isFloatingPoint(right)) {
-					double l = NumberUtil.toDouble(left);
-					double r = NumberUtil.toDouble(right);
-					return new Double(l - r);
-				}
-				return NumberUtil.parseNumber(((Number) leftValue).longValue()
-						- ((Number) rightValue).longValue());
+				double l = NumberUtil.toDouble(leftValue);
+				double r = NumberUtil.toDouble(rightValue);
+				return NumberUtil.parseNumber(l - r);
+//				if (NumberUtil.isFloatingPoint(left)
+//						|| NumberUtil.isFloatingPoint(right)) {
+//				}
+//				return NumberUtil.parseNumber(((Number) leftValue).longValue()
+//						- ((Number) rightValue).longValue());
 			}
 			throw new EvalException("执行减法出错，参数必须是数值型");
 		}

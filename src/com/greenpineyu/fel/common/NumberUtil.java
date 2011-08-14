@@ -175,16 +175,12 @@ public class NumberUtil {
             return Double.parseDouble(string);
         } else if (val instanceof Character) {
             int i = ((Character) val).charValue();
-
             return i;
-        } else if (val instanceof Double) {
-            return ((Double) val).doubleValue();
         } else if (val instanceof Number) {
-            return Double.parseDouble(String.valueOf(val));
+            return toDouble((Number)val);
         } else if (val instanceof Boolean) {
             throw new IllegalArgumentException("Boolean->Double coercion exception");
         }
-
         throw new IllegalArgumentException("Double coercion exception. Can't coerce type: "
                 + val.getClass().getName());
     }
@@ -332,6 +328,7 @@ public class NumberUtil {
         }
         return narrowed;
     }
+	
 
 	/**
 	 * 自动转换为更小类型的对象返回
@@ -357,8 +354,7 @@ public class NumberUtil {
 		}
 		return new Long(l);
 	}
-
-
+	
 	/**
 	 * @see parseNumber
 	 */
@@ -384,6 +380,21 @@ public class NumberUtil {
 			}
 		}
 		return null;
+	}
+	
+	
+	/**
+	 * 将Number转换成double
+	 * @param number
+	 * @return
+	 */
+	public static double toDouble(Number number){
+		if(number instanceof Float){
+			//float转double时，会出现精度问题。"(double)1.1f"的值类似于1.1000000476837158),
+			//使用 Double.parseDouble(number.toString());则不会出现问题。
+			return Double.parseDouble(number.toString());
+		}
+		return number.doubleValue();
 	}
 	
 	
