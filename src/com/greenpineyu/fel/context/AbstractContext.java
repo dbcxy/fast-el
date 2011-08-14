@@ -26,30 +26,27 @@ public abstract class AbstractContext implements FelContext {
 	 */
 	private boolean cbEnabled;
 
-	public AbstractContext(){
+	public AbstractContext() {
 		this.property = new HashMap<Object, Object>();
 		cbEnabled = true;
 	}
-
 
 	public Object get(Object name) {
 		isFound = false;
 		Object object = getObject(name);
 
 		if (isFound) {
-			//本级取到了，调用callback处理对象
+			// 本级取到了，调用callback处理对象
 			if (cb != null && cbEnabled) {
 				return cb.callback(object);
 			}
 		} else {
-			if (this.property != null) {
-				object = this.property.get(toString(name));
-				if (object != null) {
-					return object;
-				}
+			object = this.property.get(toString(name));
+			if (object != null) {
+				return object;
 			}
 
-			//本级没有取到，从父级中取
+			// 本级没有取到，从父级中取
 			if (this.parent != null) {
 				return this.parent.get(name);
 			}
@@ -59,14 +56,15 @@ public abstract class AbstractContext implements FelContext {
 
 	/**
 	 * 只在本级Context中取对象，只需要返回对象，如果要取对象的值，由callback对象处理
+	 * 
 	 * @param name
 	 * @return
 	 */
 	abstract protected Object getObject(Object name);
-	
+
 	public Class<?> getValueType(String varName) {
 		Object var = this.get(varName);
-		if(var != null){
+		if (var != null) {
 			return var.getClass();
 		}
 		return Object.class;
@@ -75,7 +73,6 @@ public abstract class AbstractContext implements FelContext {
 	public static String toString(Object var) {
 		return var == null ? null : var.toString();
 	}
-
 
 	public FelContext getParent() {
 		return this.parent;
@@ -86,7 +83,7 @@ public abstract class AbstractContext implements FelContext {
 		if (has) {
 			return has;
 		}
-		if(this.parent!=null){
+		if (this.parent != null) {
 			return this.parent.has(name);
 		}
 		return false;
@@ -98,7 +95,6 @@ public abstract class AbstractContext implements FelContext {
 		}
 		this.property.put(name, value);
 	}
-	
 
 	public void setParent(FelContext context) {
 		this.parent = context;
@@ -106,7 +102,7 @@ public abstract class AbstractContext implements FelContext {
 
 	public void setCallback(Callback cb) {
 		this.cb = cb;
-		//循环向上设置callback
+		// 循环向上设置callback
 		FelContext parent = this.parent;
 		if (parent != null) {
 			parent.setCallback(cb);
@@ -144,4 +140,3 @@ public abstract class AbstractContext implements FelContext {
 	}
 
 }
-
