@@ -8,6 +8,7 @@ import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.FelNode;
+import static com.greenpineyu.fel.common.NumberUtil.*;
 
 public class Add implements Function {
 
@@ -55,9 +56,9 @@ public class Add implements Function {
 				Number value = (Number) child;
 				if (returnMe instanceof Number) {
 					Number r = (Number) returnMe;
-					returnMe = new Double(isAdd ? r.doubleValue()
-							+ value.doubleValue() : r.doubleValue()
-							- value.doubleValue());
+					returnMe = new Double(isAdd ? toDouble(r)
+							+ toDouble(value):toDouble(r)
+							- toDouble(value));
 				}else if(returnMe instanceof String){
 					String r = (String) returnMe;
 					returnMe=r+value;

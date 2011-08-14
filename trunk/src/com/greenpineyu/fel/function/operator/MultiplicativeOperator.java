@@ -2,6 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
@@ -56,6 +57,33 @@ public class MultiplicativeOperator extends CommonFunction {
 			}
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");
+	}
+	
+	@Override
+	public Object call(FelNode node, FelContext context) {
+		List<FelNode> children = node.getChildren();
+		if (children.size() == 2) {
+			FelNode left = children.get(0);
+			Object leftValue = left.eval(context);
+			FelNode right = children.get(1);
+			Object rightValue = right.eval(context);
+			if (leftValue instanceof Number && rightValue instanceof Number) {
+				double l = NumberUtil.toDouble(leftValue);
+				double r = NumberUtil.toDouble(rightValue);
+				if(this == MUL){
+					return NumberUtil.parseNumber(l * r);
+				}
+				if(this == DIV){
+					return NumberUtil.parseNumber(l / r);
+				}
+				if(this == MOD){
+					return NumberUtil.parseNumber(l % r);
+				}
+				throw new EvalException("执行"+this.operator+"出错，未知的操作符");
+			}
+			throw new EvalException("执行"+this.operator+"出错，参数必须是数值型");
+		}
+		return super.call(node, context);
 	}
 
 	/**

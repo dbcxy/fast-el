@@ -278,10 +278,14 @@ public class Dot implements Function {
 			
 			long start = System.currentTimeMillis();
 		Expression compiler = e.compiler(str, null);
-		System.out.println(compiler.eval(null));
+		Object complierValue = compiler.eval(null);
+		System.out.println(complierValue);
+		Object evalValue = e.eval(str);
+		System.out.println(evalValue.equals(complierValue));
 		int count =100*1000*1000;
+		count = 10;
 		for(int i = 0;i<count;i++){
-			compiler.eval(null);
+			System.out.println(compiler.eval(null));
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("cost:"+(end - start));

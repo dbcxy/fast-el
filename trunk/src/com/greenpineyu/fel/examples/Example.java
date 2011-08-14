@@ -15,6 +15,20 @@ import com.greenpineyu.fel.parser.FelNode;
 
 public class Example {
 	static FelEngine fel = new FelEngineImpl();
+	
+	public static void main(String[] args) {
+		
+		helloworld();
+		useVariable();
+		callMethod();
+		contexts();
+//		FelContext ctx = fel.getContext();
+//		ctx.set("单价", "5000");
+//		ctx.set("数量", new Integer(12));
+//		ctx.set("运费", "7500");
+//		Object result = fel.eval("单价*数量+运费");
+//		System.out.println(result);
+	}
 
 	/**
 	 * 入门
@@ -29,9 +43,9 @@ public class Example {
 	 */
 	public static void useVariable() {
 		FelContext ctx = fel.getContext();
-		ctx.set("单价", "5000");
+		ctx.set("单价", 5000);
 		ctx.set("数量", new Integer(12));
-		ctx.set("运费", "7500");
+		ctx.set("运费", 7500);
 		Object result = fel.eval("单价*数量+运费");
 		System.out.println(result);
 	}
@@ -51,7 +65,7 @@ public class Example {
 	public static void contexts() {
 		String costStr = "成本";
 		FelContext rootContext = fel.getContext();
-		rootContext.set(costStr, "60000");
+		rootContext.set(costStr, 60000);
 		Object baseCost = fel.eval(costStr);
 		System.out.println("基本费用：" + baseCost);
 		MyContext myContext = new MyContext();
@@ -132,9 +146,7 @@ public class Example {
 	}
 
 
-	public static void main(String[] args) {
-		testSpeed();
-	}
+	
 
 }
 
