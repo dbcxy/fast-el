@@ -1,5 +1,6 @@
 package com.greenpineyu.fel.compile;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -59,13 +60,14 @@ public class FelCompilerImpl implements FelCompiler {
 		String srcDir = "src";
 		String folder = getPackagefolder(srcDir);
 		String file = folder + className + ".java";
+//		System.out.println(source.getBytes().length);
 		
 		
 		OutputStreamWriter write =null;
 		try {
 			new File(folder).mkdirs();
-			FileOutputStream os;
-			os = new FileOutputStream(file);
+			BufferedOutputStream os;
+			os = new BufferedOutputStream( new FileOutputStream(file),500);
 			  write = new OutputStreamWriter(os,
 					"utf-8");
 			write.write(source);
