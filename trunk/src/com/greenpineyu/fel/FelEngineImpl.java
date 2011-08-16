@@ -2,8 +2,6 @@ package com.greenpineyu.fel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -12,8 +10,8 @@ import org.antlr.runtime.RecognitionException;
 
 import com.greenpineyu.fel.compile.FelCompiler;
 import com.greenpineyu.fel.compile.FelCompilerImpl;
-import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.exception.ParseException;
 import com.greenpineyu.fel.parser.FelLexer;
 import com.greenpineyu.fel.parser.FelNode;
