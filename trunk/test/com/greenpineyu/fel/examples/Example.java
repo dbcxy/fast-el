@@ -116,7 +116,7 @@ public class Example {
 		List<FelNode> children = node.getChildren();
 		MutableInt index = new MutableInt(0);
 		// 替换节点的解释器
-		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+		for (Iterator<FelNode> iterator = children.iterator(); iterator.hasNext();) {
 			FelNode child = (FelNode) iterator.next();
 			if ("单价".equals(child.getText())) {
 				child.setInterpreter(new ColumnInterpreter(index, price));
@@ -139,8 +139,8 @@ public class Example {
 		int times = 100 * 1000 * 1000;
 		long s1 = System.currentTimeMillis();
 		for (int i = 0; i < times; i++) {
-			double j = 40.52334 + 60 * (21.8144 + 17 * 32.663);
-			// node.eval(null);
+//			double j = 40.52334 + 60 * (21.8144 + 17 * 32.663);
+			 node.eval(null);
 		}
 		long s2 = System.currentTimeMillis();
 		System.out.println("花费的时间:" + (s2 - s1));
