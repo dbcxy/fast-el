@@ -8,15 +8,14 @@ import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
+import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
- * 包名 .script.function.operator 类名 LogicalOperator.java 创建日期 Oct 26, 20103:20:20
- * PM 作者 版权
+ * 逻辑操作符
  */
-public class LogicalOperator extends TolerantFunction {
+public class LogicalOperator implements Function{
 
 	private String operator;
 
@@ -51,7 +50,7 @@ public class LogicalOperator extends TolerantFunction {
 		return this.getName();
 	}
 
-	public Object callFun(FelNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		Object[] children = node.getChildrenArray();
 		if (children != null && children.length == 2) {
 			if (this == AND || this == AND2) {
@@ -88,7 +87,7 @@ public class LogicalOperator extends TolerantFunction {
 	}
 
 	private Boolean toBoolean(FelContext context, Object left) {
-		left = eval(context, left);
+		left = TolerantFunction.eval(context, left);
 		Boolean leftValue = NumberUtil.toBooleanObj(left);
 		return leftValue;
 	}

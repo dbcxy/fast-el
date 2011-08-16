@@ -13,7 +13,7 @@ import com.greenpineyu.fel.parser.FelNode;
  * @author yqs
  * 
  */
-public abstract class CommonFunction extends TolerantFunction {
+public abstract class CommonFunction implements Function {
 
 	/*
 	 * (non-Javadoc)
@@ -21,7 +21,7 @@ public abstract class CommonFunction extends TolerantFunction {
 	 * @see .script.function.Function#call(.script.antlr.AstNode,
 	 *      .script.context.ScriptContext)
 	 */
-	protected Object callFun(FelNode node, FelContext context) {
+	public Object call(FelNode node, FelContext context) {
 		// 如果参数中包含表达式，执行表达式。将表达式替换成表达式执行结果。
 		Object[] children = evalArgs(node, context);
 		return call(children);

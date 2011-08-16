@@ -22,7 +22,7 @@ public class VarAstNode extends AbstFelNode {
 	}
 
 	public FelMethod toMethod(FelContext ctx) {
-		Class<?> type = ctx.getValueType(this.text);
+		Class<?> type = ctx.getVarType(this.text);
 		if(type!=null &&!type.isAssignableFrom(Number.class)){
 			
 		}

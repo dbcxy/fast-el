@@ -49,9 +49,7 @@ public class Dot implements Function {
 		Object left = children.get(0);
 		if (left instanceof Expression) {
 			Expression exp = (Expression) left;
-			context.setCbEnabled(false);
 			left = exp.eval(context);
-			context.setCbEnabled(true);
 		}
 		Object right = children.get(1);
 		if (right instanceof FelNode) {
