@@ -12,7 +12,7 @@ import org.antlr.runtime.RecognitionException;
 
 import com.greenpineyu.fel.compile.FelCompiler;
 import com.greenpineyu.fel.compile.FelCompilerImpl;
-import com.greenpineyu.fel.context.AbstractContext;
+import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.ParseException;
 import com.greenpineyu.fel.parser.FelLexer;
@@ -37,22 +37,7 @@ public class FelEngineImpl implements FelEngine {
 	}
 
 	public FelEngineImpl() {
-		this(new AbstractContext() {
-			@Override
-			protected Object getObject(Object name) {
-				Object a = varMap.get(name);
-				this.setFound(a!=null);
-				return a;
-			}
-			
-			private Map<String,Object> varMap = new HashMap<String, Object>();
-			
-			@Override
-			public void set(String name, Object value) {
-				varMap.put(name, value);
-			}
-
-		});
+		this(new MapContext());
 	}
 
 
