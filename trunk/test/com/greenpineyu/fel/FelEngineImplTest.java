@@ -3,10 +3,11 @@ package com.greenpineyu.fel;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ObjectUtils;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -42,6 +43,13 @@ public class FelEngineImplTest {
 		jc.set("A4", new Integer(4));
 		jc.set("B5", new Integer(5));
 		jc.set("f",1.1f);
+		
+		
+		Map<String,String> m = new HashMap<String, String>();
+		m.put("cpu", "AMD");
+		m.put("memory", "4G");
+		m.put(null, "test null key");
+		jc.set("pc", m);
 
 		Object[][] object = new Object[1000][];
 		int i = 0;
@@ -136,6 +144,10 @@ public class FelEngineImplTest {
 
 		object[i++] = new Object[] { engine, "foo.convertBoolean(true)",
 				header.convertBoolean(true) };
+		object[i++] = new Object[] { engine, "pc.cpu",m.get("cpu")};
+		object[i++] = new Object[] { engine, "pc.memory",m.get("memory")};
+		object[i++] = new Object[] { engine, "pc.get(null)",m.get(null)};
+		
 		/*
 		*//** **************** Dot operator end **************** */
 		/*

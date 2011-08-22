@@ -42,7 +42,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		switch (type) {
 			case FelParser.Identifier:
 				if("null".equals(text)){
-					returnMe = AbstFelNode.NULL_NODE;
+					returnMe = AbstFelNode.NULL;
 				}else{
 					returnMe = new VarAstNode(token);
 				}

@@ -21,6 +21,9 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	protected Interpreter interpreter;
 
 
+	/**
+	 * 点位节点
+	 */
 	public static final AbstFelNode NULL_NODE = new AbstFelNode() {
 		public boolean isNil() {
 			return false;
@@ -29,14 +32,35 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		public Object interpret(FelContext context, FelNode node) {
 			return null;
 		};
-
-
+		
 		public String toString() {return "NULL_NODE";}
 
 		public FelMethod toMethod(FelContext ctx) {
-			return new FelMethod(Null.class, "null");
+			throw new UnsupportedOperationException("占位节点");
 		}
 
+	};
+	
+	public static final AbstFelNode NULL = new AbstFelNode() {
+		public boolean isNil() {
+			return false;
+		};
+		
+		public Object interpret(FelContext context, FelNode node) {
+			return null;
+		};
+		
+		public String getText() {
+			return "null";
+		};
+		
+		
+		public String toString() {return "NULL_NODE";}
+		
+		public FelMethod toMethod(FelContext ctx) {
+			return new FelMethod(Null.class, "null");
+		}
+		
 	};
 	
 	public static final FelNode TRUE_NODE = new AbstFelNode(){
