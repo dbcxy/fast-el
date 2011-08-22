@@ -398,7 +398,7 @@ public class NumberUtil {
 	}
 	
 	
-	public static int compare(Comparable a,Comparable b){
+	public static <T extends Comparable<T>> int compare(T a,T b){
 		if(a != null&& b!=null){
 			return a.compareTo(b);
 		}
