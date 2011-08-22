@@ -3,6 +3,8 @@ package com.greenpineyu.fel.context;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.ObjectUtils.Null;
+
 public class MapContext implements FelContext {
 	/**
 	 * 保存脚本上下文的变量
@@ -22,7 +24,7 @@ public class MapContext implements FelContext {
 		if (var != null) {
 			return var.getClass();
 		}
-		return Object.class;
+		return Null.class;
 	}
 
 	public static String toString(Object var) {

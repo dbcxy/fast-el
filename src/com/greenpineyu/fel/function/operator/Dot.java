@@ -2,16 +2,17 @@ package com.greenpineyu.fel.function.operator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ObjectUtils.Null;
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
-import com.greenpineyu.fel.Foo;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
@@ -45,24 +46,45 @@ public class Dot implements Function {
 	public Object call(FelNode node, FelContext context) {
 		//		System.out.println("call dot:" + node.toString());
 		Object returnMe = null;
-		List children = node.getChildren();
+		List<FelNode> children = node.getChildren();
 		Object left = children.get(0);
 		if (left instanceof Expression) {
 			Expression exp = (Expression) left;
 			left = exp.eval(context);
 		}
-		Object right = children.get(1);
-		if (right instanceof FelNode) {
+		FelNode right = children.get(1);
 			FelNode exp = (FelNode) right;
-			if (exp instanceof FunNode) {
-				//是函数，调用left中的方法
-				returnMe = callMethod(left, exp, context);
-			} else {
-				//是属性，调用left中的属性
-				returnMe = callGet(left, exp.getText());
+			Class<?>[] argsType = new Class<?>[0];
+			if(getParamNodes(right) == null){
+				if(right.getChildren()!=null){				
+					right.getChildren().clear();
+				}
 			}
-		}
-		return returnMe;
+			Object[] args = CommonFunction.evalArgs(right, context);
+			if (!ArrayUtils.isEmpty(args)) {
+				argsType = new Class[args.length];
+				for (int i = 0; i < args.length; i++) {
+					if(args[i]==null){
+						argsType[i]=Null.class;
+						continue;
+					}
+					argsType[i] = args[i].getClass();
+				}
+			}
+			Method method = null;
+				 method = ReflectUtil.findMethod(left.getClass(), right.getText(),argsType);
+//				//是函数，调用left中的方法
+//				returnMe = callMethod(left, exp, context);
+			if(method == null){
+				method = ReflectUtil.findMethod(left.getClass(), "get", new Class<?>[]{String.class});
+				args = new Object[]{exp.getText()};
+				//是属性，调用left中的属性
+//				returnMe = callGet(left, exp.getText());
+			}
+			if(method != null){
+				return invoke(left, method, args);
+			}
+			return null;
 	}
 
 	private static Class getPrimitiveType(Class clz){
@@ -88,7 +110,6 @@ public class Dot implements Function {
 		}
 		method = getMethod(obj.getClass(), node.getText(), argsType);
 		return invoke(obj, method, args);
-		
 	}
 
 	/**
@@ -103,7 +124,6 @@ public class Dot implements Function {
 		}
 		
 		Method get = getMethod(obj, property);
-		
 		if (get == null) {
 			return null;
 		}
@@ -183,27 +203,71 @@ public class Dot implements Function {
 		FelNode l = children.get(0);
 		FelMethod leftMethod = l.toMethod(context);
 		Class<?> cls = leftMethod.getReturnType();
-		String objType = "";
-		if(cls !=null){
-			objType = cls.getName();
-		}
 		sb.append("(");
 		sb.append(leftMethod.getCode());
 		sb.append(").");
+		Method method  = null;
 		FelNode rightNode = children.get(1);
-		Method method = ReflectUtil.findMethod(cls, rightNode.getText());
+		List<FelNode> params = getParamNodes(rightNode);
+		List<FelMethod> paramMethods = new ArrayList<FelMethod>();
+		Class<?>[] paramValueTypes = null;
+		boolean hasParam = params!= null && !params.isEmpty();
 		String rightMethod = rightNode.getText();
-		if(method!=null){
-			rightMethod = method.getName();
-		}
 		String rightMethodParam = "";
-		List<FelNode> params = rightNode.getChildren();
-		if(params!= null && !params.isEmpty()&&method.getParameterTypes().length>0){
-			for (FelNode n : params) {
-				FelMethod paramMethod = n.toMethod(context);
-				rightMethodParam+=paramMethod.getCode()+",";
+		if(hasParam){
+			//有参数
+			paramValueTypes = new Class<?>[params.size()];
+			for (int i = 0; i < params.size(); i++) {
+				FelMethod paramMethod = params.get(i).toMethod(context);
+				paramMethods.add(paramMethod);
+				paramValueTypes[i] = paramMethod.getReturnType();
+			}
+			//根据参数查找方法
+			method = ReflectUtil.findMethod(cls, rightNode.getText(),paramValueTypes);
+			if(method != null){
+				Class<?>[] paramTypes = method.getParameterTypes();
+				for (int i = 0; i < paramTypes.length; i++) {
+					Class<?> paramType = paramTypes[i];
+					Class<?> paramValueType = paramValueTypes[i];
+					FelMethod paramMethod = paramMethods.get(i);
+					String paramCode = getParamCode(paramType, paramValueType, paramMethod);
+					rightMethodParam+=paramCode + ",";
+				}
+				rightMethod = method.getName();
+			}
+		}else{
+			method = ReflectUtil.findMethod(cls, rightNode.getText(),new Class<?>[0]);
+			if(method == null){
+				//当没有找到方法 ，直接使用get方法来获取属性
+				method = ReflectUtil.getMethod(cls, "get", new Class<?>[]{String.class});
+				if(method!=null){
+					rightMethod = "get";
+					rightMethodParam ="\""+ rightNode.getText()+"\"";
+				}
+			}else{
+				rightMethod = method.getName();
 			}
 		}
+	
+		if(method!=null){
+		}
+		/*
+		if(hasParam && paramTypes.length>0){
+		
+			for (FelNode n : params) {
+				FelMethod paramMethod = n.toMethod(context);
+				Class<?> c = paramTypes[i];
+				Class<?> wrapperClass = ReflectUtil.toWrapperClass(c);
+				String className = null;
+				if(wrapperClass!=null){
+					className = wrapperClass.getName();
+				}else{
+					className = c.getName();
+				}
+				rightMethodParam+="("+className+")"+paramMethod.getCode()+",";
+			}
+		}
+		*/
 		if(rightMethodParam.endsWith(",")){
 			rightMethodParam =rightMethodParam.substring(0,rightMethodParam.length()-1);
 		}
@@ -237,10 +301,61 @@ public class Dot implements Function {
 		FelMethod returnMe = new FelMethod( method == null?null:method.getReturnType(), sb.toString());
 		return returnMe;
 	}
+
+	/**
+	 * 获取参数代码
+	 * @param paramType 方法声明的参数类型
+	 * @param paramValueType 参数值的类型 
+	 * @param paramMethod 
+	 * @return
+	 */
+	private String getParamCode(Class<?> paramType, Class<?> paramValueType,
+			FelMethod paramMethod) {
+		// 如果类型相等（包装类型与基本类型（int和Integer)也认为是相等 ），直接添加参数。
+		String paramCode = "";
+		if (ReflectUtil.isTypeMatch(paramType, paramValueType)) {
+			paramCode = paramMethod.getCode();
+		} else {
+			// 如果类型不匹配，使用强制转型
+			String className = null;
+			Class<?> wrapperClass = ReflectUtil.toWrapperClass(paramType);
+			if (wrapperClass != null) {
+				className = wrapperClass.getName();
+			} else {
+				className = paramType.getName();
+			}
+			paramCode = "(" + className + ")" + paramMethod.getCode();
+		}
+		return paramCode;
+	}
+
+	/**
+	 * 如果只有一个空参数，将其去掉
+	 * @param rightNode
+	 * @return
+	 */
+	private List<FelNode> getParamNodes(FelNode rightNode) {
+		List<FelNode> params = rightNode.getChildren();
+		if(params!=null && params.size()==1&&params.get(0)== AbstFelNode.NULL_NODE){
+				//如果只有一个空参数，视为null
+				params = null;
+		}
+		return params;
+	}
 	
-	
+	static void  b(Integer a){}
+	static void  c(int a){}
 	
 	public static void main(String[] args) {
+		/*
+		int g = 0;
+		Integer f = 0;
+		b(g);
+		b(f);
+		c(g);
+		c(f);
+		
+		
 		FelEngine e = new FelEngineImpl();
 		String a = "abcd";
 		FelContext ctx = e.getContext();
@@ -259,13 +374,15 @@ public class Dot implements Function {
 		text = "foo.getCount()";
 		text = "\"abc\".indexOf('bc')";
 		text = "\"abc\".substring(1)";
+		text = "foo.foo";
 		FelNode parse = e.parse(text);
 		Object result = e.eval(text);
 		System.out.println(result);
 		Expression exp = e.compiler(text, null);
 		Object eval = exp.eval(ctx);
 		System.out.println(eval);
-		testEff();
+//		testEff();
+ */
 	}
 	
 	static public void testEff(){
@@ -287,7 +404,6 @@ public class Dot implements Function {
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("cost:"+(end - start));
-		
 	}
 	
 
