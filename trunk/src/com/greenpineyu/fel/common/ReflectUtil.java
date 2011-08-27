@@ -145,7 +145,7 @@ public class ReflectUtil {
 		if(w1!=null){
 			//可能转换成包装类型
 			if(w1==w2){
-				//查看基包装类型是否相等
+				//查看包装类型是否相等
 				return true;
 			}
 		}
