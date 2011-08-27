@@ -3,16 +3,18 @@ package com.greenpineyu.fel.context;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.ObjectUtils.Null;
-
 public class MapContext implements FelContext {
 	/**
 	 * 保存脚本上下文的变量
 	 */
-	private Map<Object, Object> varMap;
+	private Map<String, Object> varMap;
 
 	public MapContext() {
-		this.varMap = new HashMap<Object, Object>();
+		this(new HashMap<String, Object>());
+	}
+	
+	public MapContext(Map<String,Object> map){
+		this.varMap = map;
 	}
 
 	public Object get(Object name) {
