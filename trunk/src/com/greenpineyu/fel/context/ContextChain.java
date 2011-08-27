@@ -40,7 +40,7 @@ public class ContextChain implements FelContext{
 	}
 
 	public Class<?> getVarType(String varName) {
-		return MapContext.getVarType(varName, this);
+		return AbstractConetxt.getVarType(varName, this);
 	}
 
 }

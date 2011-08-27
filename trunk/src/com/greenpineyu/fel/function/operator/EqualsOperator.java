@@ -45,10 +45,10 @@ public class EqualsOperator implements Function {
 	}
 
 	public Object call(FelNode node, FelContext context) {
-		Object[] children = node.getChildrenArray();
-		if (children != null && children.length == 2) {
-			Object left = TolerantFunction.eval(context, children[0]);
-			Object right = TolerantFunction.eval(context, children[1]);
+		List<FelNode> children = node.getChildren();
+		if (children != null && children.size() == 2) {
+			Object left = TolerantFunction.eval(context, children.get(0));
+			Object right = TolerantFunction.eval(context, children.get(1));
 			if (this == EQUAL) {
 				return Boolean.valueOf(equals(left, right));
 			} else if (this == NOEQUAL) {

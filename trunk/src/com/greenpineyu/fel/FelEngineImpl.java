@@ -29,7 +29,7 @@ public class FelEngineImpl implements FelEngine {
 
 	private FelContext context;
 
-	FelEngineImpl(FelContext context) {
+	public FelEngineImpl(FelContext context) {
 		this.context = context;
 		this.compiler = new FelCompilerImpl();
 	}
