@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils.Null;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 public class MapContext implements FelContext {
 	/**
@@ -16,15 +17,25 @@ public class MapContext implements FelContext {
 	}
 
 	public Object get(Object name) {
-		return this.varMap.get(name);
+		Object object = this.varMap.get(name);
+		if(object!=null || this.varMap.containsKey(name)){
+			//对象有值，或者包含此变量时，返回object
+			return object;
+		}
+		//map中不包含此变量返回NOT_FOUND
+		return NOT_FOUND;
 	}
 
 	public Class<?> getVarType(String varName) {
-		Object var = this.get(varName);
+		return getVarType(varName,this);
+	}
+
+	public static Class<?> getVarType(String varName, FelContext ctx) {
+		Object var = ctx.get(varName);
 		if (var != null) {
 			return var.getClass();
 		}
-		return Null.class;
+		return NotFound.class;
 	}
 
 	public static String toString(Object var) {
