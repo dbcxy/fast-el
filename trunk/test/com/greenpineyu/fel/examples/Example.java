@@ -1,9 +1,7 @@
 package com.greenpineyu.fel.examples;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.ObjectUtils.Null;
 import org.apache.commons.lang.mutable.MutableInt;
 
 import com.greenpineyu.fel.Expression;
@@ -33,7 +31,7 @@ public class Example {
 		System.out.println("--------------------");
 		userInterpreter();
 		System.out.println("--------------------");
-		userInterpreterX();
+		operatorOverload();
 		System.out.println("--------------------");
 		testCompile();
 		// FelContext ctx = fel.getContext();
@@ -89,7 +87,7 @@ public class Example {
 				if("温度".equals(name)){
 					return 25;
 				}
-				return null;
+				return NOT_FOUND;
 			}
 		};
 		FelEngine fel = new FelEngineImpl(ctx);
@@ -98,77 +96,44 @@ public class Example {
 	}
 
 	/**
-	 * 多层次上下文环境
+	 * 多层次上下文环境(变量命名空间)
 	 */
 	public static void contexts() {
 		FelEngine fel = new FelEngineImpl();
 		String costStr = "成本";
-		FelContext rootContext = fel.getContext();
-		//父级上下文中设置成本
-		rootContext.set(costStr, 60000);
-		Object baseCost = fel.eval(costStr);
-		System.out.println("基本费用：" + baseCost);
+		String priceStr="价格";
+		FelContext baseCtx = fel.getContext();
+		//父级上下文中设置成本和价格
+		baseCtx.set(costStr, 50);
+		baseCtx.set(priceStr,100);
+		
+		String exp = priceStr+"-"+costStr;
+		Object baseCost = fel.eval(exp);
+		System.out.println("期望利润：" + baseCost);
 
-		ContextChain ctx = new ContextChain(rootContext, new MapContext());
-		//子级上下文 中设置成本，会覆盖父级上下文中的成本
-		ctx.set(costStr, new Integer(67500));
-		Object allCost = fel.eval(costStr, ctx);
-		System.out.println("所有费用：" + allCost);
+		FelContext ctx = new ContextChain(baseCtx, new MapContext());
+		//通货膨胀导致成本增加（子级上下文 中设置成本，会覆盖父级上下文中的成本）
+		ctx.set(costStr,50+20 );
+		Object allCost = fel.eval(exp, ctx);
+		System.out.println("实际利润：" + allCost);
 	}
-
-	/**
-	 * 自定义 解释器
-	 */
-	public static void userInterpreter() {
-		FelEngine fel = new FelEngineImpl();
-		String costStr = "成本";
-		FelContext rootContext = fel.getContext();
-		rootContext.set(costStr, "60000");
-		FelNode node = fel.parse(costStr);
-		// 将变量解析成常量
-		node.setInterpreter(new ConstInterpreter(rootContext, node));
-		// 下面这段代码执行速度非常高
-		System.out.println(node.eval(rootContext));
-	}
-
-	/**
-	 * 自定义解释器的高级用法
-	 */
-	public static void userInterpreterX() {
-		/*
-		 * 假设数据库中有两列，单价和数量。 现在需要通过表达式计算金额(表达式:单价*数量)。
-		 * 通常的做法是通过context获取变量（单价、数量的值）， 在小数量里时，这种做法是很好的，但是大数量量时，性能就很差了。
-		 * 如果使用自定义的解释器，会提高效率。
-		 */
-		FelEngine fel = new FelEngineImpl();
-		// 数据库中单价列的记录
-		double[] price = new double[] { 2, 3, 4 };
-		// 数据库中数量列的记录
-		double[] number = new double[] { 10.99, 20.99, 9.9 };
-
-		String exp = "单价*数量";
-		FelNode node = fel.parse(exp);
-		List<FelNode> children = node.getChildren();
-		MutableInt index = new MutableInt(0);
-		// 替换节点的解释器
-		for (Iterator<FelNode> iterator = children.iterator(); iterator.hasNext();) {
-			FelNode child = (FelNode) iterator.next();
-			if ("单价".equals(child.getText())) {
-				child.setInterpreter(new ColumnInterpreter(index, price));
-			} else if ("数量".equals(child.getText())) {
-				child.setInterpreter(new ColumnInterpreter(index, number));
-			}
-		}
-
-		for (int i = 0; i < number.length; i++) {
-			index.setValue(i);
-			Object eval = node.eval(null);
-			System.out.println("金额[" + price[i] + "*" + number[i] + "=" + eval
-					+ "]");
-		}
-	}
-
+	
 	public static void testCompile(){
+		FelEngine fel = new FelEngineImpl();
+		FelContext ctx = fel.getContext();
+		ctx.set("单价", 5000);
+		ctx.set("数量", 12);
+		ctx.set("运费", 7500);
+		Expression exp = fel.compiler("单价*数量+运费",ctx);
+		Object result = exp.eval(ctx);
+		System.out.println(result);
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public static void testCompileX(){
 		FelEngine fel = new FelEngineImpl();
 		String exp = "单价*数量";
 		final MutableInt index = new MutableInt(0);
@@ -197,6 +162,60 @@ public class Example {
 					+ "]");
 		}
 	}
+
+	/**
+	 * 自定义 解释器
+	 */
+	public static void userInterpreter() {
+		FelEngine fel = new FelEngineImpl();
+		String costStr = "成本";
+		FelContext rootContext = fel.getContext();
+		rootContext.set(costStr, "60000");
+		FelNode node = fel.parse(costStr);
+		// 将变量解析成常量
+		node.setInterpreter(new ConstInterpreter(rootContext, node));
+		System.out.println(node.eval(rootContext));
+	}
+
+	/**
+	 * 操作符重载，使用自定义解释器实现操作符重载
+	 */
+	public static void operatorOverload() {
+		/*
+		 * 扩展Fel的+运算符，使其支持数组+数组
+		 */
+		
+		FelEngine fel = new FelEngineImpl();
+		// 单价
+		double[] price = new double[] { 2, 3, 4 };
+		// 费用
+		double[] cost = new double[] { 0.99, 0.59, 1.9 };
+		FelContext ctx = fel.getContext();
+		ctx.set("单价", price);
+		ctx.set("费用", cost);
+		String exp = "单价+费用";
+		FelNode node = fel.parse(exp);
+		//使用新的解释器来实现数组相加
+		node.setInterpreter(new Interpreter() {
+			public Object interpret(FelContext context, FelNode node) {
+				List<FelNode> args = node.getChildren();
+				double[] leftArg = (double[]) args.get(0).eval(context);
+				double[] rightArg = (double[]) args.get(1).eval(context);
+				return sum(leftArg)+sum(rightArg);
+			}
+			//对数组进行求和
+			public double sum(double[] array){
+				double d = 0;
+				for (int i = 0; i < array.length; i++) {
+					d+=array[i];
+				}
+				return d;
+			}
+		});
+		Object eval = node.eval(ctx);
+		System.out.println("数组相加:"+eval);
+	}
+
 
 	public static void testSpeed() {
 		FelEngine fel = new FelEngineImpl();
