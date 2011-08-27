@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils.Null;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 public class MapContext implements FelContext {
 	/**
@@ -27,15 +26,7 @@ public class MapContext implements FelContext {
 	}
 
 	public Class<?> getVarType(String varName) {
-		return getVarType(varName,this);
-	}
-
-	public static Class<?> getVarType(String varName, FelContext ctx) {
-		Object var = ctx.get(varName);
-		if (var != null) {
-			return var.getClass();
-		}
-		return NotFound.class;
+		return AbstractConetxt.getVarType(varName,this);
 	}
 
 	public static String toString(Object var) {

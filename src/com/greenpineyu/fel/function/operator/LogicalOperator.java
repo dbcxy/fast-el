@@ -51,12 +51,13 @@ public class LogicalOperator implements Function{
 	}
 
 	public Object call(FelNode node, FelContext context) {
-		Object[] children = node.getChildrenArray();
-		if (children != null && children.length == 2) {
+		List<FelNode> children = node.getChildren();
+		if (children != null && children.size() == 2) {
+			Object[] c = children.toArray();
 			if (this == AND || this == AND2) {
-				return and(context, children);
+				return and(context, c);
 			} else if (this == OR || this == OR2) {
-				return or(context, children);
+				return or(context, c);
 			}
 			throw new EvalException("未知的逻辑操作符");
 		}

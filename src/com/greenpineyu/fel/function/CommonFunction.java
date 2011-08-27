@@ -30,13 +30,14 @@ public abstract class CommonFunction implements Function {
 
 	public static Object[] evalArgs(FelNode node, FelContext context) {
 		Object[] returnMe = null;
-		Object[] children = node.getChildrenArray();
-		int size = children.length;
-		if (size > 0) {
+		List<FelNode> children = node.getChildren();
+		if(children!=null&& children.size()>0){
+			Object[] args = children.toArray();
+			int size = args.length;
 			returnMe = new Object[size];
-			System.arraycopy(children, 0, returnMe, 0, size);
+			System.arraycopy(args, 0, returnMe, 0, size);
 			for (int i = 0; i < size; i++) {
-				Object child = children[i];
+				Object child = args[i];
 				if (child instanceof Expression) {
 					Expression childExp = ((Expression) child);
 					returnMe[i] = childExp.eval(context);
@@ -44,23 +45,6 @@ public abstract class CommonFunction implements Function {
 			}
 		}
 		return returnMe;
-
-//		Object[] returnMe = null;
-		//		List children = node.getChildren();
-		//		if (children != null) {
-		//			int size = children.size();
-		//			if (size > 0) {
-		//				returnMe = children.toArray(new Object[size]);
-		//				for (int i = 0; i < size; i++) {
-		//					Object child = children.get(i);
-		//					if (child instanceof Expression) {
-		//						Expression childExp = ((Expression) child);
-		//						returnMe[i] = childExp.eval(context);
-		//					}
-		//				}
-		//					}
-		//				}
-		//		return returnMe;
 	}
 
 	public static void main(String[] args) {

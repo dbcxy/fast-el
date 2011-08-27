@@ -21,8 +21,6 @@ public interface FelNode extends Expression, Tree {
 	 */
 	List<FelNode> getChildren();
 
-	Object[] getChildrenArray();
-
 	/**
 	 * 重置解释器
 	 * @return
