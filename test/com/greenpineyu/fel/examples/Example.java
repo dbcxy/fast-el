@@ -2,7 +2,7 @@ package com.greenpineyu.fel.examples;
 
 import java.util.List;
 
-import org.apache.commons.lang.mutable.MutableInt;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;

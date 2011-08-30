@@ -17,15 +17,15 @@ import com.greenpineyu.fel.context.MapContext;
 public class PerformanceTest {
 
 	public static void main(String[] args) {
-		speed();
-		// stable();
+//		speed();
+		 stable();
 //		testConcurrent();
 	}
 
 	public static void stable() {
 		final FelEngine engine = new FelEngineImpl();
 		final long start = System.currentTimeMillis();
-		final int times = 1;
+		final int times = 10;
 		Thread cur = Thread.currentThread();
 		for (int i = 0; i < times; i++) {
 			final int temp = i;
@@ -43,10 +43,6 @@ public class PerformanceTest {
 				};
 			};
 			t.start();
-			// try {
-			// // t.join();
-			// } catch (InterruptedException e) {
-			// }
 		}
 		System.out.println("cost:" + (System.currentTimeMillis() - start));
 	}
@@ -70,8 +66,8 @@ public class PerformanceTest {
 		exps[i++] = "1000+100.0*99-(600-3*15)%(((68-9)-3)*2-100)+10000%7*71";
 		exps[i++] = "i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ==i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ";
 		exps[i++] = "pi*d+b-(1000-d*b/pi)/(pi+99-i*d)-i*pi*d/b";
-		// exps[i++] = "s.substring(m.d)";
-		// exps[i++] = "s.substring(1).substring(2).indexOf('world')";
+		 exps[i++] = "s.substring(m.d)";
+		 exps[i++] = "s.substring(1).substring(2).indexOf('world')";
 		int times = 10 * 1000 * 1000;
 		// times =1;
 		for (String exp : exps) {
@@ -85,7 +81,7 @@ public class PerformanceTest {
 
 	private static void fel(String exp, Map<String, Object> vars, int times) {
 		FelContext ctx = new MapContext(vars);
-		ctx = getContext();
+		ctx = new MapContext(vars);
 		fel(exp, ctx, times);
 	}
 
@@ -103,25 +99,11 @@ public class PerformanceTest {
 //		System.out.println(result + " == " + evalResult + "："
 //				+ result.equals(evalResult));
 		long cost = end - start;
-//		System.out.println("--------cost[ " + cost + " ] ------exp="
-//				+ result);
+		System.out.println("--------cost[ " + cost + " ] ------exp="
+				+ result);
 		return cost;
 	}
-
-	private static void temp() {
-		// String s = "(1 - d * pi) - (2 + 100 - i / pi) % 99 ";
-		int i = 100;
-		double pi = 3.14d;
-		double d = -3.9;
-		byte b = (byte) 4;
-		boolean bool = false;
-		// System.out.println((1 - d * pi) - (2 + 100 - i / pi) % 99 );
-		// System.out.println("value:"+engine.eval(s));
-		// System.out.println("value:"+engine.compiler(s, null).eval(ctx));
-		// str1 =
-		// "i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ==i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ";
-	}
-
+/*
 	private static void jexl(String exp, Map<String, Object> vars, int times) {
 		JexlEngine je = new JexlEngine();
 		JexlContext ctx = new org.apache.commons.jexl2.MapContext(vars);
@@ -137,14 +119,13 @@ public class PerformanceTest {
 		System.out.println("--------cost[ " + (end - start) + " ] ------exp="
 				+ result);
 	}
+	*/
 
 	public static void testConcurrent(){
 		int threads = 10;
 		concurrent(50);
 		concurrent(100);
 		concurrent(200);
-
-
 	}
 
 	private static void concurrent(int threads) {
