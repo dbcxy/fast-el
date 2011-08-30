@@ -52,8 +52,8 @@ public class FelEngineImpl implements FelEngine {
 			ctx = this.context;
 		}
 		FelNode parse = parse(exp);
+		parse = parse.optimize(ctx);
 		String src = parse.toMethod(ctx).getCode();
-		System.out.println(src);
 		return getCompiler().newInstance(src);
 	}
 
@@ -85,8 +85,8 @@ public class FelEngineImpl implements FelEngine {
 			}
 		}
 		return null;
-
 	}
+
 
 	public String toString() {
 		return "FelEngine[ANTLR]";
