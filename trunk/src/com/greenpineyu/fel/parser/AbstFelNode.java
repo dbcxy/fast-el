@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.ObjectUtils.Null;
 
+import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
@@ -194,6 +197,55 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 	public Object interpret(FelContext context, FelNode node) {
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
+	}
+	
+	public boolean stable() {
+		return false;
+	}
+	protected boolean isChildrenStable() {
+		if(this.children!=null){
+			//子节点有一个不是稳定的，就返回false
+			for (int i = 0; i < children.size(); i++) {
+				FelNode child = (FelNode) children.get(i);
+				if(!child.stable()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/*public boolean isAllStable(){
+		if(!this.stable()){
+			return false;
+		}
+		if(this.children!=null){
+			//子节点有一个不是稳定的，就返回false
+			for (int i = 0; i < children.size(); i++) {
+				FelNode child = (FelNode) children.get(i);
+				if(!child.stable()){
+					return false;
+				}
+			}
+		}
+		return true;
+	}*/
+	
+	public FelNode optimize(FelContext ctx) {
+		if(stable()){
+			Object value = this.interpret(ctx, this);
+			Token token = new CommonToken(this.getToken());
+			token.setText(ObjectUtils.toString(value));
+			return new ConstNode(token, value);
+		}else{
+			if(this.children!=null){
+				for (int i = 0; i < children.size(); i++) {
+					FelNode c = (FelNode) children.get(i);
+					children.set(i, c.optimize(ctx));
+				}
+			}
+			return this;
+		}
 	}
 
 }

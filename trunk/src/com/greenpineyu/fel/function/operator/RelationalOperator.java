@@ -11,6 +11,9 @@ import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
+import com.greenpineyu.fel.parser.Optimizable;
+import com.greenpineyu.fel.parser.Stable;
+
 import static com.greenpineyu.fel.function.operator.EqualsOperator.*;
 
 /**
@@ -20,7 +23,7 @@ import static com.greenpineyu.fel.function.operator.EqualsOperator.*;
  * 作者				
  * 版权				
  */
-public class RelationalOperator extends CommonFunction {
+public class RelationalOperator extends CommonFunction implements Stable {
 
 	private String operator;
 	
@@ -175,6 +178,10 @@ public class RelationalOperator extends CommonFunction {
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		StringBuilder code = buildRelationExpr(node, ctx, this.getName());
 		return new FelMethod(Boolean.class, code.toString());
+	}
+
+	public boolean stable() {
+		return true;
 	}
 
 }

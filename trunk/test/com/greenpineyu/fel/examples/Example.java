@@ -189,7 +189,7 @@ public class Example {
 		// 单价
 		double[] price = new double[] { 2, 3, 4 };
 		// 费用
-		double[] cost = new double[] { 0.99, 0.59, 1.9 };
+		double[] cost = new double[] { 0.3, 0.3, 0.4 };
 		FelContext ctx = fel.getContext();
 		ctx.set("单价", price);
 		ctx.set("费用", cost);
