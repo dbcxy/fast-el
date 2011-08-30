@@ -18,6 +18,9 @@ import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +34,34 @@ public class FelCompilerImpl implements FelCompiler {
          * 用户编译的classpath
          */
         public  static final String CLASSPATH;
+        
+        /**
+         * 包名
+         */
+        private static final String PACKAGE;
+        /**
+         * 源文件所在文件夹，包含包名
+         */
+        private static final String SRC_PACKAGE_DIR;
+        /**
+         * Class文件所在文件夹，包含包名
+         */
+        private static final String CLASS_PACKAGE_DIR;
+        /**
+         * class文件夹
+         */
+        private static final String CLASS_DIR;
 
         static {
+        	String fullName = FelCompilerImpl.class.getName();
+			PACKAGE=fullName.substring(0,fullName.lastIndexOf("."));
                 CLASSPATH = getClassPath();
+                String userDir = System.getProperty("user.dir");
+                String baseDir = userDir+File.separator+"fel"+File.separator;
+				CLASS_DIR =baseDir+"classes"+File.separator;
+                SRC_PACKAGE_DIR =baseDir+"src"+File.separator+getPackage()+File.separator;
+                CLASS_PACKAGE_DIR =CLASS_DIR+getPackage()+File.separator;
+                createDir();
         }
 
         private static String getPath(Class<?> cls){
@@ -118,20 +146,19 @@ public class FelCompilerImpl implements FelCompiler {
 
         private static ClassLoader loader;
         static {
-                StringBuilder sb = new StringBuilder();
-                InputStream in = FelCompilerImpl.class.getResourceAsStream("java.template");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String line = null;
-                try {
-                        while ((line = reader.readLine()) != null) {
-                                sb.append(line).append("\r\n");
-                        }
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }
-                template = sb.toString();
-                
-                loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(), getClassDir());
+        	StringBuilder sb = new StringBuilder();
+        	InputStream in = FelCompilerImpl.class.getResourceAsStream("java.template");
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        	String line = null;
+        	try {
+        		while ((line = reader.readLine()) != null) {
+        			sb.append(line).append("\r\n");
+        		}
+        	} catch (IOException e) {
+        		e.printStackTrace();
+        	}
+        	template = sb.toString();
+        	loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(), CLASS_DIR);
         }
 
         private static int count = 0;
@@ -146,115 +173,100 @@ public class FelCompilerImpl implements FelCompiler {
                         e.printStackTrace();
                 }
                 return null;
-                
+        }
+        
+        static private void createDir(){
+        	new File(SRC_PACKAGE_DIR).mkdirs();
+        	 new File(CLASS_DIR).mkdirs();
         }
 
         public Class<Expression> compile(String expr) {
-
                 String className = getClassName();
+                String file = SRC_PACKAGE_DIR + className + ".java";
                 String source = buildsource(expr, className);
-                String srcDir = "src";
-                String folder = getPackagefolder(srcDir);
-                String file = folder + className + ".java";
-//              System.out.println(source.getBytes().length);
+                writeJavaFile(file, source);
                 
-                
-                OutputStreamWriter write =null;
-                try {
-                        new File(folder).mkdirs();
-                        BufferedOutputStream os;
-                        os = new BufferedOutputStream( new FileOutputStream(file),500);
-                          write = new OutputStreamWriter(os,
-                                        "utf-8");
-                        write.write(source);
-                } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }finally{
-                        if(write!=null){
-                                try {
-                                        write.close();
-                                } catch (IOException e) {
-                                        e.printStackTrace();
-                                }
-                        }
-                }
-                
-                String classDir = getClassDir();
-                new File(classDir).mkdirs();String[] arg = new String[]{"-encoding", "UTF-8","-d", classDir, file};
+               String[] arg = new String[]{"-encoding", "UTF-8","-d",CLASS_DIR, file};
                 if(StringUtils.isNotEmpty(CLASSPATH)){
                         arg = (String[]) ArrayUtils.add(arg, 0,CLASSPATH);
                         arg = (String[]) ArrayUtils.add(arg, 0,"-classpath");
                 }
                 int compile = Main.compile(arg);
                 if(compile !=0){
-                        return null;
-                }else{
-                        //FIXME 要删除java文件和class文件
-                        new File(file).deleteOnExit();
+                	return null;
                 }
 //              System.out.println(compile);
-                String replaceAll = getPackage().replaceAll("/", ".");
-                String fullName = replaceAll+className;
+//                String replaceAll = getPackage().replaceAll("/", ".");
+//                String fullName = replaceAll+className;
 //              System.out.println(fullName);
                 try {
                         @SuppressWarnings("unchecked")
-                        Class<Expression> c = (Class<Expression>) loader.loadClass(fullName);
+                        Class<Expression> c = (Class<Expression>) loader.loadClass(PACKAGE+"."+className);
                         return c;
                 } catch (ClassNotFoundException e) {
                         e.printStackTrace();
+                }finally{
+                	clean(className);
                 }
                 return null;
-//              System.getProperties().list(System.out);
-                // FileWriter write = new FileWriter();
-                // Main.compile(arg0)
+        }
+       private static ExecutorService exeService=Executors.newFixedThreadPool(1);
+        
+        private void clean(final String fileName){
+        	if(exeService.isShutdown()){
+        		exeService = Executors.newFixedThreadPool(1);
+        	}
+        	exeService.execute(new Runnable() {
+				public void run() {
+					String src = SRC_PACKAGE_DIR + fileName + ".java";
+					String cls = CLASS_PACKAGE_DIR + fileName + ".class";
+					deleteFile(src);
+					deleteFile(cls);
+				}
 
-                // JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
-                // DiagnosticCollector<JavaFileObject> diagnostics =
-                // new DiagnosticCollector<JavaFileObject>();
-                //
-                //
-                // StandardJavaFileManager fileManager =
-                // compiler.getStandardFileManager(diagnostics, null, null);
-                //
-                // JavaFileObject cu = new SimpleJavaFileObject
-                // Iterable<? extends JavaFileObject> iter =
-                // fileManager.getJavaFileObjectsFromStrings(Arrays.asList(new
-                // String[]{source}));
-                // for (JavaFileObject cu : iter) {
-                // System.out.println(cu.getKind());
-                // }
-                // CompilationTask task = compiler.getTask(null, fileManager, null,
-                // null, null, iter);
-                // task.call();
-                // // compiler.run(new ByteArrayInputStream(source.getBytes()), out,
-                // err, arguments)
-                // System.out.println(source);
+				private void deleteFile(String src) {
+					File file = new File(src);
+					if(file.exists()){
+						file.delete();
+					}
+				}
+			});
+        	exeService.shutdown();
         }
 
-        static private String getClassDir() {
-                String classesDir = "classes";
-                String cdire = getFolder(classesDir);
-                return cdire;
-        }
-
-        private static String getPackagefolder(String srcDir) {
-                String dir = getFolder(srcDir);
-                String folder = dir+getPackage();
-                return folder;
-        }
-
-        private static String getFolder(String folder) {
-                String userDir = System.getProperty("user.dir");
-                return  userDir + "/fel/"+folder +"/";
-        }
+		private void writeJavaFile(String file, String source) {
+			OutputStreamWriter write =null;
+			try {
+			        BufferedOutputStream os;
+			        os = new BufferedOutputStream( new FileOutputStream(file),500);
+			          write = new OutputStreamWriter(os,
+			                        "utf-8");
+			        write.write(source);
+			} catch (FileNotFoundException e) {
+			        e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+			        e.printStackTrace();
+			} catch (IOException e) {
+			        e.printStackTrace();
+			}finally{
+			        if(write!=null){
+			                try {
+			                        write.close();
+			                } catch (IOException e) {
+			                        e.printStackTrace();
+			                }
+			        }
+			}
+		}
 
         private static String getPackage() {
-                return "com/greenpineyu/fel/compile/";
+        	String sep = File.separator;
+        	if(sep.equals("\\")){
+        		sep ="\\\\";
+        	}
+        	String name = FelCompilerImpl.class.getName();
+        	name = name.substring(0,name.lastIndexOf("."));
+        	return name.replaceAll("\\.", sep);
         }
 
         private String buildsource(String expression, String className) {
