@@ -19,7 +19,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
  * 包名 .script.function.operator 类名 EqualsOperator.java 创建日期 Oct 25, 20104:54:53
  * PM 作者 版权
  */
-public class EqualsOperator implements Function {
+public class EqualsOperator extends StableFunction {
 
 	private String operator;
 

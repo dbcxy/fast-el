@@ -1,7 +1,5 @@
 package com.greenpineyu.fel.parser;
 
-import java.util.List;
-
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -61,5 +59,14 @@ public  class FunNode extends AbstFelNode {
 	
 	public FelMethod toMethod(FelContext ctx) {
 		return this.fun.toMethod(this,ctx);
+	}
+	
+	@Override
+	public boolean stable() {
+		if(this.fun instanceof Stable){
+			//函数是稳定的，并且参数是稳定的
+			return ((Stable)fun).stable()&&this.isChildrenStable();
+		}
+		return false;
 	}
 }

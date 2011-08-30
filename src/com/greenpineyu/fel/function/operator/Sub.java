@@ -13,7 +13,7 @@ import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.FelNode;
 
-public class Sub implements Function {
+public class Sub extends StableFunction {
 
 	private static Sub instance;
 

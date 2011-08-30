@@ -14,7 +14,7 @@ import com.greenpineyu.fel.interpreter.Interpreter;
  * @author yqs
  *
  */
-public interface FelNode extends Expression, Tree {
+public interface FelNode extends Expression, Tree ,Optimizable{
 
 	/**
 	 * 获取子节点

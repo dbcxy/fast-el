@@ -1,16 +1,16 @@
 package com.greenpineyu.fel.function.operator;
 
+import static com.greenpineyu.fel.common.NumberUtil.toDouble;
+
 import java.util.Iterator;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.FelNode;
-import static com.greenpineyu.fel.common.NumberUtil.*;
 
-public class Add implements Function {
+public class Add extends StableFunction  {
 
 	private static Add instance;
 

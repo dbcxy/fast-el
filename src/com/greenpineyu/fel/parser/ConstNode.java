@@ -7,20 +7,21 @@ import com.greenpineyu.fel.context.FelContext;
 
 /**
  * 常量节点
+ * 
  * @author yqs
- *
+ * 
  */
 public class ConstNode extends AbstFelNode {
 
 	private Object value;
-	
+
 	private Class<?> type;
 
 	public ConstNode(Token token, Object value) {
 		super(token);
-		if(value == null){
+		if (value == null) {
 			type = Object.class;
-		}else{
+		} else {
 			type = value.getClass();
 		}
 		this.value = value;
@@ -29,23 +30,27 @@ public class ConstNode extends AbstFelNode {
 	public Object interpret(FelContext context, FelNode node) {
 		return value;
 	}
-	
+
 	public FelMethod toMethod(FelContext ctx) {
 		return new FelMethod(this.getValueType(), this.toJavaSrc(ctx));
 	}
-	
+
 	public Class<?> getValueType() {
 		return type;
 	}
-	
+
 	public String toJavaSrc(FelContext ctx) {
-		if(this.value == null){
+		if (this.value == null) {
 			return "null";
 		}
-		if(type == String.class){
-			return "\""+value+"\"";
+		if (type == String.class) {
+			return "\"" + value + "\"";
 		}
 		return this.getToken().getText();
+	}
+
+	public boolean stable() {
+		return true;
 	}
 
 }

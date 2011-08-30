@@ -20,7 +20,6 @@ import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.AbstFelNode;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.FunNode;
 
 public class Dot implements Function {
 

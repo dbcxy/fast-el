@@ -10,6 +10,8 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
+import com.greenpineyu.fel.parser.Optimizable;
+import com.greenpineyu.fel.parser.Stable;
 
 /**
  * 包名				.script.function.operator
@@ -18,7 +20,7 @@ import com.greenpineyu.fel.parser.FelNode;
  * 作者				
  * 版权				
  */
-public class MultiplicativeOperator extends CommonFunction {
+public class MultiplicativeOperator extends CommonFunction implements Stable{
 
 	private String operator;
 	
@@ -247,6 +249,10 @@ public class MultiplicativeOperator extends CommonFunction {
 		code = "("+node.getChildren().get(0).toMethod(ctx).getCode()+")"+this.operator+"("+node.getChildren().get(1).toMethod(ctx).getCode()+")";
 		FelMethod m = new FelMethod(Number.class, code);
 		return m;
+	}
+
+	public boolean stable() {
+		return true;
 	}
 
 }
