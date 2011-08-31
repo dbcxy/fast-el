@@ -116,7 +116,7 @@ public class FelCompilerImpl implements FelCompiler {
 		}
 		String cpStr = "";
 		for (String c : cpSet) {
-			cpStr += c + ";";
+			cpStr += c + File.pathSeparator;
 		}
 		return cpStr;
 	}
