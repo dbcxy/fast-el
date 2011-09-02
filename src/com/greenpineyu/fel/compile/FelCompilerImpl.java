@@ -20,6 +20,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -192,10 +196,10 @@ public class FelCompilerImpl implements FelCompiler {
 			arg = (String[]) ArrayUtils.add(arg, 0, "-classpath");
 		}
 		int compile = Main.compile(arg);
-		if (compile != 0) {
-			return null;
-		}
 		try {
+			if (compile != 0) {
+				return null;
+			}
 			@SuppressWarnings("unchecked")
 			Class<Expression> c = (Class<Expression>) loader.loadClass(PACKAGE
 					+ "." + className);
@@ -208,11 +212,17 @@ public class FelCompilerImpl implements FelCompiler {
 		return null;
 	}
 
-	private static ExecutorService exeService = Executors.newFixedThreadPool(1);
+	private static ExecutorService exeService = initThreadPool() ;
+
+	private static ExecutorService initThreadPool() {
+		return new ThreadPoolExecutor(0, 10,
+		  5L, TimeUnit.SECONDS,
+		  new SynchronousQueue<Runnable>());
+	}
 
 	private void clean(final String fileName) {
 		if (exeService.isShutdown()) {
-			exeService = Executors.newFixedThreadPool(1);
+			exeService = initThreadPool();
 		}
 		exeService.execute(new Runnable() {
 			public void run() {
@@ -229,7 +239,7 @@ public class FelCompilerImpl implements FelCompiler {
 				}
 			}
 		});
-		exeService.shutdown();
+//		exeService.shutdown();
 	}
 
 	private void writeJavaFile(String file, String source) {
@@ -323,6 +333,14 @@ class FileClassLoader extends ClassLoader {
 			data = baos.toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally{
+			if(fis!= null){
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return data;
 	}
