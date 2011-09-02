@@ -17,8 +17,8 @@ import com.greenpineyu.fel.context.MapContext;
 public class PerformanceTest {
 
 	public static void main(String[] args) {
-//		speed();
-		 stable();
+		speed();
+//		 stable();
 //		testConcurrent();
 	}
 
@@ -48,7 +48,6 @@ public class PerformanceTest {
 	}
 
 	private static void speed() {
-
 		Map<String, Object> vars = new HashMap<String, Object>();
 		vars.put("i", 100);
 		vars.put("pi", 3.14d);
@@ -66,9 +65,9 @@ public class PerformanceTest {
 		exps[i++] = "1000+100.0*99-(600-3*15)%(((68-9)-3)*2-100)+10000%7*71";
 		exps[i++] = "i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ==i * pi + (d * b - 199) / (1 - d * pi) - (2 + 100 - i / pi) % 99 ";
 		exps[i++] = "pi*d+b-(1000-d*b/pi)/(pi+99-i*d)-i*pi*d/b";
-		 exps[i++] = "s.substring(m.d)";
-		 exps[i++] = "s.substring(1).substring(2).indexOf('world')";
-		int times = 10 * 1000 * 1000;
+		exps[i++] = "s.substring(m.d)";
+		exps[i++] = "s.substring(1).substring(2).indexOf('world')";
+		int times = 10 * 1000 *10000;
 		// times =1;
 		for (String exp : exps) {
 			if (exp == null) {
