@@ -10,6 +10,9 @@ import org.antlr.runtime.RecognitionException;
 
 import com.greenpineyu.fel.compile.FelCompiler;
 import com.greenpineyu.fel.compile.FelCompilerImpl;
+import com.greenpineyu.fel.compile.JavaSource;
+import com.greenpineyu.fel.compile.SourceGenerator;
+import com.greenpineyu.fel.compile.SourceGeneratorImpl;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.exception.ParseException;
@@ -28,10 +31,14 @@ public class FelEngineImpl implements FelEngine {
 	private FelCompiler compiler;
 
 	private FelContext context;
+	
+	private SourceGenerator srcGenerator;
+	
 
 	public FelEngineImpl(FelContext context) {
 		this.context = context;
 		this.compiler = new FelCompilerImpl();
+		this.srcGenerator = new SourceGeneratorImpl();
 	}
 
 	public FelEngineImpl() {
@@ -53,8 +60,8 @@ public class FelEngineImpl implements FelEngine {
 		}
 		FelNode parse = parse(exp);
 		parse = parse.optimize(ctx);
-		String src = parse.toMethod(ctx).getCode();
-		return getCompiler().newInstance(src);
+		JavaSource src = srcGenerator.getSource(ctx, parse);
+		return getCompiler().compile(src);
 	}
 
 	public FelNode parse(String exp) {
@@ -93,9 +100,9 @@ public class FelEngineImpl implements FelEngine {
 	}
 
 	public static void main(String[] args) {
-		FelEngine engine = new FelEngineImpl();
+		FelEngineImpl engine = new FelEngineImpl();
 		Object eval = engine.eval("1+2");
-		Expression expr = engine.getCompiler().newInstance("1+(2-(5+6))");
+		Expression expr = engine.compiler("1+(2-(5+6))",engine.context);
 		
 		int count = 1000*1000*100;
 		long start =  System.currentTimeMillis();

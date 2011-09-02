@@ -1,7 +1,6 @@
 package com.greenpineyu.fel.compile;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -19,9 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +24,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.greenpineyu.fel.Expression;
-import com.greenpineyu.fel.FelEngineImpl;
 import com.sun.tools.javac.Main;
 
 public class FelCompilerImpl implements FelCompiler {
@@ -39,33 +33,31 @@ public class FelCompilerImpl implements FelCompiler {
 	public static final String CLASSPATH;
 
 	/**
-	 * 包名
-	 */
-	private static final String PACKAGE;
-	/**
-	 * 源文件所在文件夹，包含包名
-	 */
-	private static final String SRC_PACKAGE_DIR;
-	/**
-	 * Class文件所在文件夹，包含包名
-	 */
-	private static final String CLASS_PACKAGE_DIR;
-	/**
 	 * class文件夹
 	 */
 	private static final String CLASS_DIR;
-
+	
+	private static final String BASE_DIR;
+	private static ClassLoader loader;
 	static {
-		String fullName = FelCompilerImpl.class.getName();
-		PACKAGE = fullName.substring(0, fullName.lastIndexOf("."));
 		CLASSPATH = getClassPath();
 		String userDir = System.getProperty("user.dir");
-		String baseDir = userDir + File.separator + "fel" + File.separator;
-		CLASS_DIR = baseDir + "classes" + File.separator;
-		SRC_PACKAGE_DIR = baseDir + "src" + File.separator + getPackage()
+		BASE_DIR = userDir + File.separator + "fel" + File.separator;
+		CLASS_DIR = BASE_DIR + "classes" + File.separator;
+		loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(),
+				CLASS_DIR);
+	}
+
+	/**
+	 * Class文件所在文件夹，包含包名
+	 */
+	private static String getClassPackageDir(String pack) {
+		return CLASS_DIR + packageToPath(pack) + File.separator;
+	}
+
+	private static String getSrcPackageDir(String pack) {
+		return BASE_DIR + "src" + File.separator + packageToPath(pack)
 				+ File.separator;
-		CLASS_PACKAGE_DIR = CLASS_DIR + getPackage() + File.separator;
-		createDir();
 	}
 
 	private static String getPath(Class<?> cls) {
@@ -143,31 +135,9 @@ public class FelCompilerImpl implements FelCompiler {
 		return jarPathSet;
 	}
 
-	private static String template;
 
-	private static ClassLoader loader;
-	static {
-		StringBuilder sb = new StringBuilder();
-		InputStream in = FelCompilerImpl.class
-				.getResourceAsStream("java.template");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				sb.append(line).append("\r\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		template = sb.toString();
-		loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(),
-				CLASS_DIR);
-	}
-
-	private static int count = 0;
-
-	public Expression newInstance(String expr) {
-		Class<Expression> compile = this.compile(expr);
+	public Expression compile(JavaSource expr) {
+		Class<Expression> compile = this.compileToClass(expr);
 		try {
 			return compile.newInstance();
 		} catch (InstantiationException e) {
@@ -178,15 +148,18 @@ public class FelCompilerImpl implements FelCompiler {
 		return null;
 	}
 
-	static private void createDir() {
-		new File(SRC_PACKAGE_DIR).mkdirs();
+	static private void createDir(String srcPackageDir) {
+		new File(srcPackageDir).mkdirs();
 		new File(CLASS_DIR).mkdirs();
 	}
 
-	public Class<Expression> compile(String expr) {
-		String className = getClassName();
-		String file = SRC_PACKAGE_DIR + className + ".java";
-		String source = buildsource(expr, className);
+	private Class<Expression> compileToClass(JavaSource src) {
+		String className = src.getName();
+		String pack = src.getPackageName();
+		String srcPackageDir = getSrcPackageDir(pack);
+		String file = srcPackageDir  + className + ".java";
+		createDir(srcPackageDir);
+		String source =src.getSource();
 		writeJavaFile(file, source);
 
 		String[] arg = new String[] { "-encoding", "UTF-8", "-d", CLASS_DIR,
@@ -201,13 +174,13 @@ public class FelCompilerImpl implements FelCompiler {
 				return null;
 			}
 			@SuppressWarnings("unchecked")
-			Class<Expression> c = (Class<Expression>) loader.loadClass(PACKAGE
+			Class<Expression> c = (Class<Expression>) loader.loadClass(pack
 					+ "." + className);
 			return c;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			clean(className);
+			clean(srcPackageDir,getClassPackageDir(pack),className);
 		}
 		return null;
 	}
@@ -220,20 +193,21 @@ public class FelCompilerImpl implements FelCompiler {
 		  new SynchronousQueue<Runnable>());
 	}
 
-	private void clean(final String fileName) {
+	private void clean(final String srcPackageDir,final String classPackageDir,final String fileName) {
 		if (exeService.isShutdown()) {
 			exeService = initThreadPool();
 		}
 		exeService.execute(new Runnable() {
 			public void run() {
-				String src = SRC_PACKAGE_DIR + fileName + ".java";
-				String cls = CLASS_PACKAGE_DIR + fileName + ".class";
+				String src = srcPackageDir + fileName + ".java";
+				String cls = classPackageDir + fileName + ".class";
 				deleteFile(src);
 				deleteFile(cls);
 			}
 
 			private void deleteFile(String src) {
 				File file = new File(src);
+//				System.out.println("delete file:"+src);
 				if (file.exists()) {
 					file.delete();
 				}
@@ -266,42 +240,26 @@ public class FelCompilerImpl implements FelCompiler {
 		}
 	}
 
-	private static String getPackage() {
+	/**
+	 * 将包名转换成包路径
+	 * @param packageName
+	 * @return
+	 */
+	private static String packageToPath(String packageName) {
 		String sep = File.separator;
 		if (sep.equals("\\")) {
 			sep = "\\\\";
 		}
-		String name = FelCompilerImpl.class.getName();
-		name = name.substring(0, name.lastIndexOf("."));
-		return name.replaceAll("\\.", sep);
+		return packageName.replaceAll("\\.", sep);
 	}
 
-	private String buildsource(String expression, String className) {
-		String src = template.replaceAll("\\$\\{classname\\}", className);
-		src = src.replaceAll("\\$\\{expression\\}", expression);
-		return src;
-	}
 
-	private String getClassName() {
-		String className = null;
-		synchronized (FelCompilerImpl.class) {
-			className = "Fel_" + count++;
-		}
-		return className;
-	}
+
 
 	public static void main(String[] args) throws InstantiationException,
 			IllegalAccessException {
 		FelCompilerImpl c = new FelCompilerImpl();
 		long start = System.currentTimeMillis();
-		Class<Expression> compile = c.compile("\"中国\"+2");
-		Object eval = compile.newInstance().eval(null);
-		System.out.println(eval);
-		long cost = System.currentTimeMillis() - start;
-		System.out.println(cost);
-		FelEngineImpl fe = new FelEngineImpl();
-		Object r = fe.compiler("1+1", null).eval(null);
-		System.out.println("result:" + r);
 	}
 }
 

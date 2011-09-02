@@ -59,7 +59,7 @@ public class FelEngineImplTest {
 		// 算术运算
 		object[i++] = new Object[] { engine, "+1", new Integer(1) };
 		object[i++] = new Object[] { engine, "-1", new Integer(-1) };
-		object[i++] = new Object[] { engine, "f+1", 2.1 };
+//		object[i++] = new Object[] { engine, "f+1", 2.1 };
 		object[i++] = new Object[] { engine, "A4*B5", new Integer(4 * 5) };
 
 		// 逻辑运算
