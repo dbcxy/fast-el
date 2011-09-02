@@ -31,8 +31,17 @@ public class VarAstNode extends AbstFelNode {
 			//基本类型转换成包装类型
 			type = ReflectUtil.toWrapperClass(type);
 		}
-		return new FelMethod(type, "("+type.getName()+")context.get(\""+this.text+"\")");
-//		return ctx.getValueType(ctx);
+		String getVarCode = "context.get(\""+this.text+"\")";
+		String code = "";
+		if(Number.class.isAssignableFrom(type)){
+			type = Number.class;
+			//当float转double时，会丢失精度
+			code = "(("+type.getName()+")"+getVarCode+").doubleValue()";
+		}else{
+			code = "(" + type.getName() + ")" + getVarCode;
+		}
+		return new FelMethod(type, code);
+		//			 return ctx.getValueType(ctx);
 	}
 
 }
