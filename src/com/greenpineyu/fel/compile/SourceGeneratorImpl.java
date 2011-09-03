@@ -60,7 +60,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 		node = optimize(ctx, node);
 		SourceBuilder builder = node.toMethod(ctx);
-		String exp = builder.source(ctx, null);
+		String exp = builder.source(ctx, node);
 		String className = getClassName();
 		String src = buildsource(exp, className);
 //		System.out.println("****************\n" + src);
@@ -174,8 +174,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 				return new SourceBuilder() {
 
-					public String source(FelContext ctx, FelNode n) {
-						VarAstNode node = (VarAstNode) old;
+					public String source(FelContext ctx, FelNode node) {
 						String text = node.getText();
 						if (localvars.containsKey(text)) {
 							StringKeyValue kv = localvars.get(text);
