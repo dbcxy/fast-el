@@ -218,9 +218,10 @@ public class Dot implements Function {
 			//有参数
 			paramValueTypes = new Class<?>[params.size()];
 			for (int i = 0; i < params.size(); i++) {
-				SourceBuilder paramMethod = params.get(i).toMethod(context);
+				FelNode p = params.get(i);
+				SourceBuilder paramMethod = p.toMethod(context);
 				paramMethods.add(paramMethod);
-				paramValueTypes[i] = paramMethod.returnType(context, null);
+				paramValueTypes[i] = paramMethod.returnType(context, p);
 			}
 			//根据参数查找方法
 			method = ReflectUtil.findMethod(cls, rightNode.getText(),paramValueTypes);
