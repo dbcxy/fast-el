@@ -226,11 +226,19 @@ public class Dot implements Function {
 			method = ReflectUtil.findMethod(cls, rightNode.getText(),paramValueTypes);
 			if(method != null){
 				Class<?>[] paramTypes = method.getParameterTypes();
+				/*
 				for (int i = 0; i < paramTypes.length; i++) {
 					Class<?> paramType = paramTypes[i];
 					Class<?> paramValueType = paramValueTypes[i];
 					SourceBuilder paramMethod = paramMethods.get(i);
 					String paramCode = getParamCode(paramType, paramValueType, paramMethod,context);
+					rightMethodParam+=paramCode + ",";
+				}
+				*/
+				for (int i = 0; i < paramTypes.length; i++) {
+					Class<?> paramType = paramTypes[i];
+					FelNode p = params.get(i);
+					String paramCode = getParamCode(paramType, p,context);
 					rightMethodParam+=paramCode + ",";
 				}
 				rightMethod = method.getName();
@@ -309,12 +317,13 @@ public class Dot implements Function {
 	 * @param paramMethod 
 	 * @return
 	 */
-	private String getParamCode(Class<?> paramType, Class<?> paramValueType,
-			SourceBuilder paramMethod,FelContext ctx) {
+	private String getParamCode(Class<?> paramType,FelNode node,FelContext ctx) {
 		// 如果类型相等（包装类型与基本类型（int和Integer)也认为是相等 ），直接添加参数。
 		String paramCode = "";
+		 SourceBuilder paramMethod = node.toMethod(ctx);
+		Class<?> paramValueType = paramMethod.returnType(ctx, node);
 		if (ReflectUtil.isTypeMatch(paramType, paramValueType)) {
-			paramCode = paramMethod.source(ctx, null);
+			paramCode = paramMethod.source(ctx, node);
 		} else {
 			// 如果类型不匹配，使用强制转型
 			String className = null;
@@ -324,7 +333,7 @@ public class Dot implements Function {
 			} else {
 				className = paramType.getName();
 			}
-			paramCode = "(" + className + ")" + paramMethod.source(ctx, null);
+			paramCode = "(" + className + ")" + paramMethod.source(ctx, node);
 		}
 		return paramCode;
 	}

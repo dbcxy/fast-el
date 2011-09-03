@@ -21,12 +21,12 @@ public class Sub extends StableFunction {
 		instance = new Sub();
 	}
 
-	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx) {
-		Class<?> t = argMethod.returnType(ctx, null);
+	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
+		Class<?> t = argMethod.returnType(ctx, node);
 		sb.append("(");
 		if (Number.class.isAssignableFrom(t)) {
 			// 数值型和字符型时，直接添加
-			sb.append(argMethod.source(ctx, null));
+			sb.append(argMethod.source(ctx, node));
 		} else if (CharSequence.class.isAssignableFrom(t)) {
 			// FIXME 处理1-"1"的
 		}
@@ -40,14 +40,14 @@ public class Sub extends StableFunction {
 		if (children.size() == 2) {
 			FelNode left = children.get(0);
 			SourceBuilder lm = left.toMethod(ctx);
-			appendArg(sb, lm,ctx);
+			appendArg(sb, lm,ctx,left);
 			right = children.get(1);
 		} else if (children.size() == 1) {
 			right = children.get(0);
 		}
 		sb.append("-");
 		SourceBuilder rm = right.toMethod(ctx);
-		appendArg(sb, rm,ctx);
+		appendArg(sb, rm,ctx,right);
 		FelMethod m = new FelMethod(Number.class, sb.toString());
 		return m;
 	}

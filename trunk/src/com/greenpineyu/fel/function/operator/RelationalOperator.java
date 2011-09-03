@@ -112,10 +112,10 @@ public class RelationalOperator extends CommonFunction implements Stable {
 		FelNode rightNode = child.get(1);
 		SourceBuilder leftM = leftNode.toMethod(ctx);
 		SourceBuilder rightM = rightNode.toMethod(ctx);
-		Class<?> leftType = leftM.returnType(ctx, null);
-		Class<?> rightType = rightM.returnType(ctx, null);
-		String left = "(" + leftM.source(ctx, null) + ")";
-		String right = "(" +rightM.source(ctx, null) + ")";
+		Class<?> leftType = leftM.returnType(ctx, leftNode);
+		Class<?> rightType = rightM.returnType(ctx, rightNode);
+		String left = "(" + leftM.source(ctx, leftNode) + ")";
+		String right = "(" +rightM.source(ctx, rightNode) + ")";
 
 		StringBuilder sb = new StringBuilder();
 		// 只要有一个是数值型，就将另一个也转成值型。
