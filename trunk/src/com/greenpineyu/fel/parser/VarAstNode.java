@@ -27,7 +27,7 @@ public class VarAstNode extends AbstFelNode implements SourceBuilder {
 	}
 	
 	{
-		this.builder  = this;
+		resetSourceBuilder();
 	}
 
 	public SourceBuilder toMethod(FelContext ctx) {
@@ -36,9 +36,8 @@ public class VarAstNode extends AbstFelNode implements SourceBuilder {
 	}
 
 	public String source(FelContext ctx, FelNode node) {
-		FelNode node2 = this;
-		Class<?> type = returnType(ctx, node2);
-		String getVarCode = "context.get(\""+node2.getText()+"\")";
+		Class<?> type = returnType(ctx, node);
+		String getVarCode = "context.get(\""+node.getText()+"\")";
 		String code = "";
 		if(Number.class.isAssignableFrom(type)){
 			//当float转double时，会丢失精度

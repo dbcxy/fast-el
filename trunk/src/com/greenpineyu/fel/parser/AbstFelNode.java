@@ -17,7 +17,7 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
-public abstract class AbstFelNode extends CommonTree implements FelNode, Interpreter {
+public abstract class AbstFelNode extends CommonTree implements FelNode, Interpreter,SourceBuilder {
 
 	/**
 	 * 解析器,用于解析节点的值
@@ -197,6 +197,8 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	public void resetInterpreter() {
 		this.interpreter = this;
 	}
+	
+	
 
 	public Object interpret(FelContext context, FelNode node) {
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
@@ -258,5 +260,17 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 			return this;
 		}
 	}*/
+	
+	public Class<?> returnType(FelContext ctx, FelNode node) {
+		throw new UnsupportedOperationException("没有实现");
+	}
+	
+	public String source(FelContext ctx, FelNode node) {
+		throw new UnsupportedOperationException("没有实现");
+	}
+	
+	public void resetSourceBuilder(){
+		this.builder = this;
+	}
 
 }
