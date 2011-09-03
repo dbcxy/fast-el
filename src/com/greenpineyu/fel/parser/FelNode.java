@@ -5,7 +5,7 @@ import java.util.List;
 import org.antlr.runtime.tree.Tree;
 
 import com.greenpineyu.fel.Expression;
-import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
@@ -14,7 +14,7 @@ import com.greenpineyu.fel.interpreter.Interpreter;
  * @author yqs
  *
  */
-public interface FelNode extends Expression, Tree ,Optimizable{
+public interface FelNode extends Expression, Tree ,Stable{
 
 	/**
 	 * 获取子节点
@@ -32,7 +32,10 @@ public interface FelNode extends Expression, Tree ,Optimizable{
 
 	void setInterpreter(Interpreter interpreter);
 	
-	FelMethod toMethod(FelContext ctx);
+	void setSourcebuilder(SourceBuilder builder);
+	
+	
+	SourceBuilder toMethod(FelContext ctx);
 
 
 }

@@ -6,8 +6,10 @@ import com.greenpineyu.fel.context.FelContext;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class ${classname} implements Expression{
+public class ${classname} extends CompileExp implements Expression{
+    ${attrs}
 	public Object eval(FelContext context) {
+	    ${localVars}
 		return ${expression};
 	}
 }

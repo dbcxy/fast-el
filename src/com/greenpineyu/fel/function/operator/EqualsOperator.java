@@ -3,17 +3,14 @@ package com.greenpineyu.fel.function.operator;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.ObjectUtils.Null;
 
 import com.greenpineyu.fel.common.NumberUtil;
-import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * 包名 .script.function.operator 类名 EqualsOperator.java 创建日期 Oct 25, 20104:54:53
@@ -100,8 +97,8 @@ public class EqualsOperator extends StableFunction {
 	public static String getChildCode(FelNode node, FelContext ctx,int index) {
 		List<FelNode> child = node.getChildren();
 		FelNode leftNode = child.get(index);
-		FelMethod leftM = leftNode.toMethod(ctx);
-		String code = "(" + leftM.getCode() + ")";
+		SourceBuilder leftM = leftNode.toMethod(ctx);
+		String code = "(" + leftM.source(ctx, null) + ")";
 		return code;
 	}
 
@@ -110,12 +107,12 @@ public class EqualsOperator extends StableFunction {
 		List<FelNode> child = node.getChildren();
 		FelNode leftNode = child.get(0);
 		FelNode rightNode = child.get(1);
-		FelMethod leftM = leftNode.toMethod(ctx);
-		FelMethod rightM = rightNode.toMethod(ctx);
-		Class<?> leftType = leftM.getReturnType();
-		Class<?> rightType = rightM.getReturnType();
-		String left = "(" + leftM.getCode() + ")";
-		String right = "(" +rightM.getCode() + ")";
+		SourceBuilder leftM = leftNode.toMethod(ctx);
+		SourceBuilder rightM = rightNode.toMethod(ctx);
+		Class<?> leftType = leftM.returnType(ctx, null);
+		Class<?> rightType = rightM.returnType(ctx, null);
+		String left = "(" + leftM.source(ctx, null) + ")";
+		String right = "(" +rightM.source(ctx, null) + ")";
 
 		StringBuilder sb = new StringBuilder();
 		// 只要有一个是数值型，就将另一个也转成值型。

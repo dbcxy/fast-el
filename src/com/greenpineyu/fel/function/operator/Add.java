@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -125,19 +126,19 @@ public class Add extends StableFunction  {
 		FelNode right = null;
 		if (children.size() == 2) {
 			FelNode left = children.get(0);
-			FelMethod lm = left.toMethod(ctx);
-			appendArg(sb, lm);
-			type = lm.getReturnType();
+			SourceBuilder lm = left.toMethod(ctx);
+			appendArg(sb, lm,ctx,left);
+			type = lm.returnType(ctx, left);
 			right = children.get(1);
 			sb.append("+");
 		} else if (children.size() == 1) {
 			right = children.get(0);
 		}
-		FelMethod rm = right.toMethod(ctx);
-		if(Character.class.isAssignableFrom(rm.getReturnType())){
-			type = rm.getReturnType();
+		SourceBuilder rm = right.toMethod(ctx);
+		if(Character.class.isAssignableFrom(rm.returnType(ctx, right))){
+			type = rm.returnType(ctx, right);
 		}
-		appendArg(sb, rm);
+		appendArg(sb, rm,ctx,right);
 		FelMethod m = new FelMethod(type, sb.toString());
 		return m;
 
@@ -149,15 +150,15 @@ public class Add extends StableFunction  {
 		// return sb.toString();
 	}
 
-	private void appendArg(StringBuilder sb, FelMethod argMethod) {
-		Class<?> t = argMethod.getReturnType();
+	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
+		Class<?> t = argMethod.returnType(ctx, node);
 		sb.append("(");
 		if (Number.class.isAssignableFrom(t)
 				|| CharSequence.class.isAssignableFrom(t)) {
 			// 数值型和字符型时，直接添加
-			sb.append(argMethod.getCode());
+			sb.append(argMethod.source(ctx, node));
 		} else {
-			sb.append("ObjectUtils.toString(").append(argMethod.getCode())
+			sb.append("ObjectUtils.toString(").append(argMethod.source(ctx, node))
 					.append(")");
 		}
 		sb.append(")");

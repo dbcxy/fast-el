@@ -6,6 +6,7 @@ import org.apache.commons.lang3.ObjectUtils.Null;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
@@ -152,13 +153,13 @@ public class LogicalOperator implements Function{
 	public String toBoolean(FelNode node, FelContext ctx, int index) {
 		List<FelNode> children = node.getChildren();
 		FelNode child = children.get(index);
-		FelMethod method = child.toMethod(ctx);
-		Class<?> type = method.getReturnType();
+		SourceBuilder method = child.toMethod(ctx);
+		Class<?> type = method.returnType(ctx, null);
 		if (Boolean.class.isAssignableFrom(type)) {
-			return "(" + method.getCode() + ")";
+			return "(" + method.source(ctx, null) + ")";
 		}
 		if (String.class.isAssignableFrom(type)) {
-			return "Boolean.valueOf(" + method.getCode() + ")";
+			return "Boolean.valueOf(" + method.source(ctx, null) + ")";
 		}
 		if (Null.class.isAssignableFrom(type)) {
 			return "false";

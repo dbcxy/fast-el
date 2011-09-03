@@ -13,6 +13,7 @@ import org.apache.commons.lang3.ObjectUtils.Null;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
@@ -23,6 +24,8 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	 */
 	protected Interpreter interpreter;
 
+	
+	protected SourceBuilder builder;
 
 	/**
 	 * 点位节点
@@ -38,7 +41,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		
 		public String toString() {return "NULL_NODE";}
 
-		public FelMethod toMethod(FelContext ctx) {
+		public SourceBuilder toMethod(FelContext ctx) {
 			throw new UnsupportedOperationException("占位节点");
 		}
 
@@ -60,7 +63,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		
 		public String toString() {return "NULL_NODE";}
 		
-		public FelMethod toMethod(FelContext ctx) {
+		public SourceBuilder toMethod(FelContext ctx) {
 			return new FelMethod(Null.class, "null");
 		}
 		
@@ -75,7 +78,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 			return Boolean.TRUE;
 		}
 
-		public FelMethod toMethod(FelContext ctx) {
+		public SourceBuilder toMethod(FelContext ctx) {
 			return new FelMethod(Boolean.class, "true");
 		}
 
@@ -199,6 +202,14 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
 	}
 	
+	public SourceBuilder toMethod(FelContext ctx){
+		return this.builder;
+	}
+	
+	public void setSourcebuilder(SourceBuilder builder) {
+		this.builder = builder;
+	}
+	
 	public boolean stable() {
 		return false;
 	}
@@ -230,8 +241,8 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		}
 		return true;
 	}*/
-	
-	public FelNode optimize(FelContext ctx) {
+	/*
+	public FelNode optimize(FelContext ctx, FelNode node) {
 		if(stable()){
 			Object value = this.interpret(ctx, this);
 			Token token = new CommonToken(this.getToken());
@@ -241,11 +252,11 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 			if(this.children!=null){
 				for (int i = 0; i < children.size(); i++) {
 					FelNode c = (FelNode) children.get(i);
-					children.set(i, c.optimize(ctx));
+					children.set(i, c.optimize(ctx, null));
 				}
 			}
 			return this;
 		}
-	}
+	}*/
 
 }

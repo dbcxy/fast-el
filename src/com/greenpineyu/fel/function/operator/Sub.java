@@ -1,16 +1,12 @@
 package com.greenpineyu.fel.function.operator;
 
-import java.math.BigInteger;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.crypto.Cipher;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class Sub extends StableFunction {
@@ -25,12 +21,12 @@ public class Sub extends StableFunction {
 		instance = new Sub();
 	}
 
-	private void appendArg(StringBuilder sb, FelMethod argMethod) {
-		Class<?> t = argMethod.getReturnType();
+	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx) {
+		Class<?> t = argMethod.returnType(ctx, null);
 		sb.append("(");
 		if (Number.class.isAssignableFrom(t)) {
 			// 数值型和字符型时，直接添加
-			sb.append(argMethod.getCode());
+			sb.append(argMethod.source(ctx, null));
 		} else if (CharSequence.class.isAssignableFrom(t)) {
 			// FIXME 处理1-"1"的
 		}
@@ -43,15 +39,15 @@ public class Sub extends StableFunction {
 		FelNode right = null;
 		if (children.size() == 2) {
 			FelNode left = children.get(0);
-			FelMethod lm = left.toMethod(ctx);
-			appendArg(sb, lm);
+			SourceBuilder lm = left.toMethod(ctx);
+			appendArg(sb, lm,ctx);
 			right = children.get(1);
 		} else if (children.size() == 1) {
 			right = children.get(0);
 		}
 		sb.append("-");
-		FelMethod rm = right.toMethod(ctx);
-		appendArg(sb, rm);
+		SourceBuilder rm = right.toMethod(ctx);
+		appendArg(sb, rm,ctx);
 		FelMethod m = new FelMethod(Number.class, sb.toString());
 		return m;
 	}
