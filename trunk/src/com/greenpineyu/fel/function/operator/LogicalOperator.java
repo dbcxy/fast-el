@@ -154,12 +154,12 @@ public class LogicalOperator implements Function{
 		List<FelNode> children = node.getChildren();
 		FelNode child = children.get(index);
 		SourceBuilder method = child.toMethod(ctx);
-		Class<?> type = method.returnType(ctx, null);
+		Class<?> type = method.returnType(ctx, child);
 		if (Boolean.class.isAssignableFrom(type)) {
-			return "(" + method.source(ctx, null) + ")";
+			return "(" + method.source(ctx, child) + ")";
 		}
 		if (String.class.isAssignableFrom(type)) {
-			return "Boolean.valueOf(" + method.source(ctx, null) + ")";
+			return "Boolean.valueOf(" + method.source(ctx, child) + ")";
 		}
 		if (Null.class.isAssignableFrom(type)) {
 			return "false";

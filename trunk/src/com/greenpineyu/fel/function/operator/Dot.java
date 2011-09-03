@@ -202,9 +202,9 @@ public class Dot implements Function {
 		List<FelNode> children = node.getChildren();
 		FelNode l = children.get(0);
 		SourceBuilder leftMethod = l.toMethod(context);
-		Class<?> cls = leftMethod.returnType(context, null);
+		Class<?> cls = leftMethod.returnType(context, l);
 		sb.append("(");
-		sb.append(leftMethod.source(context, null));
+		sb.append(leftMethod.source(context, l));
 		sb.append(").");
 		Method method  = null;
 		FelNode rightNode = children.get(1);
