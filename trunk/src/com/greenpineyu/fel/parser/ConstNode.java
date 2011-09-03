@@ -3,6 +3,7 @@ package com.greenpineyu.fel.parser;
 import org.antlr.runtime.Token;
 
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -31,7 +32,7 @@ public class ConstNode extends AbstFelNode {
 		return value;
 	}
 
-	public FelMethod toMethod(FelContext ctx) {
+	public SourceBuilder toMethod(FelContext ctx) {
 		return new FelMethod(this.getValueType(), this.toJavaSrc(ctx));
 	}
 

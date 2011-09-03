@@ -246,7 +246,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		String code = "";
-		code = "("+node.getChildren().get(0).toMethod(ctx).getCode()+")"+this.operator+"("+node.getChildren().get(1).toMethod(ctx).getCode()+")";
+		code = "("+node.getChildren().get(0).toMethod(ctx).source(ctx, null)+")"+this.operator+"("+node.getChildren().get(1).toMethod(ctx).source(ctx, null)+")";
 		FelMethod m = new FelMethod(Number.class, code);
 		return m;
 	}

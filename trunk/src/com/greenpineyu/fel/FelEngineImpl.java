@@ -59,7 +59,7 @@ public class FelEngineImpl implements FelEngine {
 			ctx = this.context;
 		}
 		FelNode parse = parse(exp);
-		parse = parse.optimize(ctx);
+//		parse = parse.optimize(ctx, null);
 		JavaSource src = srcGenerator.getSource(ctx, parse);
 		return getCompiler().compile(src);
 	}

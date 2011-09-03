@@ -5,7 +5,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeAdaptor;
 
 import com.greenpineyu.fel.common.NumberUtil;
-import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 
 public class NodeAdaptor extends CommonTreeAdaptor {
@@ -13,7 +13,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		if (token == null) {
 			return new AbstFelNode(token){
 
-				public FelMethod toMethod(FelContext ctx) {
+				public SourceBuilder toMethod(FelContext ctx) {
 					return null;
 				}};
 		}

@@ -15,6 +15,7 @@ import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
@@ -200,15 +201,15 @@ public class Dot implements Function {
 		StringBuilder sb = new StringBuilder();
 		List<FelNode> children = node.getChildren();
 		FelNode l = children.get(0);
-		FelMethod leftMethod = l.toMethod(context);
-		Class<?> cls = leftMethod.getReturnType();
+		SourceBuilder leftMethod = l.toMethod(context);
+		Class<?> cls = leftMethod.returnType(context, null);
 		sb.append("(");
-		sb.append(leftMethod.getCode());
+		sb.append(leftMethod.source(context, null));
 		sb.append(").");
 		Method method  = null;
 		FelNode rightNode = children.get(1);
 		List<FelNode> params = getParamNodes(rightNode);
-		List<FelMethod> paramMethods = new ArrayList<FelMethod>();
+		List<SourceBuilder> paramMethods = new ArrayList<SourceBuilder>();
 		Class<?>[] paramValueTypes = null;
 		boolean hasParam = params!= null && !params.isEmpty();
 		String rightMethod = rightNode.getText();
@@ -217,9 +218,9 @@ public class Dot implements Function {
 			//有参数
 			paramValueTypes = new Class<?>[params.size()];
 			for (int i = 0; i < params.size(); i++) {
-				FelMethod paramMethod = params.get(i).toMethod(context);
+				SourceBuilder paramMethod = params.get(i).toMethod(context);
 				paramMethods.add(paramMethod);
-				paramValueTypes[i] = paramMethod.getReturnType();
+				paramValueTypes[i] = paramMethod.returnType(context, null);
 			}
 			//根据参数查找方法
 			method = ReflectUtil.findMethod(cls, rightNode.getText(),paramValueTypes);
@@ -228,8 +229,8 @@ public class Dot implements Function {
 				for (int i = 0; i < paramTypes.length; i++) {
 					Class<?> paramType = paramTypes[i];
 					Class<?> paramValueType = paramValueTypes[i];
-					FelMethod paramMethod = paramMethods.get(i);
-					String paramCode = getParamCode(paramType, paramValueType, paramMethod);
+					SourceBuilder paramMethod = paramMethods.get(i);
+					String paramCode = getParamCode(paramType, paramValueType, paramMethod,context);
 					rightMethodParam+=paramCode + ",";
 				}
 				rightMethod = method.getName();
@@ -309,11 +310,11 @@ public class Dot implements Function {
 	 * @return
 	 */
 	private String getParamCode(Class<?> paramType, Class<?> paramValueType,
-			FelMethod paramMethod) {
+			SourceBuilder paramMethod,FelContext ctx) {
 		// 如果类型相等（包装类型与基本类型（int和Integer)也认为是相等 ），直接添加参数。
 		String paramCode = "";
 		if (ReflectUtil.isTypeMatch(paramType, paramValueType)) {
-			paramCode = paramMethod.getCode();
+			paramCode = paramMethod.source(ctx, null);
 		} else {
 			// 如果类型不匹配，使用强制转型
 			String className = null;
@@ -323,7 +324,7 @@ public class Dot implements Function {
 			} else {
 				className = paramType.getName();
 			}
-			paramCode = "(" + className + ")" + paramMethod.getCode();
+			paramCode = "(" + className + ")" + paramMethod.source(ctx, null);
 		}
 		return paramCode;
 	}

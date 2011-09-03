@@ -7,8 +7,8 @@ import com.greenpineyu.fel.context.FelContext;
  * @author yuqingsong
  *
  */
-public interface Optimizable extends Stable {
+public interface Optimizable  {
 	
 	
-	FelNode optimize(FelContext ctx);
+	FelNode optimize(FelContext ctx, FelNode node);
 }

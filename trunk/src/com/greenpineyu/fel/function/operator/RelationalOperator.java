@@ -1,20 +1,18 @@
 package com.greenpineyu.fel.function.operator;
 
-import java.math.BigDecimal;
+import static com.greenpineyu.fel.function.operator.EqualsOperator.appendNumber;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
-import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.Optimizable;
 import com.greenpineyu.fel.parser.Stable;
-
-import static com.greenpineyu.fel.function.operator.EqualsOperator.*;
 
 /**
  * 包名				.script.function.operator
@@ -112,12 +110,12 @@ public class RelationalOperator extends CommonFunction implements Stable {
 		List<FelNode> child = node.getChildren();
 		FelNode leftNode = child.get(0);
 		FelNode rightNode = child.get(1);
-		FelMethod leftM = leftNode.toMethod(ctx);
-		FelMethod rightM = rightNode.toMethod(ctx);
-		Class<?> leftType = leftM.getReturnType();
-		Class<?> rightType = rightM.getReturnType();
-		String left = "(" + leftM.getCode() + ")";
-		String right = "(" +rightM.getCode() + ")";
+		SourceBuilder leftM = leftNode.toMethod(ctx);
+		SourceBuilder rightM = rightNode.toMethod(ctx);
+		Class<?> leftType = leftM.returnType(ctx, null);
+		Class<?> rightType = rightM.returnType(ctx, null);
+		String left = "(" + leftM.source(ctx, null) + ")";
+		String right = "(" +rightM.source(ctx, null) + ")";
 
 		StringBuilder sb = new StringBuilder();
 		// 只要有一个是数值型，就将另一个也转成值型。
