@@ -95,10 +95,10 @@ public class EqualsOperator extends StableFunction {
 	}
 
 	public static String getChildCode(FelNode node, FelContext ctx,int index) {
-		List<FelNode> child = node.getChildren();
-		FelNode leftNode = child.get(index);
-		SourceBuilder leftM = leftNode.toMethod(ctx);
-		String code = "(" + leftM.source(ctx, null) + ")";
+		List<FelNode> children = node.getChildren();
+		FelNode child = children.get(index);
+		SourceBuilder leftM = child.toMethod(ctx);
+		String code = "(" + leftM.source(ctx, child) + ")";
 		return code;
 	}
 
@@ -109,10 +109,10 @@ public class EqualsOperator extends StableFunction {
 		FelNode rightNode = child.get(1);
 		SourceBuilder leftM = leftNode.toMethod(ctx);
 		SourceBuilder rightM = rightNode.toMethod(ctx);
-		Class<?> leftType = leftM.returnType(ctx, null);
-		Class<?> rightType = rightM.returnType(ctx, null);
-		String left = "(" + leftM.source(ctx, null) + ")";
-		String right = "(" +rightM.source(ctx, null) + ")";
+		Class<?> leftType = leftM.returnType(ctx, leftNode);
+		Class<?> rightType = rightM.returnType(ctx, rightNode);
+		String left = "(" + leftM.source(ctx, leftNode) + ")";
+		String right = "(" +rightM.source(ctx, rightNode) + ")";
 
 		StringBuilder sb = new StringBuilder();
 		// 只要有一个是数值型，就将另一个也转成值型。
