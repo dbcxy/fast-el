@@ -24,6 +24,13 @@ public interface FelContext {
 	 * @param value 变量值
 	 */
 	void set(String name, Object value);
+	
+	/**
+	 * 设置变量类型
+	 * @param type
+	 * @param vars
+	 */
+//	void setVarType(Class<?> type,String... vars);
 
 	
 	/**

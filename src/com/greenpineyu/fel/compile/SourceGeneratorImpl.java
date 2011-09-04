@@ -12,13 +12,13 @@ import java.util.Map;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.Optimizable;
 import com.greenpineyu.fel.parser.VarAstNode;
 
 public class SourceGeneratorImpl implements SourceGenerator {
 
-	private List<Optimizable> opt;
+	private List<Optimizer> opt;
 
 	private static String template;
 
@@ -32,7 +32,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	static final String PACKAGE;
 
 	{
-		opt = new ArrayList<Optimizable>();
+		opt = new ArrayList<Optimizer>();
 		localvars = new HashMap<String, StringKeyValue>();
 		initOpti();
 	}
@@ -58,11 +58,15 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 	public JavaSource getSource(FelContext ctx, FelNode node) {
 
-		node = optimize(ctx, node);
-		SourceBuilder builder = node.toMethod(ctx);
-		String exp = builder.source(ctx, node);
+		String src = "";
 		String className = getClassName();
-		String src = buildsource(exp, className);
+		synchronized(this){
+			node = optimize(ctx, node);
+			SourceBuilder builder = node.toMethod(ctx);
+			String 	exp = builder.source(ctx, node);
+			src = buildsource(exp, className);
+			this.localvars.clear();
+		}
 //		System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setName(className);
@@ -74,7 +78,14 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	private String buildsource(String expression, String className) {
 		String src = template.replaceAll("\\$\\{classname\\}", className);
 		// src = src.replaceAll("\\$\\{extends\\}", "Object");
-		src = src.replaceAll("\\$\\{attrs\\}", "");
+		StringBuilder attrs = new StringBuilder();
+		String pop = VarBuffer.pop();
+		while(pop!=null){
+		  attrs.append("    ").append(pop).append("\r\n");
+		  pop = VarBuffer.pop();
+		}
+		removeLastEnter(attrs);
+		src = src.replaceAll("\\$\\{attrs\\}", attrs.toString());
 		src = src.replaceAll("\\$\\{localVars\\}", getLocalVarsCode());
 		src = src.replaceAll("\\$\\{expression\\}", expression);
 		return src;
@@ -91,9 +102,16 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	private String getLocalVarsCode() {
 		StringBuilder sb = new StringBuilder();
 		for (StringKeyValue code : localvars.values()) {
-			sb.append(code.value).append("\r\n");
+			sb.append("        ").append(code.value).append("\r\n");
 		}
+		removeLastEnter(sb);
 		return sb.toString();
+	}
+
+	private void removeLastEnter(StringBuilder sb) {
+		if(sb.length()>0){
+			sb.delete(sb.length()-2, sb.length());
+		}
 	}
 
 	private int localVarCount = 0;
@@ -123,18 +141,18 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	 * @return
 	 */
 	private FelNode optimize(FelContext ctx, FelNode node) {
-		for (Optimizable o : opt) {
-			node = o.optimize(ctx, node);
+		for (Optimizer o : opt) {
+			node = o.call(ctx, node);
 		}
 		return node;
 	}
 
 	private void initOpti() {
 		//进行常量优化
-		Optimizable constOpti = new ConstOpti();
+		Optimizer constOpti = new ConstOpti();
 		this.addOpti(constOpti);
 		//进行变量优化
-		Optimizable optimizVars = getVarOpti();
+		Optimizer optimizVars = getVarOpti();
 		this.addOpti(optimizVars);
 	}
 
@@ -142,10 +160,10 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	 * 获取变量优化方案
 	 * @return
 	 */
-	private Optimizable getVarOpti() {
-		Optimizable optimizVars = new Optimizable() {
+	private Optimizer getVarOpti() {
+		Optimizer optimizVars = new Optimizer() {
 
-			public FelNode optimize(FelContext ctx, FelNode node) {
+			public FelNode call(FelContext ctx, FelNode node) {
 				setVarSourceBuilder(ctx, node);
 				return node;
 			}
@@ -204,7 +222,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		return optimizVars;
 	}
 
-	public void addOpti(Optimizable opti) {
+	public void addOpti(Optimizer opti) {
 		this.opt.add(opti);
 	}
 	
@@ -212,8 +230,9 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		FelEngine engine = new FelEngineImpl();
 		FelContext ctx = engine.getContext();
 		ctx.set("a", 1);
-		String exp = "1+2+a";
-		Object eval = engine.compiler(exp, ctx).eval(ctx);
+		ctx.set("b", 1);
+		String exp = "a+b";
+		Object eval = engine.compile(exp, ctx).eval(ctx);
 		System.out.println(eval);
 	}
 }

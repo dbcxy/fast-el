@@ -402,7 +402,7 @@ public class Dot implements Function {
 			System.out.println(d);
 			
 			long start = System.currentTimeMillis();
-		Expression compiler = e.compiler(str, null);
+		Expression compiler = e.compile(str, null);
 		Object complierValue = compiler.eval(null);
 		System.out.println(complierValue);
 		Object evalValue = e.eval(str);

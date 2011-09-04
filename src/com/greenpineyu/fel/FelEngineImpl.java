@@ -8,14 +8,11 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
 
-import com.greenpineyu.fel.compile.FelCompiler;
-import com.greenpineyu.fel.compile.FelCompilerImpl;
-import com.greenpineyu.fel.compile.JavaSource;
-import com.greenpineyu.fel.compile.SourceGenerator;
-import com.greenpineyu.fel.compile.SourceGeneratorImpl;
+import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.exception.ParseException;
+import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelLexer;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.FelParser;
@@ -28,17 +25,14 @@ import com.greenpineyu.fel.parser.NodeAdaptor;
  */
 public class FelEngineImpl implements FelEngine {
 	
-	private FelCompiler compiler;
 
 	private FelContext context;
 	
-	private SourceGenerator srcGenerator;
-	
+	private CompileService compiler	;
 
 	public FelEngineImpl(FelContext context) {
 		this.context = context;
-		this.compiler = new FelCompilerImpl();
-		this.srcGenerator = new SourceGeneratorImpl();
+		compiler = new CompileService();
 	}
 
 	public FelEngineImpl() {
@@ -54,14 +48,17 @@ public class FelEngineImpl implements FelEngine {
 		return parse(exp).eval(ctx);
 	}
 	
-	public Expression compiler(String exp,FelContext ctx){
+	public Expression compile(String exp,FelContext ctx,Optimizer... opts){
 		if(ctx == null){
 			ctx = this.context;
 		}
-		FelNode parse = parse(exp);
-//		parse = parse.optimize(ctx, null);
-		JavaSource src = srcGenerator.getSource(ctx, parse);
-		return getCompiler().compile(src);
+		FelNode node = parse(exp);
+		if(opts!= null){
+			for (Optimizer opt : opts) {
+				node = opt.call(ctx, node);
+			}
+		}
+		return compiler.compile(ctx, node);
 	}
 
 	public FelNode parse(String exp) {
@@ -102,7 +99,7 @@ public class FelEngineImpl implements FelEngine {
 	public static void main(String[] args) {
 		FelEngineImpl engine = new FelEngineImpl();
 		Object eval = engine.eval("1+2");
-		Expression expr = engine.compiler("1+(2-(5+6))",engine.context);
+		Expression expr = engine.compile("1+(2-(5+6))",engine.context);
 		
 		int count = 1000*1000*100;
 		long start =  System.currentTimeMillis();
@@ -120,9 +117,5 @@ public class FelEngineImpl implements FelEngine {
 		return this.context;
 	}
 
-	public FelCompiler getCompiler() {
-		return this.compiler;
-	}
-	
 
 }

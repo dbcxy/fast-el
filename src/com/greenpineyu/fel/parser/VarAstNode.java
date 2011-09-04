@@ -8,7 +8,10 @@ import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
+import com.greenpineyu.fel.compile.VarBuffer;
+import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.interpreter.ProxyInterpreter;
 
 public class VarAstNode extends AbstFelNode implements SourceBuilder {
 	private String text;
@@ -36,10 +39,22 @@ public class VarAstNode extends AbstFelNode implements SourceBuilder {
 	}
 
 	public String source(FelContext ctx, FelNode node) {
-		Class<?> type = returnType(ctx, node);
-		String getVarCode = "context.get(\""+node.getText()+"\")";
 		String code = "";
-		if(Number.class.isAssignableFrom(type)){
+		Class<?> type = returnType(ctx, node);
+		boolean isNumber = Number.class.isAssignableFrom(type);
+		if(this.getInterpreter()!=this||true){
+			ProxyInterpreter inte = new ProxyInterpreter(this.getInterpreter(), node);
+			code = "("+type.getName()+")";
+			String varName = VarBuffer.push(inte);
+			code+=varName+".interpret(context,null)";
+			if(isNumber){
+				code="("+code+").doubleValue();";
+			}
+			//用户设置了解释器
+			return code;
+		}
+		String getVarCode = "context.get(\""+node.getText()+"\")";
+		if(isNumber){
 			//当float转double时，会丢失精度
 			code = "(("+type.getName()+")"+getVarCode+").doubleValue()";
 		}else{
@@ -49,8 +64,10 @@ public class VarAstNode extends AbstFelNode implements SourceBuilder {
 	}
 
 	public Class<?> returnType(FelContext ctx, FelNode node) {
-		FelNode node2 = this;
-		Class<?> type = ctx.getVarType(node2.getText());
+		Class<?> type = ctx.getVarType(node.getText());
+		if(node.getInterpreter()!=node){
+			type = AbstractConetxt.getVarType(node.getInterpreter().interpret(ctx, node));
+		}
 		if(type == null){
 			type = Null.class;
 		}else if(type.isPrimitive()){
