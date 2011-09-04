@@ -67,17 +67,7 @@ public class VarAstNode extends AbstFelNode implements SourceBuilder {
 		if(node.getInterpreter()!=node){
 			type = AbstractConetxt.getVarType(node.getInterpreter().interpret(ctx, node));
 		}
-		if(type == null){
-			type = Null.class;
-		}else if(type.isPrimitive()){
-			//基本类型转换成包装类型
-			type = ReflectUtil.toWrapperClass(type);
-		}
-		if(Number.class.isAssignableFrom(type)){
-			type = Number.class;
-		}
 		return type;
 	}
-	
 
 }

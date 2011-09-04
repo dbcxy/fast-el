@@ -1,6 +1,7 @@
 package com.greenpineyu.fel.context;
 
-import org.omg.CosNaming.NamingContextPackage.NotFound;
+
+import com.greenpineyu.fel.common.ReflectUtil;
 
 public abstract class AbstractConetxt implements FelContext{
 
@@ -19,9 +20,17 @@ public abstract class AbstractConetxt implements FelContext{
 
     public static Class<?> getVarType(Object varValue) {
 		if (varValue != null) {
-			return varValue.getClass();
+			Class<? extends Object> type = varValue.getClass();
+		    if(type.isPrimitive()){
+				//基本类型转换成包装类型
+				type = ReflectUtil.toWrapperClass(type);
+			}
+			if(Number.class.isAssignableFrom(type)){
+				type = Number.class;
+			}
+			return type;
 		}
-		return NotFound.class;
+		return NULL.getClass();
 	}
 	
 
