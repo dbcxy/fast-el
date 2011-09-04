@@ -1,5 +1,6 @@
 package com.greenpineyu.fel.examples;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -13,27 +14,30 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.interpreter.ConstInterpreter;
 import com.greenpineyu.fel.interpreter.Interpreter;
+import com.greenpineyu.fel.optimizer.InteOpt;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class Example {
 
 	public static void main(String[] args) {
 
-		helloworld();
+//		helloworld();
+//		System.out.println("--------------------");
+//		useVariable();
+//		System.out.println("--------------------");
+//		callMethod();
+//		System.out.println("--------------------");
+//		context();
+//		System.out.println("--------------------");
+//		contexts();
+//		System.out.println("--------------------");
+//		userInterpreter();
 		System.out.println("--------------------");
-		useVariable();
-		System.out.println("--------------------");
-		callMethod();
-		System.out.println("--------------------");
-		context();
-		System.out.println("--------------------");
-		contexts();
-		System.out.println("--------------------");
-		userInterpreter();
-		System.out.println("--------------------");
-		operatorOverload();
-		System.out.println("--------------------");
-		testCompile();
+		massData();
+//		System.out.println("--------------------");
+//		operatorOverload();
+//		System.out.println("--------------------");
+//		testCompile();
 		// FelContext ctx = fel.getContext();
 		// ctx.set("单价", "5000");
 		// ctx.set("数量", new Integer(12));
@@ -124,7 +128,7 @@ public class Example {
 		ctx.set("单价", 5000);
 		ctx.set("数量", 12);
 		ctx.set("运费", 7500);
-		Expression exp = fel.compiler("单价*数量+运费",ctx);
+		Expression exp = fel.compile("单价*数量+运费",ctx);
 		Object result = exp.eval(ctx);
 		System.out.println(result);
 	}
@@ -154,7 +158,7 @@ public class Example {
 				return NOT_FOUND;
 			}
 		};
-		Expression compExp = fel.compiler(exp, context);
+		Expression compExp = fel.compile(exp, context);
 		for (int i = 0; i < number.length; i++) {
 			index.setValue(i);
 			Object eval = compExp.eval(context);
@@ -175,6 +179,39 @@ public class Example {
 		// 将变量解析成常量
 		node.setInterpreter(new ConstInterpreter(rootContext, node));
 		System.out.println(node.eval(rootContext));
+	}
+	/**
+	 * 大数据量计算（计算1千万次)
+	 */
+	public static void massData() {
+		FelEngine fel = new FelEngineImpl();
+		final InteOpt opti = new InteOpt();
+		final MutableInt index = new MutableInt(0);
+		int count = 10*1000*1000;
+		final double[] counts = new double[count];
+		final double[] prices = new double[count];
+		Arrays.fill(counts, 10d);
+		Arrays.fill(prices, 2.5d);
+		opti.add("单价",new Interpreter() {
+			public Object interpret(FelContext context, FelNode node) {
+				return prices[index.intValue()];
+			}
+		});
+		opti.add("数量", new Interpreter() {
+			public Object interpret(FelContext context, FelNode node) {
+				return counts[index.intValue()];
+			}
+		});
+		Expression expObj = fel.compile("单价*数量", null, opti);
+		long start = System.currentTimeMillis();
+		Object result = null;
+		for (int i = 0; i < count; i++) {
+			result = expObj.eval(null);
+			index.increment();
+		}
+		long end = System.currentTimeMillis();
+		
+		System.out.println("大数据量计算:"+result+";耗时:"+(end-start));
 	}
 
 	/**

@@ -5,14 +5,24 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.interpreter.Interpreter;
+import com.greenpineyu.fel.optimizer.InteOpt;
+import com.greenpineyu.fel.parser.FelNode;
 
 public class FelEngineImplTest {
 
@@ -249,7 +259,56 @@ public class FelEngineImplTest {
 		}
 		assert isPassed == new Boolean(expected).booleanValue();
 	}
+	/**
+	 * 
+	 */
+	@Test
+	public void testConcurrent(){
+		int i = 100;
+		ExecutorService pool =
+			new ThreadPoolExecutor(0, i,
+					1L, TimeUnit.SECONDS,
+					new SynchronousQueue<Runnable>());
+		final boolean[] result = new boolean[i];
+		for (int j = 0; j < i; j++) {
+			final int pos = j;
+			pool.submit(new Runnable() {
+				public void run() {
+					final FelEngine e = new FelEngineImpl();
+					final FelContext ctx = e.getContext();
+					InteOpt inte = new InteOpt();
+					//随机生成A,B,C三个字母
+					String varName =String.valueOf((char)(65+(int)(Math.random()*3)));
+					final String varValue = varName+"_value";
+					inte.add(varName, new Interpreter() {
+						public Object interpret(FelContext context, FelNode node) {
+							return varValue;
+						}
+					});
+
+					Object value = e.compile(varName, ctx, inte).eval(null);
+					//System.out.println(varName+"=>"+(value == varValue));
+					result[pos]= value == varValue;
+				}
+
+			});
+		}
+		pool.shutdown();
+		while(!pool.isTerminated()){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		for (boolean b : result) {
+			assert b;
+		}
+	}
 
 	public static void main(String[] args) {
+		
+		FelEngineImplTest test = new FelEngineImplTest();
+		test.testConcurrent();
 	}
 }
