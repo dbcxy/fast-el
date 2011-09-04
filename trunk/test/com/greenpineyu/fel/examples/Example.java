@@ -3,6 +3,7 @@ package com.greenpineyu.fel.examples;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import com.greenpineyu.fel.Expression;
@@ -12,6 +13,8 @@ import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.ContextChain;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
+import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.interpreter.ConstInterpreter;
 import com.greenpineyu.fel.interpreter.Interpreter;
 import com.greenpineyu.fel.optimizer.InteOpt;
@@ -30,6 +33,8 @@ public class Example {
 //		context();
 //		System.out.println("--------------------");
 //		contexts();
+		System.out.println("--------------------");
+		testFunction();
 //		System.out.println("--------------------");
 //		userInterpreter();
 		System.out.println("--------------------");
@@ -131,6 +136,34 @@ public class Example {
 		Expression exp = fel.compile("单价*数量+运费",ctx);
 		Object result = exp.eval(ctx);
 		System.out.println(result);
+	}
+	
+	
+	public static void testFunction(){
+		Function fun = new CommonFunction() {
+
+			public String getName() {
+				return "hello";
+			}
+			
+			@Override
+			public Object call(Object[] arguments) {
+				Object msg = null;
+				if(arguments!= null && arguments.length>0){
+					msg = arguments[0];
+				}
+				return ObjectUtils.toString(msg);
+			}
+
+		};
+		FelEngine e = new FelEngineImpl();
+		e.addFun(fun);
+		String exp = "hello('fel')";
+		Object eval = e.eval(exp);
+		System.out.println("hello "+eval);
+		Expression compile = e.compile(exp, null);
+		eval = compile.eval(null);
+		System.out.println("hello "+eval);
 	}
 	
 	

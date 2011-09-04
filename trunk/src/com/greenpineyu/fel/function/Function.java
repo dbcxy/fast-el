@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function;
 
-import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -24,7 +24,7 @@ public interface Function {
 	
 	
 	
-	FelMethod toMethod(FelNode node,FelContext ctx);
+	SourceBuilder toMethod(FelNode node,FelContext ctx);
 	
 	
 

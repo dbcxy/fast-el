@@ -4,6 +4,7 @@ import org.antlr.runtime.Token;
 
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
+import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -33,6 +34,9 @@ public class ConstNode extends AbstFelNode {
 	}
 
 	public SourceBuilder toMethod(FelContext ctx) {
+		if(!this.isDefaultInterpreter()){
+			return InterpreterSourceBuilder.getInstance();  
+		}
 		return new FelMethod(this.getValueType(), this.toJavaSrc(ctx));
 	}
 

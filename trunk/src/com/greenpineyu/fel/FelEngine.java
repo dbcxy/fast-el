@@ -1,6 +1,7 @@
 package com.greenpineyu.fel;
 
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -36,6 +37,13 @@ public interface FelEngine {
 	Expression compile(String exp,FelContext ctx,Optimizer... opts);
 
 	FelContext getContext();
+	
+	/**
+	 * 添加函数到全局函数库中（所有的引擎实例共享一个函数库）
+	 * @param fun
+	 * @return
+	 */
+	boolean addFun(Function fun);
 	
 	
 
