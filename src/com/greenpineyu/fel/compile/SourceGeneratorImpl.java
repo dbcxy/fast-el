@@ -218,8 +218,8 @@ public class SourceGeneratorImpl implements SourceGenerator {
 					}
 
 					public Class<?> returnType(FelContext ctx, FelNode n) {
-						VarAstNode node = (VarAstNode) old;
-						return old.returnType(ctx, node);
+//						VarAstNode node = (VarAstNode) old;
+						return old.returnType(ctx, n);
 					}
 				};
 			}

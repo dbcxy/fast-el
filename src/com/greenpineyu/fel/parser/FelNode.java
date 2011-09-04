@@ -27,6 +27,12 @@ public interface FelNode extends Expression, Tree ,Stable{
 	 */
 
 	void resetInterpreter();
+	
+	/**
+	 * 节点中的解释器是否默认的解释器
+	 * @return
+	 */
+	boolean isDefaultInterpreter();
 
 	Interpreter getInterpreter();
 

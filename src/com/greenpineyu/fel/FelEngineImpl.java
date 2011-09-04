@@ -12,6 +12,8 @@ import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.exception.ParseException;
+import com.greenpineyu.fel.function.Function;
+import com.greenpineyu.fel.function.FunctionFactory;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelLexer;
 import com.greenpineyu.fel.parser.FelNode;
@@ -115,6 +117,20 @@ public class FelEngineImpl implements FelEngine {
 
 	public FelContext getContext() {
 		return this.context;
+	}
+
+	public boolean addFun(Function fun) {
+		if(fun != null){
+			String name = fun.getName();
+			if(name != null){
+				FunctionFactory instance = FunctionFactory.getInstance();
+				if(instance.getFun(name)!=null){
+					return false;
+				}
+				instance.add(fun);
+			}
+		}
+		return true;
 	}
 
 

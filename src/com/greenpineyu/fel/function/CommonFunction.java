@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.greenpineyu.fel.Expression;
+import com.greenpineyu.fel.compile.SourceBuilder;
+import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -25,6 +27,10 @@ public abstract class CommonFunction implements Function {
 		// 如果参数中包含表达式，执行表达式。将表达式替换成表达式执行结果。
 		Object[] children = evalArgs(node, context);
 		return call(children);
+	}
+	
+	public SourceBuilder toMethod(FelNode node, FelContext ctx) {
+		return InterpreterSourceBuilder.getInstance();
 	}
 
 

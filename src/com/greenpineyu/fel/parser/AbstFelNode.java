@@ -4,25 +4,28 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.ObjectUtils.Null;
 
-import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 
-public abstract class AbstFelNode extends CommonTree implements FelNode, Interpreter,SourceBuilder {
+public abstract class AbstFelNode extends CommonTree implements FelNode, Interpreter {
 
 	/**
 	 * 解析器,用于解析节点的值
 	 */
 	protected Interpreter interpreter;
+	
+	
+	/**
+	 * 默认的解析器
+	 */
+	protected Interpreter defaultInter;
 
 	
 	protected SourceBuilder builder;
@@ -95,8 +98,11 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 
 	{
-		//解释器设置成自己
+		//解释器设置成this
+		this.defaultInter = this;
 		resetInterpreter();
+		//源码构建器设置成this
+//		resetSourceBuilder();
 	}
 
 
@@ -179,7 +185,15 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 
 	public void resetInterpreter() {
-		this.interpreter = this;
+		this.interpreter = this.defaultInter;
+	}
+	
+	/**
+	 * 是否默认的解释器
+	 * @return
+	 */
+	public boolean isDefaultInterpreter(){
+		return this.interpreter == this.defaultInter;
 	}
 	
 	
@@ -213,17 +227,11 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 	
 	
-	public Class<?> returnType(FelContext ctx, FelNode node) {
-		throw new UnsupportedOperationException("没有实现");
-	}
 	
-	public String source(FelContext ctx, FelNode node) {
-		throw new UnsupportedOperationException("没有实现");
-	}
 	
-	public void resetSourceBuilder(){
-		this.builder = this;
-	}
+//	public void resetSourceBuilder(){
+//		this.builder = this;
+//	}
 	
 
 }

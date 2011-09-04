@@ -31,8 +31,13 @@ public class CompileService {
 	}
 	
 	public Expression compile(FelContext ctx,FelNode node){
-		JavaSource src = srcGen.getSource(ctx, node);
-		return complier.compile(src);
+		try {
+			JavaSource src = srcGen.getSource(ctx, node);
+			return complier.compile(src);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 
