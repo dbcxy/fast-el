@@ -199,6 +199,13 @@ public class FelCompilerImpl implements FelCompiler {
 		}
 		exeService.execute(new Runnable() {
 			public void run() {
+				//优先级设置成最低
+				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+//				try {
+//					Thread.sleep(10*1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 				String src = srcPackageDir + fileName + ".java";
 				String cls = classPackageDir + fileName + ".class";
 				deleteFile(src);

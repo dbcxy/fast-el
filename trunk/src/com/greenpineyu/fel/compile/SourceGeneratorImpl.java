@@ -13,8 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.optimizer.Optimizer;
+import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.VarAstNode;
 
@@ -153,9 +155,44 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	}
 
 	private void initOpti() {
-		//进行常量优化
+		//进行常量优化(计算表达式中的常量节点)
 		Optimizer constOpti = new ConstOpti();
 		this.addOpti(constOpti);
+		
+		//如果整个表达式是一个常量，再进行一次优化(可以减少装包拆包花费的时间)
+		Optimizer constExpOpti = new Optimizer() {
+			
+			public FelNode call(FelContext ctx, FelNode node) {
+				if(node instanceof ConstNode){
+					final Object value = node.eval(ctx);
+					
+					//重新构建常量节点的java源码
+					node.setSourcebuilder(new SourceBuilder() {
+						
+						public String source(FelContext ctx, FelNode node) {
+							Class<?> type = returnType(ctx, node);
+							return VarBuffer.push(value,type);
+						}
+						
+						public Class<?> returnType(FelContext ctx, FelNode node) {
+							if(value != null){
+								Class<?> cls = value.getClass();
+								if(cls.isPrimitive()){
+									return ReflectUtil.toWrapperClass(cls);
+								}
+								return cls;
+							}
+							return FelContext.NULL.getClass();
+						}
+					});
+				}
+				return node;
+			}
+		};
+		
+		this.addOpti(constExpOpti);
+		
+		
 		//进行变量优化
 		Optimizer optimizVars = getVarOpti();
 		this.addOpti(optimizVars);

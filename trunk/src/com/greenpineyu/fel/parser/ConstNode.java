@@ -34,6 +34,9 @@ public class ConstNode extends AbstFelNode {
 	}
 
 	public SourceBuilder toMethod(FelContext ctx) {
+		if(this.builder!=null){
+			return this.builder;
+		}
 		if(!this.isDefaultInterpreter()){
 			return InterpreterSourceBuilder.getInstance();  
 		}
