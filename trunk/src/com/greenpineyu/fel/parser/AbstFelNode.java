@@ -146,18 +146,18 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	//	abstract public Object evalWithoutCache(FelContext context);
 
 
-	public static List getNodes(FelNode node) {
-		List returnMe = new ArrayList();
+	public static List<FelNode> getNodes(FelNode node) {
+		List<FelNode> returnMe = new ArrayList<FelNode>();
 		getNodes(node, returnMe);
 		return returnMe;
 	}
 
-	public static void getNodes(FelNode node, List returnMe) {
+	public static void getNodes(FelNode node, List<FelNode> returnMe) {
 		if (node != null) {
 			returnMe.add(node);
-			List nodeChildren = node.getChildren();
+			List<FelNode> nodeChildren = node.getChildren();
 			if (nodeChildren != null) {
-				for (Iterator iterator = nodeChildren.iterator(); iterator.hasNext();) {
+				for (Iterator<FelNode> iterator = nodeChildren.iterator(); iterator.hasNext();) {
 					try {
 						FelNode child = (FelNode) iterator.next();
 						getNodes(child, returnMe);
@@ -169,7 +169,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		}
 	}
 
-	private Object[] childrenCache;
+/*	private Object[] childrenCache;
 
 	public Object[] getChildrenArray() {
 		if (childrenCache != null) {
@@ -184,7 +184,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 			childrenCache[i] = (Tree) children.get(i);
 		}
 		return childrenCache;
-	}
+	}*/
 
 	public Interpreter getInterpreter() {
 		return this.interpreter;

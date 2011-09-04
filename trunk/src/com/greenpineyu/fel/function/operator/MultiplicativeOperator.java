@@ -10,7 +10,6 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.Optimizable;
 import com.greenpineyu.fel.parser.Stable;
 
 /**

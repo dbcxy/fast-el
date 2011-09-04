@@ -7,19 +7,19 @@ import org.antlr.runtime.Token;
 import org.apache.commons.lang3.ObjectUtils;
 
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.Optimizable;
 
 /**
  * 常量节点优化，表达式："1+2+var",当var是变量时，可以优化成"3+var";当var是常量，其值为3时，可以优化成"6"
  * @author yuqingsong
  *
  */
-public class ConstOpti implements Optimizable {
+public class ConstOpti implements Optimizer {
 
 
-	public FelNode optimize(FelContext ctx, FelNode node) {
+	public FelNode call(FelContext ctx, FelNode node) {
 		if(node.stable()){
 			Object value = node.getInterpreter().interpret(ctx, node);
 			Token token = new ConstOptToken(node);
@@ -30,7 +30,7 @@ public class ConstOpti implements Optimizable {
 			if(children !=null){
 				for (int i = 0; i < children.size(); i++) {
 					FelNode c = (FelNode) children.get(i);
-					children.set(i, this.optimize(ctx, c));
+					children.set(i, this.call(ctx, c));
 				}
 			}
 			return node;
