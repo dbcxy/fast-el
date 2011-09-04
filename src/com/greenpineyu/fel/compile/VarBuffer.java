@@ -16,9 +16,7 @@ public  class  VarBuffer {
 		vars = new ThreadLocal<Map<String, Object>>();
 	}
 	
-	
 	private static int  count;
-	
 	
 	/**
 	 * 获取当前线程中的变量代码(类的属性代码)stack
