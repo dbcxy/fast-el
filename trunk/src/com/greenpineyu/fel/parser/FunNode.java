@@ -60,6 +60,9 @@ public  class FunNode extends AbstFelNode {
 	}
 	
 	public SourceBuilder toMethod(FelContext ctx) {
+		if(this.builder!=null){
+			return builder;
+		}
 		if(!this.isDefaultInterpreter()){
 			return InterpreterSourceBuilder.getInstance();
 		}
