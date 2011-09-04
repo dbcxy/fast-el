@@ -247,10 +247,11 @@ public class FelCompilerImpl implements FelCompiler {
 	 */
 	private static String packageToPath(String packageName) {
 		String sep = File.separator;
-		if (sep.equals("\\")) {
-			sep = "\\\\";
-		}
-		return packageName.replaceAll("\\.", sep);
+//		if (sep.equals("\\")) {
+//			sep = "\\\\";
+//		}
+		return StringUtils.replace(packageName, ".", sep);
+//		return packageName.replaceAll("\\.", sep);
 	}
 
 

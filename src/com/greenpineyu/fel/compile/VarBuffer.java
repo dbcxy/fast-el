@@ -52,17 +52,23 @@ public  class  VarBuffer {
 	 * @param attrCode
 	 */
 	static public String push(Object var){
+		return push(var,var.getClass());
+		
+	}
+	static public String push(Object var,Class<?> cls){
 		String varName = getVarName();
 		
-		String type = var.getClass().getName();
+		String type = cls.getName();
 		String varId = UUID.randomUUID().toString();
 		
 		getVars().put(varId, var);
-		String code = ""+type+" "+varName
+		String code = type+" "+varName
 		+" = ("+type+")"+VarBuffer.class.getSimpleName()+".pop(\""+varId+"\");";
 		getVarCodes().push(code);
 		return varName;
 	}
+	
+	
 	
 	synchronized static private String getVarName(){
 		return "attr_"+count++;
@@ -74,7 +80,7 @@ public  class  VarBuffer {
 	 * @return
 	 */
 	public static String pop(){
-		Stack<String> stack = varCodes.get();
+		Stack<String> stack = getVarCodes();
 		if(stack.empty()){
 			return null;
 		}

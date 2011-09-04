@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.context.FelContext;
@@ -76,7 +78,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	}
 
 	private String buildsource(String expression, String className) {
-		String src = template.replaceAll("\\$\\{classname\\}", className);
+		String src = StringUtils.replace(template,"${classname}", className);
 		// src = src.replaceAll("\\$\\{extends\\}", "Object");
 		StringBuilder attrs = new StringBuilder();
 		String pop = VarBuffer.pop();
@@ -85,9 +87,12 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		  pop = VarBuffer.pop();
 		}
 		removeLastEnter(attrs);
-		src = src.replaceAll("\\$\\{attrs\\}", attrs.toString());
-		src = src.replaceAll("\\$\\{localVars\\}", getLocalVarsCode());
-		src = src.replaceAll("\\$\\{expression\\}", expression);
+		src = StringUtils.replace(src, "${attrs}", attrs.toString());
+		src = StringUtils.replace(src, "${localVars}", getLocalVarsCode());
+		src = StringUtils.replace(src, "${expression}", expression);
+//		src = src.replaceAll("\\$\\{attrs\\}", attrs.toString());
+//		src = src.replaceAll("\\$\\{localVars\\}", getLocalVarsCode());
+//		src = src.replaceAll("\\$\\{expression\\}", expression);
 		return src;
 	}
 
