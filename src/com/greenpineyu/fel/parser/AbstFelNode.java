@@ -169,22 +169,6 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		}
 	}
 
-/*	private Object[] childrenCache;
-
-	public Object[] getChildrenArray() {
-		if (childrenCache != null) {
-			return childrenCache;
-		}
-		if (children == null) {
-			childrenCache = new Object[0];
-			return childrenCache;
-		}
-		childrenCache = new Object[children.size()];
-		for (int i = 0; i < childrenCache.length; i++) {
-			childrenCache[i] = (Tree) children.get(i);
-		}
-		return childrenCache;
-	}*/
 
 	public Interpreter getInterpreter() {
 		return this.interpreter;
@@ -228,38 +212,6 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		return true;
 	}
 	
-	/*public boolean isAllStable(){
-		if(!this.stable()){
-			return false;
-		}
-		if(this.children!=null){
-			//子节点有一个不是稳定的，就返回false
-			for (int i = 0; i < children.size(); i++) {
-				FelNode child = (FelNode) children.get(i);
-				if(!child.stable()){
-					return false;
-				}
-			}
-		}
-		return true;
-	}*/
-	/*
-	public FelNode optimize(FelContext ctx, FelNode node) {
-		if(stable()){
-			Object value = this.interpret(ctx, this);
-			Token token = new CommonToken(this.getToken());
-			token.setText(ObjectUtils.toString(value));
-			return new ConstNode(token, value);
-		}else{
-			if(this.children!=null){
-				for (int i = 0; i < children.size(); i++) {
-					FelNode c = (FelNode) children.get(i);
-					children.set(i, c.optimize(ctx, null));
-				}
-			}
-			return this;
-		}
-	}*/
 	
 	public Class<?> returnType(FelContext ctx, FelNode node) {
 		throw new UnsupportedOperationException("没有实现");
@@ -272,5 +224,6 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	public void resetSourceBuilder(){
 		this.builder = this;
 	}
+	
 
 }

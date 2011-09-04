@@ -9,7 +9,9 @@ public interface FelContext {
 	/**
 	 * 如果Context未找到变量，返回NOT_FOUND对象
 	 */
-	Null NOT_FOUND = ObjectUtils.NULL;
+	Object NOT_FOUND = new Object();
+	
+	Object NULL = new Object();
 	
 	/**
 	 * 获取变量值
