@@ -56,8 +56,12 @@ public class FelEngineImplTest {
 
 		object[i++] = new Object[] { engine, "foo.getCount()",
 				new Integer(header.getCount()) };
+		
 		// 算术运算
 		object[i++] = new Object[] { engine, "+1", new Integer(1) };
+//		if(true){
+//			return subarray(object, i);
+//		}
 		object[i++] = new Object[] { engine, "-1", new Integer(-1) };
 //		object[i++] = new Object[] { engine, "f+1", 2.1 };
 		object[i++] = new Object[] { engine, "A4*B5", new Integer(4 * 5) };
@@ -81,6 +85,7 @@ public class FelEngineImplTest {
 		object[i++] = new Object[] { engine, "'1'+2+'1'", "121" };
 //		object[i++] = new Object[] { engine, "'1'*2+'1'", "121" };
 		object[i++] = new Object[] { engine, "1.5-1", 0.5 };
+		
 		
 		object[i++] = new Object[] { engine, "2 < 3", Boolean.TRUE };
 		object[i++] = new Object[] { engine, "num < 5", Boolean.FALSE };
@@ -163,6 +168,10 @@ public class FelEngineImplTest {
 
 		i = addStringTest(engine, object, i);
 
+		return subarray(object, i);
+	}
+
+	private Object[][] subarray(Object[][] object, int i) {
 		return (Object[][]) ArrayUtils.subarray(object, 0, i);
 	}
 
@@ -180,7 +189,7 @@ public class FelEngineImplTest {
 	@Test(dataProvider = "eval")
 	public void testEvalWithCompiler(FelEngine engine, String expr,
 			Object expected) {
-		Expression ins = engine.compiler(expr, null);
+		Expression ins = engine.compile(expr, null);
 		Object actual = ins.eval(engine.getContext());
 		if(actual instanceof Number && expected instanceof Number){
 			assert NumberUtil.toDouble(actual)==NumberUtil.toDouble(expected);
@@ -224,7 +233,7 @@ public class FelEngineImplTest {
 		// 算术运算
 		object[i++] = new Object[] { "a.b()", "true" };
 		object[i++] = new Object[] { "new Date()", "false" };
-		return (Object[][]) ArrayUtils.subarray(object, 0, i);
+		return subarray(object, i);
 	}
 
 	/**

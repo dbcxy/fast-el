@@ -34,7 +34,7 @@ public class PerformanceTest {
 					for (int j = 0; j < times; j++) {
 						String str = temp + "+" + j;
 						long s = System.currentTimeMillis();
-						Expression exp = engine.compiler(str, null);
+						Expression exp = engine.compile(str, null);
 						long now = System.currentTimeMillis();
 						Object value = exp.eval(null);
 						System.out.println(now - start + ":" + (now - s)
@@ -67,7 +67,7 @@ public class PerformanceTest {
 		exps[i++] = "pi*d+b-(1000-d*b/pi)/(pi+99-i*d)-i*pi*d/b";
 		exps[i++] = "s.substring(m.d)";
 		exps[i++] = "s.substring(1).substring(2).indexOf('world')";
-		int times = 10 * 1000 *10000;
+		int times = 10 * 1000 *1000;
 		// times =1;
 		for (String exp : exps) {
 			if (exp == null) {
@@ -80,18 +80,18 @@ public class PerformanceTest {
 
 	private static void fel(String exp, Map<String, Object> vars, int times) {
 		FelContext ctx = new MapContext(vars);
-		ctx = new MapContext(vars);
+//		ctx = new MapContext(vars);
 		fel(exp, ctx, times);
 	}
 
 	private static long fel(String exp, FelContext ctx, int times) {
 		FelEngine engine = new FelEngineImpl();
-		Expression compiler = engine.compiler(exp, ctx);
+		Expression expObj = engine.compile(exp, ctx);
 		Object evalResult = null;
 		long start = System.currentTimeMillis();
 		Object result = null;
 		for (int i = 0; i < times; i++) {
-			result = compiler.eval(ctx);
+			result = expObj.eval(ctx);
 			// evalResult = engine.eval(exp,ctx);
 		}
 		long end = System.currentTimeMillis();
