@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -105,7 +106,7 @@ public class FelCompilerImpl implements FelCompiler {
 		}
 		String systemCp = System.getProperty("java.class.path");
 		if (systemCp != null) {
-			String[] cps = systemCp.split(";");
+			String[] cps = systemCp.split(File.pathSeparator);
 			if (cps != null) {
 				cpSet.addAll(Arrays.asList(cps));
 			}
@@ -190,7 +191,7 @@ public class FelCompilerImpl implements FelCompiler {
 	private static ExecutorService initThreadPool() {
 		return new ThreadPoolExecutor(0, 10,
 		  5L, TimeUnit.SECONDS,
-		  new SynchronousQueue<Runnable>());
+		  new LinkedBlockingQueue<Runnable>());
 	}
 
 	private void clean(final String srcPackageDir,final String classPackageDir,final String fileName) {
