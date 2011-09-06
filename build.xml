@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="fel" default="clean" basedir=".">
+	<property name="buildDir" value="bin" />
+	<property name="deployDir" value="deploy" />
+	<property name="srcDir" value="src" />
+	<property name="destClassDir" value="${deployDir}\classes" />
+	<property name="destLibPath" value="${deployDir}\fel-all.jar" />
+	<property name="classpathDir" value="LibClass" />
+	<property name="toolsPath" value="d:\jdk1.5\lib\tools.jar" />
+	<target name="prepare">
+		<echo>clean ${deployDir} folder</echo>
+		<mkdir dir="${deployDir}" />
+		<delete includeEmptyDirs="true">
+			<fileset dir="${deployDir}" includes="**/*" />  
+		</delete>
+		<mkdir dir="${deployDir}" />
+		<mkdir dir="${destClassDir}" />
+	</target>
+	<!-- 编译成jdk1.6版本 -->
+	<target name="compile" description="编译源文件" depends="prepare">
+		<echo>compile  ${srcDir}  to ${destClassDir}</echo>
+		<javac  srcdir="${srcDir}" destdir="${destClassDir}" >
+			<classpath>
+				<fileset file="${toolsPath}">
+				</fileset>
+				<dirset dir="${classpathDir}">
+				</dirset>
+			</classpath>
+		</javac>
+		<copy todir="${destClassDir}">
+			<fileset dir="${classpathDir}" excludes="**/*.java/" />
+		</copy>
+		<echo>compile success</echo>
+	</target>
+	<target name="jar" depends="compile">
+		<jar compress="false" destfile="${destLibPath}">
+			<fileset dir="${destClassDir}">
+			</fileset>
+		</jar>
+		<echo>jar success</echo>
+		<exec executable="explorer">
+			<arg line="${deployDir}" />
+		</exec>
+	</target>
+	<target name="clean" depends="jar">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${deployDir}">
+				<exclude name="*fel*.jar" />
+			</fileset>
+		</delete>
+	</target>
+</project>
