@@ -27,7 +27,37 @@ public class CompileService {
 
 	{
 		srcGen = new SourceGeneratorImpl();
-		complier = new FelCompilerImpl();
+		String name = getCompilerClassName();
+		FelCompiler comp = newCompiler(name);
+		complier = comp;
+	}
+
+	private FelCompiler newCompiler(String name) {
+		FelCompiler comp = null;
+		try {
+			@SuppressWarnings("unchecked")
+			Class<FelCompiler> cls = (Class<FelCompiler>) Class.forName(name);
+			comp = cls.newInstance();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} finally {
+		}
+		return comp;
+	}
+
+	private String getCompilerClassName() {
+		String version = System.getProperty("java.version");
+		String compileClassName = FelCompiler.class.getName();
+		if (version != null && version.startsWith("1.5")) {
+			compileClassName += "15";
+		} else {
+			compileClassName += "16";
+		}
+		return compileClassName;
 	}
 	
 	public Expression compile(FelContext ctx,FelNode node){
@@ -40,5 +70,8 @@ public class CompileService {
 		return null;
 	}
 	
+	public static void main(String[] args) {
+		System.getProperties().list(System.out);
+	}
 
 }

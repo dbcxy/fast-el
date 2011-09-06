@@ -24,7 +24,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.greenpineyu.fel.Expression;
 import com.sun.tools.javac.Main;
 
-public class FelCompilerImpl implements FelCompiler {
+/**
+ * jdk1.5环境的编译器实现类
+ * 
+ * @author yuqingsong
+ * 
+ */
+public class FelCompiler15 implements FelCompiler {
 	/*
 	 * 用户编译的classpath
 	 */
@@ -42,7 +48,7 @@ public class FelCompilerImpl implements FelCompiler {
 		String userDir = System.getProperty("user.dir");
 		BASE_DIR = userDir + File.separator + "fel" + File.separator;
 		CLASS_DIR = BASE_DIR + "classes" + File.separator;
-		loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(),
+		loader = new FileClassLoader(FelCompiler15.class.getClassLoader(),
 				CLASS_DIR);
 	}
 
@@ -73,7 +79,7 @@ public class FelCompilerImpl implements FelCompiler {
 		/*
 		 * 将三项添加到classpath 1:lib中的所有jar 2:class目录 3:系统属性："java.class.path"
 		 */
-		Class<?> cls = FelCompilerImpl.class;
+		Class<?> cls = FelCompiler15.class;
 		String path = getPath(cls);
 		boolean isJar = path.endsWith(".jar");
 		Set<String> cpSet = new HashSet<String>();
@@ -163,8 +169,8 @@ public class FelCompilerImpl implements FelCompiler {
 		String[] arg = new String[] { "-encoding", "UTF-8", "-d", CLASS_DIR,
 				file };
 		if (StringUtils.isNotEmpty(CLASSPATH)) {
-			arg = (String[]) ArrayUtils.add(arg, 0, CLASSPATH);
-			arg = (String[]) ArrayUtils.add(arg, 0, "-classpath");
+			arg = ArrayUtils.add(arg, 0, CLASSPATH);
+			arg = ArrayUtils.add(arg, 0, "-classpath");
 		}
 		int compile = Main.compile(arg);
 		try {
@@ -197,7 +203,7 @@ public class FelCompilerImpl implements FelCompiler {
 		}
 		exeService.execute(new Runnable() {
 			public void run() {
-				//优先级设置成最低
+				// 优先级设置成最低
 				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 //				try {
 //					Thread.sleep(10*1000);
@@ -247,6 +253,7 @@ public class FelCompilerImpl implements FelCompiler {
 
 	/**
 	 * 将包名转换成包路径
+	 * 
 	 * @param packageName
 	 * @return
 	 */
