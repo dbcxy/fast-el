@@ -61,9 +61,8 @@ vars.put("s","hello world");
 执行结果：295.86196287059323
 
 ||EL	||速度（ms)||
-||fel_0.4||1419||
+||fel   ||1419||
 ||jexl	||21941||
-[/table]
 
 ==场景4：调用JAVA方法[/size]==
 表达式：{{{s.substring(m.d)}}}
