@@ -39,6 +39,7 @@ public abstract class AbstCompiler implements FelCompiler {
 		CLASS_DIR = BASE_DIR + "classes" + File.separator;
 		loader = new FileClassLoader(AbstCompiler.class.getClassLoader(),
 				CLASS_DIR);
+		createClassDir();
 	}
 
 	/**
@@ -152,8 +153,7 @@ public abstract class AbstCompiler implements FelCompiler {
 	abstract Class<Expression> compileToClass(JavaSource expr)
 			throws ClassNotFoundException;
 
-	static void createDir(String srcPackageDir) {
-		new File(srcPackageDir).mkdirs();
+	static void createClassDir() {
 		new File(CLASS_DIR).mkdirs();
 	}
 

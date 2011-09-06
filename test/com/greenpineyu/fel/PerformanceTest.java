@@ -18,8 +18,8 @@ import com.greenpineyu.fel.context.MapContext;
 public class PerformanceTest {
 
 	public static void main(String[] args) {
-//		speed();
-//		 stable();
+		// speed();
+		// stable();
 		testConcurrent();
 	}
 
@@ -38,14 +38,15 @@ public class PerformanceTest {
 						Expression exp = engine.compile(str, null);
 						long now = System.currentTimeMillis();
 						Object value = exp.eval(null);
-						System.out.println(now - start + ":" + (now - s)
-								+ "****************:" + str + "=" + value);
+						System.out.println("[" + (now - start) + ":"
+								+ (now - s) + "]****************:" + str + "="
+								+ value);
 					}
 				};
 			};
 			t.start();
 		}
-		System.out.println("cost:" + (System.currentTimeMillis() - start));
+		// System.out.println("cost:" + (System.currentTimeMillis() - start));
 	}
 
 	private static void speed() {
@@ -99,8 +100,8 @@ public class PerformanceTest {
 		// System.out.println(result + " == " + evalResult + "："
 //				+ result.equals(evalResult));
 		long cost = end - start;
-		System.out.println("--------cost[ " + cost + " ] ------exp="
-				+ result);
+		System.out.println("--------cost[" + cost + " ]---value[" + result
+				+ "] ------exp[" + exp + "]");
 		return cost;
 	}
 	private static void jexl(String exp, Map<String, Object> vars, int times) {

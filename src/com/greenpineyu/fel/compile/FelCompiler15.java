@@ -1,6 +1,7 @@
 package com.greenpineyu.fel.compile;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class FelCompiler15 extends AbstCompiler {
 		String pack = src.getPackageName();
 		String srcPackageDir = getSrcPackageDir(pack);
 		String file = srcPackageDir  + className + ".java";
-		createDir(srcPackageDir);
+		new File(srcPackageDir).mkdirs();
 		String source =src.getSource();
 		writeJavaFile(file, source);
 
