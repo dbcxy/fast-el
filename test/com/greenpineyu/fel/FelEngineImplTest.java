@@ -1,20 +1,16 @@
 package com.greenpineyu.fel;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -182,7 +178,7 @@ public class FelEngineImplTest {
 	}
 
 	private Object[][] subarray(Object[][] object, int i) {
-		return (Object[][]) ArrayUtils.subarray(object, 0, i);
+		return ArrayUtils.subarray(object, 0, i);
 	}
 
 	private int addStringTest(FelEngineImpl engine, Object[][] object, int i) {
@@ -228,11 +224,12 @@ public class FelEngineImplTest {
 		// assertEquals(expression, expected, actual);
 	}
 
-	private void assertColon(FelEngine engine, String cellArea, Object[] result) {
-		Object eval = engine.eval(cellArea);
-		assert eval.getClass().isArray();
-		assert Arrays.equals((Object[]) eval, result);
-	}
+	/*
+	 * private void assertColon(FelEngine engine, String cellArea, Object[]
+	 * result) { Object eval = engine.eval(cellArea); assert
+	 * eval.getClass().isArray(); assert Arrays.equals((Object[]) eval, result);
+	 * }
+	 */
 
 	/**
 	 * @testng.data-provider name = "parse"
@@ -277,7 +274,7 @@ public class FelEngineImplTest {
 					final FelEngine e = new FelEngineImpl();
 					final FelContext ctx = e.getContext();
 					InteOpt inte = new InteOpt();
-					//随机生成A,B,C三个字母
+					// 随机生成A,B,C三个字母
 					String varName =String.valueOf((char)(65+(int)(Math.random()*3)));
 					final String varValue = varName+"_value";
 					inte.add(varName, new Interpreter() {

@@ -1,30 +1,33 @@
 package com.greenpineyu.fel.compile;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.ArrayUtils;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileObject;
+import javax.tools.SimpleJavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.greenpineyu.fel.Expression;
-import com.sun.tools.javac.Main;
 
-public class FelCompilerImpl implements FelCompiler {
+public class FelCompiler16 implements FelCompiler {
 	/*
 	 * 用户编译的classpath
 	 */
@@ -34,7 +37,7 @@ public class FelCompilerImpl implements FelCompiler {
 	 * class文件夹
 	 */
 	private static final String CLASS_DIR;
-	
+
 	private static final String BASE_DIR;
 	private static ClassLoader loader;
 	static {
@@ -42,7 +45,7 @@ public class FelCompilerImpl implements FelCompiler {
 		String userDir = System.getProperty("user.dir");
 		BASE_DIR = userDir + File.separator + "fel" + File.separator;
 		CLASS_DIR = BASE_DIR + "classes" + File.separator;
-		loader = new FileClassLoader(FelCompilerImpl.class.getClassLoader(),
+		loader = new FileClassLoader(FelCompiler16.class.getClassLoader(),
 				CLASS_DIR);
 	}
 
@@ -73,7 +76,7 @@ public class FelCompilerImpl implements FelCompiler {
 		/*
 		 * 将三项添加到classpath 1:lib中的所有jar 2:class目录 3:系统属性："java.class.path"
 		 */
-		Class<?> cls = FelCompilerImpl.class;
+		Class<?> cls = FelCompiler16.class;
 		String path = getPath(cls);
 		boolean isJar = path.endsWith(".jar");
 		Set<String> cpSet = new HashSet<String>();
@@ -133,7 +136,6 @@ public class FelCompilerImpl implements FelCompiler {
 		return jarPathSet;
 	}
 
-
 	public Expression compile(JavaSource expr) {
 		Class<Expression> compile = this.compileToClass(expr);
 		try {
@@ -146,64 +148,81 @@ public class FelCompilerImpl implements FelCompiler {
 		return null;
 	}
 
-	static private void createDir(String srcPackageDir) {
-		new File(srcPackageDir).mkdirs();
-		new File(CLASS_DIR).mkdirs();
-	}
-
 	private Class<Expression> compileToClass(JavaSource src) {
-		String className = src.getName();
-		String pack = src.getPackageName();
-		String srcPackageDir = getSrcPackageDir(pack);
-		String file = srcPackageDir  + className + ".java";
-		createDir(srcPackageDir);
-		String source =src.getSource();
-		writeJavaFile(file, source);
+		String simpleClassName = src.getName();
+		String packageName = src.getPackageName();
+		String className = packageName + "." + simpleClassName;
 
-		String[] arg = new String[] { "-encoding", "UTF-8", "-d", CLASS_DIR,
-				file };
+		List<String> options = new ArrayList<String>();
+		options.add("-encoding");
+		options.add("UTF-8");
+		options.add("-d");
+		options.add(CLASS_DIR);
+
 		if (StringUtils.isNotEmpty(CLASSPATH)) {
-			arg = (String[]) ArrayUtils.add(arg, 0, CLASSPATH);
-			arg = (String[]) ArrayUtils.add(arg, 0, "-classpath");
+			options.add("-classpath");
+			options.add(CLASSPATH);
 		}
-		int compile = Main.compile(arg);
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		StandardJavaFileManager fileManager = compiler.getStandardFileManager(
+				null, null, null);
+		JavaFileObject javaFileObject = createJavaFileObject(className,
+				src.getSource());
+		Iterable<? extends JavaFileObject> files = Arrays
+				.asList(javaFileObject);
+		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
+				null, options, null, files);
 		try {
-			if (compile != 0) {
+			Boolean result = task.call();
+			if (!result) {
 				return null;
 			}
 			@SuppressWarnings("unchecked")
-			Class<Expression> c = (Class<Expression>) loader.loadClass(pack
-					+ "." + className);
+			Class<Expression> c = (Class<Expression>) loader
+					.loadClass(className);
 			return c;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
-			clean(srcPackageDir,getClassPackageDir(pack),className);
+			String srcPackageDir = getSrcPackageDir(packageName);
+			clean(srcPackageDir, getClassPackageDir(packageName),
+					simpleClassName);
 		}
 		return null;
 	}
 
-	private static ExecutorService exeService = initThreadPool() ;
-
-	private static ExecutorService initThreadPool() {
-		return new ThreadPoolExecutor(0, 10,
-		  5L, TimeUnit.SECONDS,
-		  new LinkedBlockingQueue<Runnable>());
+	private static SimpleJavaFileObject createJavaFileObject(String className,
+			String contents) {
+		StringObject so = null;
+		try {
+			so = new StringObject(className, contents);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		return so;
 	}
 
-	private void clean(final String srcPackageDir,final String classPackageDir,final String fileName) {
+	private static ExecutorService exeService = initThreadPool();
+
+	private static ExecutorService initThreadPool() {
+		return new ThreadPoolExecutor(0, 10, 5L, TimeUnit.SECONDS,
+				new SynchronousQueue<Runnable>());
+	}
+
+	private void clean(final String srcPackageDir,
+			final String classPackageDir, final String fileName) {
 		if (exeService.isShutdown()) {
 			exeService = initThreadPool();
 		}
 		exeService.execute(new Runnable() {
 			public void run() {
-				//优先级设置成最低
+				// 优先级设置成最低
 				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-//				try {
-//					Thread.sleep(10*1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+				// try {
+				// Thread.sleep(10*1000);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
 				String src = srcPackageDir + fileName + ".java";
 				String cls = classPackageDir + fileName + ".class";
 				deleteFile(src);
@@ -212,57 +231,46 @@ public class FelCompilerImpl implements FelCompiler {
 
 			private void deleteFile(String src) {
 				File file = new File(src);
-//				System.out.println("delete file:"+src);
+				// System.out.println("delete file:"+src);
 				if (file.exists()) {
 					file.delete();
 				}
 			}
 		});
-//		exeService.shutdown();
-	}
-
-	private void writeJavaFile(String file, String source) {
-		OutputStreamWriter write = null;
-		try {
-			BufferedOutputStream os;
-			os = new BufferedOutputStream(new FileOutputStream(file), 500);
-			write = new OutputStreamWriter(os, "utf-8");
-			write.write(source);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (write != null) {
-				try {
-					write.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		// exeService.shutdown();
 	}
 
 	/**
 	 * 将包名转换成包路径
+	 * 
 	 * @param packageName
 	 * @return
 	 */
 	private static String packageToPath(String packageName) {
 		String sep = File.separator;
-//		if (sep.equals("\\")) {
-//			sep = "\\\\";
-//		}
+		// if (sep.equals("\\")) {
+		// sep = "\\\\";
+		// }
 		return StringUtils.replace(packageName, ".", sep);
-//		return packageName.replaceAll("\\.", sep);
+		// return packageName.replaceAll("\\.", sep);
+	}
+}
+
+class StringObject extends SimpleJavaFileObject {
+	private String contents = null;
+
+	public StringObject(String className, String contents) throws Exception {
+		super(new URI(className), Kind.SOURCE);
+		this.contents = contents;
 	}
 
+	public CharSequence getCharContent(boolean ignoreEncodingErrors)
+			throws IOException {
+		return contents;
+	}
 
-
-
-	public static void main(String[] args) throws InstantiationException,
-			IllegalAccessException {
+	@Override
+	public boolean isNameCompatible(String simpleName, Kind kind) {
+		return true;
 	}
 }

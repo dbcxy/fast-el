@@ -1,11 +1,10 @@
 package com.greenpineyu.fel.function;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.greenpineyu.fel.Expression;
-import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -54,26 +53,19 @@ public abstract class CommonFunction implements Function {
 	}
 
 	public static void main(String[] args) {
-		List list = new ArrayList();
-		String[] abc = new String[] { "1", "3", "4" };
-		for (int i = 0; i < abc.length; i++) {
-			String string = abc[i];
-			list.add(string);
-		}
-		int time = 1000000;
-		long s1 = System.currentTimeMillis();
-
-		for (int i = 0; i < time; i++) {
-			abc.clone();
-		}
-		long s2 = System.currentTimeMillis();
-		System.out.println("花费的时间:" + (s2 - s1));
-
-		for (int i = 0; i < time; i++) {
-			list.toArray(new Object[0]);
-		}
-		long s3 = System.currentTimeMillis();
-		System.out.println("花费的时间:" + (s3 - s2));
+		/*
+		 * List list = new ArrayList(); String[] abc = new String[] { "1", "3",
+		 * "4" }; for (int i = 0; i < abc.length; i++) { String string = abc[i];
+		 * list.add(string); } int time = 1000000; long s1 =
+		 * System.currentTimeMillis();
+		 * 
+		 * for (int i = 0; i < time; i++) { abc.clone(); } long s2 =
+		 * System.currentTimeMillis(); System.out.println("花费的时间:" + (s2 - s1));
+		 * 
+		 * for (int i = 0; i < time; i++) { list.toArray(new Object[0]); } long
+		 * s3 = System.currentTimeMillis(); System.out.println("花费的时间:" + (s3 -
+		 * s2));
+		 */
 		//		Object[] returnMe = null;
 		//		Object[] children = node.getChildrenArray();
 		//		int size = children.length;

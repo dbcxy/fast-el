@@ -18,7 +18,7 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class LogicalOperator implements Function{
 
-	private String operator;
+	private final String operator;
 
 	private LogicalOperator(String operator) {
 		this.operator = operator;
@@ -101,17 +101,11 @@ public class LogicalOperator implements Function{
 	 * @param right
 	 * @return
 	 */
-	private boolean and(Object left, Object right) {
-		boolean l = NumberUtil.toBoolean(left);
-		if (!l) {
-			return false;
-		}
-		boolean r = NumberUtil.toBoolean(right);
-		if (!r) {
-			return false;
-		}
-		return true;
-	}
+	/*
+	 * private boolean and(Object left, Object right) { boolean l =
+	 * NumberUtil.toBoolean(left); if (!l) { return false; } boolean r =
+	 * NumberUtil.toBoolean(right); if (!r) { return false; } return true; }
+	 */
 
 	/**
 	 * OR 和 ||
@@ -120,17 +114,11 @@ public class LogicalOperator implements Function{
 	 * @param right
 	 * @return
 	 */
-	private boolean or(Object left, Object right) {
-		boolean l = NumberUtil.toBoolean(left);
-		if (l) {
-			return true;
-		}
-		boolean r = NumberUtil.toBoolean(right);
-		if (r) {
-			return true;
-		}
-		return false;
-	}
+	/*
+	 * private boolean or(Object left, Object right) { boolean l =
+	 * NumberUtil.toBoolean(left); if (l) { return true; } boolean r =
+	 * NumberUtil.toBoolean(right); if (r) { return true; } return false; }
+	 */
 
 	public String getName() {
 		return this.operator;

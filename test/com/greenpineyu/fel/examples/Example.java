@@ -24,25 +24,25 @@ public class Example {
 
 	public static void main(String[] args) {
 
-//		helloworld();
-//		System.out.println("--------------------");
-//		useVariable();
-//		System.out.println("--------------------");
-//		callMethod();
-//		System.out.println("--------------------");
-//		context();
-//		System.out.println("--------------------");
-//		contexts();
+		helloworld();
 		System.out.println("--------------------");
-		testFunction();
-//		System.out.println("--------------------");
-//		userInterpreter();
+		useVariable();
+		System.out.println("--------------------");
+		callMethod();
+		System.out.println("--------------------");
+		context();
+		System.out.println("--------------------");
+		contexts();
+		System.out.println("--------------------");
+		userFunction();
+		System.out.println("--------------------");
+		userInterpreter();
 		System.out.println("--------------------");
 		massData();
-//		System.out.println("--------------------");
-//		operatorOverload();
-//		System.out.println("--------------------");
-//		testCompile();
+		System.out.println("--------------------");
+		operatorOverload();
+		System.out.println("--------------------");
+		testCompile();
 		// FelContext ctx = fel.getContext();
 		// ctx.set("单价", "5000");
 		// ctx.set("数量", new Integer(12));
@@ -139,13 +139,17 @@ public class Example {
 	}
 	
 	
-	public static void testFunction(){
+	public static void userFunction(){
+		//定义hello函数
 		Function fun = new CommonFunction() {
 
 			public String getName() {
 				return "hello";
 			}
 			
+			/* 
+			 * 调用hello("xxx")时执行的代码
+			 */
 			@Override
 			public Object call(Object[] arguments) {
 				Object msg = null;
@@ -157,10 +161,13 @@ public class Example {
 
 		};
 		FelEngine e = new FelEngineImpl();
+		//添加函数到引擎中。
 		e.addFun(fun);
 		String exp = "hello('fel')";
+		//解释执行
 		Object eval = e.eval(exp);
 		System.out.println("hello "+eval);
+		//编译执行
 		Expression compile = e.compile(exp, null);
 		eval = compile.eval(null);
 		System.out.println("hello "+eval);
@@ -264,9 +271,9 @@ public class Example {
 		ctx.set("单价", price);
 		ctx.set("费用", cost);
 		String exp = "单价+费用";
-		FelNode node = fel.parse(exp);
-		//使用新的解释器来实现数组相加
-		node.setInterpreter(new Interpreter() {
+		InteOpt interpreters = new InteOpt();
+		//定义"+"操作符的解释方法。
+		interpreters.add("+", new Interpreter() {
 			public Object interpret(FelContext context, FelNode node) {
 				List<FelNode> args = node.getChildren();
 				double[] leftArg = (double[]) args.get(0).eval(context);
@@ -282,7 +289,10 @@ public class Example {
 				return d;
 			}
 		});
-		Object eval = node.eval(ctx);
+		
+		//使用自定义解释器作为编译选项进行进行编译
+		Expression expObj = fel.compile(exp, null, interpreters);
+		Object eval = expObj.eval(ctx);
 		System.out.println("数组相加:"+eval);
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Foo {
 
-	private String name;
+	private final String name;
 
 	private Foo foo = null;
 
@@ -18,7 +18,7 @@ public class Foo {
 	}
 
 	public class Cheezy {
-		public Iterator iterator() {
+		public Iterator<String> iterator() {
 			return getCheeseList().iterator();
 		}
 	}
@@ -39,8 +39,8 @@ public class Foo {
 		return 5;
 	}
 
-	public List getCheeseList() {
-		ArrayList answer = new ArrayList();
+	public List<String> getCheeseList() {
+		ArrayList<String> answer = new ArrayList<String>();
 		answer.add("cheddar");
 		answer.add("edam");
 		answer.add("brie");
@@ -88,6 +88,7 @@ public class Foo {
 		this.foo = foo;
 	}
 
+	@Override
 	public String toString() {
 		return this.name;
 	}

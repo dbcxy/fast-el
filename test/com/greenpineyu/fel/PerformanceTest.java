@@ -14,22 +14,23 @@ import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 
+@SuppressWarnings("unused")
 public class PerformanceTest {
 
 	public static void main(String[] args) {
-		speed();
+//		speed();
 //		 stable();
-//		testConcurrent();
+		testConcurrent();
 	}
 
 	public static void stable() {
 		final FelEngine engine = new FelEngineImpl();
 		final long start = System.currentTimeMillis();
 		final int times = 10;
-		Thread cur = Thread.currentThread();
 		for (int i = 0; i < times; i++) {
 			final int temp = i;
 			Thread t = new Thread() {
+				@Override
 				public void run() {
 					for (int j = 0; j < times; j++) {
 						String str = temp + "+" + j;
@@ -74,7 +75,7 @@ public class PerformanceTest {
 				break;
 			}
 			fel(exp, vars, times);
-			// jexl(exp, vars, times);
+//			 jexl(exp, vars, times);
 		}
 	}
 
@@ -95,14 +96,13 @@ public class PerformanceTest {
 			// evalResult = engine.eval(exp,ctx);
 		}
 		long end = System.currentTimeMillis();
-//		System.out.println(result + " == " + evalResult + "："
+		// System.out.println(result + " == " + evalResult + "："
 //				+ result.equals(evalResult));
 		long cost = end - start;
 		System.out.println("--------cost[ " + cost + " ] ------exp="
 				+ result);
 		return cost;
 	}
-/*
 	private static void jexl(String exp, Map<String, Object> vars, int times) {
 		JexlEngine je = new JexlEngine();
 		JexlContext ctx = new org.apache.commons.jexl2.MapContext(vars);
@@ -118,10 +118,9 @@ public class PerformanceTest {
 		System.out.println("--------cost[ " + (end - start) + " ] ------exp="
 				+ result);
 	}
-	*/
 
 	public static void testConcurrent(){
-		int threads = 10;
+		// int threads = 10;
 		concurrent(50);
 		concurrent(100);
 		concurrent(200);
@@ -150,7 +149,7 @@ public class PerformanceTest {
 				return vars[index++ % size];
 			}
 		};
-		FutureTask[] tasks = new FutureTask[threads];
+		FutureTask<?>[] tasks = new FutureTask[threads];
 		long start = System.currentTimeMillis();
 		for (int j = 0; j < threads; j++) {
 			final int current=j%i;
@@ -165,7 +164,7 @@ public class PerformanceTest {
 		}
 		long costCount = 0;
 		for (int j = 0; j < tasks.length; j++) {
-			FutureTask t = tasks[j];
+			FutureTask<?> t = tasks[j];
 			Long object;
 			try {
 				object = (Long)t.get();
@@ -177,35 +176,19 @@ public class PerformanceTest {
 		long end = System.currentTimeMillis();
 		double avg = 1.0*costCount/threads;
 		long  finishTime = end - start;
-		System.out.println("线程数："+threads+";总时间："+finishTime+";平均时间："+avg);
+		System.out.println("线程数：" + threads + ";总时间：" + finishTime + ";平均时间："
+				+ avg);
 		
 		exeService.shutdown();
 	}
 
-	private static FelContext getContext() {
-		return new AbstractConetxt() {
-			int index = 0;
-			int size = 10;
-			Object[] vars = new Object[size];
-			{
-				for (int i = 0; i < vars.length; i++) {
-					vars[i] = Math.random() * 100;
-				}
-			}
-
-			public Object get(Object name) {
-				return vars[index++ % size];
-			}
-		};
-	}
+	/*
+	 * private static FelContext getContext() { return new AbstractConetxt() {
+	 * int index = 0; int size = 10; Object[] vars = new Object[size]; { for
+	 * (int i = 0; i < vars.length; i++) { vars[i] = Math.random() * 100; } }
+	 * 
+	 * public Object get(Object name) { return vars[index++ % size]; } }; }
+	 */
 
 }
 
-class E implements Expression {
-
-	public static final Object value = 1;
-
-	public Object eval(FelContext context) {
-		return value;
-	}
-};

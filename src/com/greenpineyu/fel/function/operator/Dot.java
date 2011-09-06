@@ -45,7 +45,6 @@ public class Dot implements Function {
 
 	public Object call(FelNode node, FelContext context) {
 		//		System.out.println("call dot:" + node.toString());
-		Object returnMe = null;
 		List<FelNode> children = node.getChildren();
 		Object left = children.get(0);
 		if (left instanceof Expression) {
@@ -53,7 +52,7 @@ public class Dot implements Function {
 			left = exp.eval(context);
 		}
 		FelNode right = children.get(1);
-			FelNode exp = (FelNode) right;
+			FelNode exp = right;
 			Class<?>[] argsType = new Class<?>[0];
 			if(getParamNodes(right) == null){
 				if(right.getChildren()!=null){				
@@ -73,12 +72,12 @@ public class Dot implements Function {
 			}
 			Method method = null;
 				 method = ReflectUtil.findMethod(left.getClass(), right.getText(),argsType);
-//				//是函数，调用left中的方法
+		// //是函数，调用left中的方法
 //				returnMe = callMethod(left, exp, context);
 			if(method == null){
 				method = ReflectUtil.findMethod(left.getClass(), "get", new Class<?>[]{String.class});
 				args = new Object[]{exp.getText()};
-				//是属性，调用left中的属性
+			// 是属性，调用left中的属性
 //				returnMe = callGet(left, exp.getText());
 			}
 			if(method != null){
@@ -87,76 +86,59 @@ public class Dot implements Function {
 			return null;
 	}
 
-	private static Class getPrimitiveType(Class clz){
-		Class primitive = (Class) PRIMITIVE_TYPES.get(clz);
-		return primitive == null ? clz : primitive;
-	}
+	/*
+	 * private static Class getPrimitiveType(Class clz){ Class primitive =
+	 * PRIMITIVE_TYPES.get(clz); return primitive == null ? clz : primitive; }
+	 */
 
-	private static Object callMethod(Object obj,FelNode node,FelContext context){
-		Class[] argsType = null;
-		Method method = null;
-		Object[] args = null;
-		if (node.getChildCount() == 1 && node.getChildren().get(0) == AbstFelNode.NULL_NODE) {
-
-		} else {
-			args = CommonFunction.evalArgs(node, context);
-			if (!ArrayUtils.isEmpty(args)) {
-				argsType = new Class[args.length];
-				for (int i = 0; i < args.length; i++) {
-					Class argType = args[i].getClass();
-					argsType[i] = getPrimitiveType(argType);
-				}
-			}
-		}
-		method = getMethod(obj.getClass(), node.getText(), argsType);
-		return invoke(obj, method, args);
-	}
+	/*
+	 * private static Object callMethod(Object obj,FelNode node,FelContext
+	 * context){ Class<?>[] argsType = null; Method method = null; Object[] args
+	 * = null; if (node.getChildCount() == 1 && node.getChildren().get(0) ==
+	 * AbstFelNode.NULL_NODE) {
+	 * 
+	 * } else { args = CommonFunction.evalArgs(node, context); if
+	 * (!ArrayUtils.isEmpty(args)) { argsType = new Class[args.length]; for (int
+	 * i = 0; i < args.length; i++) { Class<?> argType = args[i].getClass();
+	 * argsType[i] = getPrimitiveType(argType); } } } method =
+	 * getMethod(obj.getClass(), node.getText(), argsType); return invoke(obj,
+	 * method, args); }
+	 */
 
 	/**
 	 * 调用 getXxx、isXxx、get(property)获取属性值
+	 * 
 	 * @param obj
 	 * @param property
 	 * @return
 	 */
-	private static Object callGet(Object obj, String property) {
-		if (obj == null){
-			return null;
-		}
-		
-		Method get = getMethod(obj, property);
-		if (get == null) {
-			return null;
-		}
-		Object[] args = null;
-		if(get.getName().equals("get")){
-			args = new Object[] { property };
-		}
-		return invoke(obj, get, args);
-	}
+	/*
+	 * private static Object callGet(Object obj, String property) { if (obj ==
+	 * null){ return null; }
+	 * 
+	 * Method get = getMethod(obj, property); if (get == null) { return null; }
+	 * Object[] args = null; if(get.getName().equals("get")){ args = new
+	 * Object[] { property }; } return invoke(obj, get, args); }
+	 */
 
-	private static Method getMethod(Object obj, String property) {
-		//查找方法的顺序 :getProperty->isProperty->get
-		Class<?> clz = obj.getClass();
-		Method get = null;
-		String firstUpper = property.substring(0,1).toUpperCase()+property.substring(1);
-		//获取getPrpperty
-		get = getMethod(clz, "get"+firstUpper, null);
-		if(get == null){
-			//获取isPrpperty
-			get = getMethod(clz, "is" + firstUpper, null);
-		}
-
-		if(get == null){
-			//获取get
-			String name = "get";
-			Class<String>[] parameterTypes = new Class[] { String.class };
-			get = getMethod(clz, name, parameterTypes);
-		}
-		return get;
-	}
+	/*
+	 * private static Method getMethod(Object obj, String property) { // 查找方法的顺序
+	 * :getProperty->isProperty->get Class<?> clz = obj.getClass(); Method get =
+	 * null; String firstUpper =
+	 * property.substring(0,1).toUpperCase()+property.substring(1); //
+	 * 获取getPrpperty get = getMethod(clz, "get"+firstUpper, null); if(get ==
+	 * null){ // 获取isPrpperty get = getMethod(clz, "is" + firstUpper, null); }
+	 * 
+	 * if(get == null){ // 获取get String name = "get";
+	 * 
+	 * @SuppressWarnings("unchecked") Class<String>[] parameterTypes = new
+	 * Class[] { String.class }; get = getMethod(clz, name, parameterTypes); }
+	 * return get; }
+	 */
 
 	/**
 	 * 调用方法
+	 * 
 	 * @param obj
 	 * @param method
 	 * @param args
@@ -177,22 +159,18 @@ public class Dot implements Function {
 
 	/**
 	 * 获取方法对象
+	 * 
 	 * @param clz
 	 * @param name
 	 * @param parameterTypes
 	 * @return
 	 */
-	private static Method getMethod(Class clz, String name, Class[] parameterTypes) {
-		Method get = null;
-		try {
-			get = clz.getMethod(name, parameterTypes);
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-		return get;
-	}
+	/*
+	 * private static Method getMethod(Class<?> clz, String name, Class<?>[]
+	 * parameterTypes) { Method get = null; try { get = clz.getMethod(name,
+	 * parameterTypes); } catch (SecurityException e) { e.printStackTrace(); }
+	 * catch (NoSuchMethodException e) { e.printStackTrace(); } return get; }
+	 */
 	
 	
 
@@ -215,7 +193,7 @@ public class Dot implements Function {
 		String rightMethod = rightNode.getText();
 		String rightMethodParam = "";
 		if(hasParam){
-			//有参数
+			// 有参数
 			paramValueTypes = new Class<?>[params.size()];
 			for (int i = 0; i < params.size(); i++) {
 				FelNode p = params.get(i);
@@ -223,7 +201,7 @@ public class Dot implements Function {
 				paramMethods.add(paramMethod);
 				paramValueTypes[i] = paramMethod.returnType(context, p);
 			}
-			//根据参数查找方法
+			// 根据参数查找方法
 			method = ReflectUtil.findMethod(cls, rightNode.getText(),paramValueTypes);
 			if(method != null){
 				Class<?>[] paramTypes = method.getParameterTypes();
@@ -247,7 +225,7 @@ public class Dot implements Function {
 		}else{
 			method = ReflectUtil.findMethod(cls, rightNode.getText(),new Class<?>[0]);
 			if(method == null){
-				//当没有找到方法 ，直接使用get方法来获取属性
+				// 当没有找到方法 ，直接使用get方法来获取属性
 				method = ReflectUtil.getMethod(cls, "get", new Class<?>[]{String.class});
 				if(method!=null){
 					rightMethod = "get";
@@ -283,39 +261,29 @@ public class Dot implements Function {
 		rightMethod+="("+rightMethodParam+")";
 		
 		sb.append(rightMethod);
-		
-		
-		
+
 		/*
-		Object returnMe = null;
-		List children = child; 
-		Object left = children.get(0);
-		if (left instanceof Expression) {
-			Expression exp = (Expression) left;
-			context.setCbEnabled(false);
-			left = exp.eval(context);
-			context.setCbEnabled(true);
-		}
-		Object right = children.get(1);
-		if (right instanceof FelNode) {
-			FelNode exp = (FelNode) right;
-			if (exp instanceof FunNode) {
-				//是函数，调用left中的方法
-				returnMe = callMethod(left, exp, context);
-			} else {
-				//是属性，调用left中的属性
-				returnMe = callGet(left, exp.getText());
-			}
-		}*/
+		 * Object returnMe = null; List children = child; Object left =
+		 * children.get(0); if (left instanceof Expression) { Expression exp =
+		 * (Expression) left; context.setCbEnabled(false); left =
+		 * exp.eval(context); context.setCbEnabled(true); } Object right =
+		 * children.get(1); if (right instanceof FelNode) { FelNode exp =
+		 * (FelNode) right; if (exp instanceof FunNode) { //是函数，调用left中的方法
+		 * returnMe = callMethod(left, exp, context); } else { //是属性，调用left中的属性
+		 * returnMe = callGet(left, exp.getText()); } }
+		 */
 		FelMethod returnMe = new FelMethod( method == null?null:method.getReturnType(), sb.toString());
 		return returnMe;
 	}
 
 	/**
 	 * 获取参数代码
-	 * @param paramType 方法声明的参数类型
-	 * @param paramValueType 参数值的类型 
-	 * @param paramMethod 
+	 * 
+	 * @param paramType
+	 *            方法声明的参数类型
+	 * @param paramValueType
+	 *            参数值的类型
+	 * @param paramMethod
 	 * @return
 	 */
 	private String getParamCode(Class<?> paramType,FelNode node,FelContext ctx) {
@@ -341,13 +309,14 @@ public class Dot implements Function {
 
 	/**
 	 * 如果只有一个空参数，将其去掉
+	 * 
 	 * @param rightNode
 	 * @return
 	 */
 	private List<FelNode> getParamNodes(FelNode rightNode) {
 		List<FelNode> params = rightNode.getChildren();
 		if(params!=null && params.size()==1&&params.get(0)== AbstFelNode.NULL_NODE){
-				//如果只有一个空参数，视为null
+			// 如果只有一个空参数，视为null
 				params = null;
 		}
 		return params;
