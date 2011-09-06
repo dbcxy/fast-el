@@ -10,6 +10,11 @@ import com.greenpineyu.fel.parser.AbstFelNode;
 import com.greenpineyu.fel.parser.FelNode;
 
 
+/**
+ * 设置节点的解释器
+ * @author yuqingsong
+ *
+ */
 public class InteOpt implements Optimizer {
 
 	private Map<String,Interpreter> inteMap;

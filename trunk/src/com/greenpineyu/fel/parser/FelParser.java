@@ -2,15 +2,21 @@ package com.greenpineyu.fel.parser;
 
 // $ANTLR 3.3 Nov 30, 2010 12:45:30 E:\\workspace\\Fel\\Fel.g 2011-07-30 18:47:50
 
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 
-import org.antlr.runtime.tree.*;
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.MismatchedSetException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.ParserRuleReturnScope;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
+import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeAdaptor;
+import org.antlr.runtime.tree.TreeAdaptor;
 
+@SuppressWarnings("unused")
 public class FelParser extends AbstFelParser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Logical", "Equals", "Relational", "Additive", "Multiplicative", "Dot", "Identifier", "FloatingPointLiteral", "CharacterLiteral", "StringLiteral", "BooleanLiteral", "HexLiteral", "OctalLiteral", "DecimalLiteral", "HexDigit", "IntegerTypeSuffix", "Exponent", "FloatTypeSuffix", "EscapeSequence", "UnicodeEscape", "OctalEscape", "Letter", "JavaIDDigit", "WS", "COMMENT", "LINE_COMMENT", "'('", "')'", "','"
@@ -69,13 +75,16 @@ public class FelParser extends AbstFelParser {
         return adaptor;
     }
 
-    public String[] getTokenNames() { return FelParser.tokenNames; }
-    public String getGrammarFileName() { return "E:\\workspace\\Fel\\Fel.g"; }
+    @Override
+	public String[] getTokenNames() { return FelParser.tokenNames; }
+    @Override
+	public String getGrammarFileName() { return "E:\\workspace\\Fel\\Fel.g"; }
 
 
     public static class program_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "program"
@@ -129,12 +138,14 @@ public class FelParser extends AbstFelParser {
 
     public static class parExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "parExpression"
     // E:\\workspace\\Fel\\Fel.g:14:1: parExpression : '(' expressionList ')' ;
-    public final FelParser.parExpression_return parExpression() throws RecognitionException {
+	public final FelParser.parExpression_return parExpression()
+			throws RecognitionException {
         FelParser.parExpression_return retval = new FelParser.parExpression_return();
         retval.start = input.LT(1);
         int parExpression_StartIndex = input.index();
@@ -189,12 +200,14 @@ public class FelParser extends AbstFelParser {
 
     public static class expressionList_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "expressionList"
     // E:\\workspace\\Fel\\Fel.g:18:1: expressionList : ( conditionalExpression )? ( ',' ( conditionalExpression )? )* ;
-    public final FelParser.expressionList_return expressionList() throws RecognitionException {
+	public final FelParser.expressionList_return expressionList()
+			throws RecognitionException {
         FelParser.expressionList_return retval = new FelParser.expressionList_return();
         retval.start = input.LT(1);
         int expressionList_StartIndex = input.index();
@@ -328,7 +341,8 @@ public class FelParser extends AbstFelParser {
 
     public static class conditionalExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "conditionalExpression"
@@ -421,7 +435,8 @@ public class FelParser extends AbstFelParser {
 
     public static class equalityExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "equalityExpression"
@@ -514,7 +529,8 @@ public class FelParser extends AbstFelParser {
 
     public static class relationalExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "relationalExpression"
@@ -607,7 +623,8 @@ public class FelParser extends AbstFelParser {
 
     public static class additiveExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "additiveExpression"
@@ -700,7 +717,8 @@ public class FelParser extends AbstFelParser {
 
     public static class multiplicativeExpression_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "multiplicativeExpression"
@@ -793,7 +811,8 @@ public class FelParser extends AbstFelParser {
 
     public static class primary_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "primary"
@@ -1037,7 +1056,8 @@ public class FelParser extends AbstFelParser {
 
     public static class selector_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "selector"
@@ -1122,12 +1142,14 @@ public class FelParser extends AbstFelParser {
 
     public static class arguments_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "arguments"
     // E:\\workspace\\Fel\\Fel.g:77:1: arguments : '(' ( expressionList )? ')' ;
-    public final FelParser.arguments_return arguments() throws RecognitionException {
+	public final FelParser.arguments_return arguments()
+			throws RecognitionException {
         FelParser.arguments_return retval = new FelParser.arguments_return();
         retval.start = input.LT(1);
         int arguments_StartIndex = input.index();
@@ -1206,7 +1228,8 @@ public class FelParser extends AbstFelParser {
 
     public static class literal_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "literal"
@@ -1407,7 +1430,8 @@ public class FelParser extends AbstFelParser {
 
     public static class integerLiteral_return extends ParserRuleReturnScope {
         CommonTree tree;
-        public Object getTree() { return tree; }
+        @Override
+		public Object getTree() { return tree; }
     };
 
     // $ANTLR start "integerLiteral"
@@ -1429,10 +1453,10 @@ public class FelParser extends AbstFelParser {
             {
             root_0 = (CommonTree)adaptor.nil();
 
-            set43=(Token)input.LT(1);
+            set43=input.LT(1);
             if ( (input.LA(1)>=HexLiteral && input.LA(1)<=DecimalLiteral) ) {
                 input.consume();
-                if ( state.backtracking==0 ) adaptor.addChild(root_0, (CommonTree)adaptor.create(set43));
+                if ( state.backtracking==0 ) adaptor.addChild(root_0, adaptor.create(set43));
                 state.errorRecovery=false;state.failed=false;
             }
             else {

@@ -15,15 +15,12 @@ import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.Stable;
 
 /**
- * 包名				.script.function.operator
- * 类名				RelationalOperator.java
- * 创建日期				Oct 26, 20103:04:25 PM
- * 作者				
- * 版权				
+ * 包名 .script.function.operator 类名 RelationalOperator.java 创建日期 Oct 26,
+ * 20103:04:25 PM 作者 版权
  */
 public class RelationalOperator extends CommonFunction implements Stable {
 
-	private String operator;
+	private final String operator;
 	
 	private RelationalOperator(String operator) {
 		this.operator = operator;
@@ -47,6 +44,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
 	}
 	
 	
+	@Override
 	public Object call(Object[] arguments) {
 		boolean result = false;
 		if(arguments != null && arguments.length == 2){
@@ -68,11 +66,13 @@ public class RelationalOperator extends CommonFunction implements Stable {
 
 	/**
 	 * 小于 <
+	 * 
 	 * @param left
 	 * @param right
 	 * @return
 	 */
-    public static boolean lessThan(Object left, Object right) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public static boolean lessThan(Object left, Object right) {
     	if(left != null && right != null){
     		if ((left == right)) {
     			return false;
@@ -93,7 +93,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
     			String rightString = right.toString();
     			return leftString.compareTo(rightString) < 0;
     		} else if (left instanceof Comparable) {
-    			final Comparable comparable = (Comparable) left;
+				final Comparable comparable = (Comparable) left;
     			return comparable.compareTo(right) < 0;
     		} else if (right instanceof Comparable) {
     			final Comparable comparable = (Comparable) right;
@@ -131,13 +131,15 @@ public class RelationalOperator extends CommonFunction implements Stable {
 			sb.append("NumberUtil.compare(" + left + ","+ right + ")"+operator+"0");
 			NumberUtil.compare(new Date(), new Date());
 		} else {
-			throw new UnsupportedOperationException("类型"+leftType+"与类型"+rightType+"不支持比较操作。");
+			throw new UnsupportedOperationException("类型" + leftType + "与类型"
+					+ rightType + "不支持比较操作。");
 		}
 		return sb;
 	}
 
 	/**
 	 * 大于 >
+	 * 
 	 * @param left
 	 * @param right
 	 * @return
@@ -151,6 +153,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
 
 	/**
 	 * 小于等于 <=
+	 * 
 	 * @param left
 	 * @param right
 	 * @return
@@ -161,6 +164,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
 
 	/**
 	 * 大于等于 >=
+	 * 
 	 * @param left
 	 * @param right
 	 * @return
@@ -173,6 +177,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
 		return this.operator;
 	}
 
+	@Override
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		StringBuilder code = buildRelationExpr(node, ctx, this.getName());
 		return new FelMethod(Boolean.class, code.toString());

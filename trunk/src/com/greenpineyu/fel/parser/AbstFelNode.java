@@ -20,8 +20,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	 * 解析器,用于解析节点的值
 	 */
 	protected Interpreter interpreter;
-	
-	
+
 	/**
 	 * 默认的解析器
 	 */
@@ -30,20 +29,30 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	
 	protected SourceBuilder builder;
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<FelNode> getChildren() {
+		return this.children;
+	}
+
 	/**
 	 * 点位节点
 	 */
 	public static final AbstFelNode NULL_NODE = new AbstFelNode() {
+		@Override
 		public boolean isNil() {
 			return false;
 		};
 
+		@Override
 		public Object interpret(FelContext context, FelNode node) {
 			return null;
 		};
 		
+		@Override
 		public String toString() {return "NULL_NODE";}
 
+		@Override
 		public SourceBuilder toMethod(FelContext ctx) {
 			throw new UnsupportedOperationException("占位节点");
 		}
@@ -51,21 +60,26 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	};
 	
 	public static final AbstFelNode NULL = new AbstFelNode() {
+		@Override
 		public boolean isNil() {
 			return false;
 		};
 		
+		@Override
 		public Object interpret(FelContext context, FelNode node) {
 			return null;
 		};
 		
+		@Override
 		public String getText() {
 			return "null";
 		};
 		
 		
+		@Override
 		public String toString() {return "NULL_NODE";}
 		
+		@Override
 		public SourceBuilder toMethod(FelContext ctx) {
 			return new FelMethod(Null.class, "null");
 		}
@@ -73,14 +87,17 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	};
 	
 	public static final FelNode TRUE_NODE = new AbstFelNode(){
+		@Override
 		public boolean isNil() {
 			return false;
 		};
 		
+		@Override
 		public Object interpret(FelContext context, FelNode node) {
 			return Boolean.TRUE;
 		}
 
+		@Override
 		public SourceBuilder toMethod(FelContext ctx) {
 			return new FelMethod(Boolean.class, "true");
 		}
@@ -98,18 +115,19 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 
 	{
-		//解释器设置成this
+		// 解释器设置成this
 		this.defaultInter = this;
 		resetInterpreter();
-		//源码构建器设置成this
+		// 源码构建器设置成this
 //		resetSourceBuilder();
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public AbstFelNode(CommonTree node) {
 		super(node);
 		if (node.getChildren() != null) {
-			this.children = new ArrayList(node.getChildren());
+			this.children = new ArrayList<FelNode>(node.getChildren());
 			for (int i = 0; i < this.children.size(); i++) {
 				Tree object = (Tree) this.children.get(i);
 				object.setParent(this);
@@ -118,6 +136,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 
 
+	@Override
 	public String toString() {
 		return this.getText();
 	}
@@ -127,7 +146,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 	public void setChild(int index, FelNode node) {
 		if (node instanceof Tree) {
-			super.setChild(index, (Tree) node);
+			super.setChild(index, node);
 		} else {
 			throw new IllegalArgumentException("类型必须是" + Tree.class);
 		}
@@ -165,7 +184,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 			if (nodeChildren != null) {
 				for (Iterator<FelNode> iterator = nodeChildren.iterator(); iterator.hasNext();) {
 					try {
-						FelNode child = (FelNode) iterator.next();
+						FelNode child = iterator.next();
 						getNodes(child, returnMe);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -187,9 +206,10 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	public void resetInterpreter() {
 		this.interpreter = this.defaultInter;
 	}
-	
+
 	/**
 	 * 是否默认的解释器
+	 * 
 	 * @return
 	 */
 	public boolean isDefaultInterpreter(){
@@ -215,7 +235,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 	protected boolean isChildrenStable() {
 		if(this.children!=null){
-			//子节点有一个不是稳定的，就返回false
+			// 子节点有一个不是稳定的，就返回false
 			for (int i = 0; i < children.size(); i++) {
 				FelNode child = (FelNode) children.get(i);
 				if(!child.stable()){

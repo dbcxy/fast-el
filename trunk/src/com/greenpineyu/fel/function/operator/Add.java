@@ -31,9 +31,9 @@ public class Add extends StableFunction  {
 	public Object call(FelNode node, FelContext context) {
 		Object returnMe = null;
 		boolean isAdd = node.getText().equals("+");
-		for (Iterator iterator = node.getChildren().iterator(); iterator
+		for (Iterator<FelNode> iterator = node.getChildren().iterator(); iterator
 				.hasNext();) {
-			Object child = (Object) iterator.next();
+			Object child = iterator.next();
 			if (child instanceof FelNode) {
 				FelNode childNode = (FelNode) child;
 				child = childNode.eval(context);
@@ -98,28 +98,20 @@ public class Add extends StableFunction  {
 
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		Class<?> type = null;
-	/*	List<FelNode> children = node.getChildren();
-		StringBuilder code = new StringBuilder();
-
-		Iterator<FelNode> it = children.iterator();
-		FelNode first = null;
-		if (it.hasNext()) {
-			first = it.next();
-			FelMethod argMethod = first.toMethod(ctx);
-			appendArg(code, argMethod);
-			Class<?> t = argMethod.getReturnType();
-			// 将第一个参数的类型作为返回值的类型
-			type = t.isAssignableFrom(Number.class) ? t : String.class;
-		}
-		boolean hasNext = it.hasNext();
-		while (hasNext) {
-			code.append("+");
-			FelNode n = it.next();
-			FelMethod argMethod = n.toMethod(ctx);
-			appendArg(code, argMethod);
-			hasNext = it.hasNext();
-		}
-		return new FelMethod(type, code.toString());*/
+		/*
+		 * List<FelNode> children = node.getChildren(); StringBuilder code = new
+		 * StringBuilder();
+		 * 
+		 * Iterator<FelNode> it = children.iterator(); FelNode first = null; if
+		 * (it.hasNext()) { first = it.next(); FelMethod argMethod =
+		 * first.toMethod(ctx); appendArg(code, argMethod); Class<?> t =
+		 * argMethod.getReturnType(); // 将第一个参数的类型作为返回值的类型 type =
+		 * t.isAssignableFrom(Number.class) ? t : String.class; } boolean
+		 * hasNext = it.hasNext(); while (hasNext) { code.append("+"); FelNode n
+		 * = it.next(); FelMethod argMethod = n.toMethod(ctx); appendArg(code,
+		 * argMethod); hasNext = it.hasNext(); } return new FelMethod(type,
+		 * code.toString());
+		 */
 		
 		List<FelNode> children = node.getChildren();
 		StringBuilder sb = new StringBuilder();

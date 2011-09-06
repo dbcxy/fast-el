@@ -2,10 +2,15 @@ package com.greenpineyu.fel.parser;
 
 // $ANTLR 3.3 Nov 30, 2010 12:45:30 E:\\workspace\\Fel\\Fel.g 2011-07-30 19:13:24
 
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.BaseRecognizer;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.DFA;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.Lexer;
+import org.antlr.runtime.MismatchedSetException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
 
 public class FelLexer extends Lexer {
     public static final int EOF=-1;
@@ -50,7 +55,8 @@ public class FelLexer extends Lexer {
         super(input,state);
 
     }
-    public String getGrammarFileName() { return "E:\\workspace\\Fel\\Fel.g"; }
+    @Override
+	public String getGrammarFileName() { return "E:\\workspace\\Fel\\Fel.g"; }
 
     // $ANTLR start "T__30"
     public final void mT__30() throws RecognitionException {
@@ -1705,7 +1711,8 @@ public class FelLexer extends Lexer {
     }
     // $ANTLR end "LINE_COMMENT"
 
-    public void mTokens() throws RecognitionException {
+    @Override
+	public void mTokens() throws RecognitionException {
         // E:\\workspace\\Fel\\Fel.g:1:8: ( T__30 | T__31 | T__32 | Dot | Logical | Relational | Equals | Multiplicative | Additive | HexLiteral | DecimalLiteral | OctalLiteral | BooleanLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | Identifier | WS | COMMENT | LINE_COMMENT )
         int alt33=20;
         alt33 = dfa33.predict(input);
@@ -1909,7 +1916,8 @@ public class FelLexer extends Lexer {
             this.special = DFA22_special;
             this.transition = DFA22_transition;
         }
-        public String getDescription() {
+        @Override
+		public String getDescription() {
             return "125:1: FloatingPointLiteral : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix );";
         }
     }
@@ -2011,7 +2019,8 @@ public class FelLexer extends Lexer {
             this.special = DFA33_special;
             this.transition = DFA33_transition;
         }
-        public String getDescription() {
+        @Override
+		public String getDescription() {
             return "1:1: Tokens : ( T__30 | T__31 | T__32 | Dot | Logical | Relational | Equals | Multiplicative | Additive | HexLiteral | DecimalLiteral | OctalLiteral | BooleanLiteral | FloatingPointLiteral | CharacterLiteral | StringLiteral | Identifier | WS | COMMENT | LINE_COMMENT );";
         }
     }
