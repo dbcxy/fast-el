@@ -1,11 +1,20 @@
 package com.greenpineyu.fel.compile;
 
 public class JavaSource {
+
+	/**
+	 * 类名，不包含包名
+	 */
+	private String simpleName;
 	
-	private String name;
-	
+	/**
+	 * java源码
+	 */
 	private String source;
 	
+	/**
+	 * 包名
+	 */
 	private String packageName;
 	
 	public String getPackageName() {
@@ -16,12 +25,16 @@ public class JavaSource {
 		this.packageName = packageName;
 	}
 
-	public String getName() {
-		return name;
+	public String getSimpleName() {
+		return simpleName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setSimpleName(String name) {
+		this.simpleName = name;
+	}
+
+	public String getName(){
+		return packageName + "." + simpleName;
 	}
 
 	public String getSource() {

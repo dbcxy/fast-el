@@ -73,7 +73,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		}
 //		System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
-		returnMe.setName(className);
+		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
 		returnMe.setPackageName(PACKAGE);
 		return returnMe;
