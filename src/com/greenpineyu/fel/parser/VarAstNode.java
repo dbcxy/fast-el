@@ -7,17 +7,19 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 
 public class VarAstNode extends AbstFelNode  {
-	private String text;
+	private final String text;
 
 	public VarAstNode(Token token) {
 		super(token);
 		this.text = token.getText();
 	}
 
+	@Override
 	public String getText() {
 		return this.text;
 	}
 	
+	@Override
 	public Object interpret(FelContext context, FelNode node) {
 		return context.get(text);
 	}
@@ -27,7 +29,7 @@ public class VarAstNode extends AbstFelNode  {
 			
 			public String source(FelContext ctx, FelNode node) {
 				if(!node.isDefaultInterpreter()){
-					//用户自定义解析器
+					// 用户自定义解析器
 					return InterpreterSourceBuilder.getInstance().source(ctx, node);
 				}
 				String code = "";
@@ -35,7 +37,7 @@ public class VarAstNode extends AbstFelNode  {
 				boolean isNumber = Number.class.isAssignableFrom(type);
 				String getVarCode = "context.get(\""+node.getText()+"\")";
 				if(isNumber){
-					//当float转double时，会丢失精度
+					// 当float转double时，会丢失精度
 					code = "(("+type.getName()+")"+getVarCode+").doubleValue()";
 				}else{
 					code = "(" + type.getName() + ")" + getVarCode;
@@ -51,9 +53,4 @@ public class VarAstNode extends AbstFelNode  {
 			}
 		};
 	}
-	
-	
-
-
-
 }
