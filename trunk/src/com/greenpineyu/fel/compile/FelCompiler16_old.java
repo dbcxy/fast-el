@@ -13,7 +13,7 @@ import javax.tools.ToolProvider;
 
 import com.greenpineyu.fel.Expression;
 
-public class FelCompiler16 extends AbstCompiler {
+public class FelCompiler16_old extends AbstCompiler {
 
 	 @Override
 	Class<Expression> compileToClass(JavaSource src)
