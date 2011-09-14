@@ -7,13 +7,19 @@ import com.greenpineyu.fel.parser.FelNode;
 
 /**
  * 脚本引擎
- * @author       yqs
- * @uml.dependency   supplier=".script.function.Function"
+ * 
+ * @author yqs
  */
 public interface FelEngine {
 
 	/**
+	 * 默认实例
+	 */
+	FelEngine instance = new FelEngineImpl();
+
+	/**
 	 * 执行表达式，获取结果
+	 * 
 	 * @param exp
 	 * @return
 	 */
@@ -21,14 +27,17 @@ public interface FelEngine {
 
 	/**
 	 * 使用指定的引擎上下文执行表达式，获取结果
-	 * @param exp 
-	 * @param ctx 引擎上下文
+	 * 
+	 * @param exp
+	 * @param ctx
+	 *            引擎上下文
 	 * @return
 	 */
 	Object eval(String exp, FelContext ctx);
 
 	/**
 	 * 解析表达式为节点
+	 * 
 	 * @param exp
 	 * @return
 	 */
@@ -37,9 +46,10 @@ public interface FelEngine {
 	Expression compile(String exp,FelContext ctx,Optimizer... opts);
 
 	FelContext getContext();
-	
+
 	/**
 	 * 添加函数到全局函数库中（所有的引擎实例共享一个函数库）
+	 * 
 	 * @param fun
 	 * @return
 	 */
