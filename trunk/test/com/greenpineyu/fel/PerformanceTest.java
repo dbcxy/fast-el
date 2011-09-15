@@ -10,6 +10,7 @@ import java.util.concurrent.FutureTask;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 
+import com.googlecode.aviator.AviatorEvaluator;
 import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
@@ -18,9 +19,9 @@ import com.greenpineyu.fel.context.MapContext;
 public class PerformanceTest {
 
 	public static void main(String[] args) {
-		// speed();
+		speed();
 		// stable();
-		testConcurrent();
+		// testConcurrent();
 	}
 
 	public static void stable() {
@@ -76,7 +77,8 @@ public class PerformanceTest {
 				break;
 			}
 			fel(exp, vars, times);
-//			 jexl(exp, vars, times);
+			// jexl(exp, vars, times);
+			// aviator(exp, vars, times);
 		}
 	}
 
@@ -114,6 +116,18 @@ public class PerformanceTest {
 		long start = System.currentTimeMillis();
 		for (int i = 0; i < times; i++) {
 			result = e.evaluate(ctx);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("--------cost[ " + (end - start) + " ] ------exp="
+				+ result);
+	}
+
+	private static void aviator(String exp, Map<String, Object> vars, int times) {
+		com.googlecode.aviator.Expression e = AviatorEvaluator.compile(exp);
+		Object result = null;
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < times; i++) {
+			result = e.execute(vars);
 		}
 		long end = System.currentTimeMillis();
 		System.out.println("--------cost[ " + (end - start) + " ] ------exp="

@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -26,9 +27,9 @@ public class FelEngineImplTest {
 	 * @testng.data-provider name = "eval"
 	 */
 
+	FelEngineImpl engine = new FelEngineImpl();
 	@DataProvider(name = "eval")
 	public Object[][] evalData() {
-		FelEngineImpl engine = new FelEngineImpl();
 		FelContext jc = engine.getContext();
 
 		// 构建一个循环的foo
@@ -57,134 +58,152 @@ public class FelEngineImplTest {
 		m.put(null, "test null key");
 		jc.set("pc", m);
 
-		Object[][] object = new Object[1000][];
-		int i = 0;
+		Object[][] a = new Object[1000][];
+		AtomicInteger i = new AtomicInteger(-1);
 
-		object[i++] = new Object[] { engine, "foo.getCount()",
-				new Integer(header.getCount()) };
+
+		add(a, i, "foo.getCount()", new Integer(header.getCount()));
 		
 		// 算术运算
-		object[i++] = new Object[] { engine, "+1", new Integer(1) };
+		add(a, i, "+1", new Integer(1));
 //		if(true){
 //			return subarray(object, i);
 //		}
-		object[i++] = new Object[] { engine, "-1", new Integer(-1) };
-//		object[i++] = new Object[] { engine, "f+1", 2.1 };
-		object[i++] = new Object[] { engine, "A4*B5", new Integer(4 * 5) };
+		add(a, i, "-1", new Integer(-1) );
+//		add(object, i, "f+1", 2.1 );
+		add(a, i, "A4*B5", new Integer(4 * 5) );
 
 		// 逻辑运算
-		object[i++] = new Object[] { engine, "5 % 10", 5 };
-		object[i++] = new Object[] { engine, "5 % 2", 1 };
-		object[i++] = new Object[] { engine, "11 % 5", 1 };
-		object[i++] = new Object[] { engine, "a == b", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "a==true", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "a==false", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "1=='1'", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "1==1.0", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "1=='1.0'", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "1.0=='1.0'", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "true==false", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "1+'2'", "12" };
-		object[i++] = new Object[] { engine, "1+'2'+1", "121" };
-		object[i++] = new Object[] { engine, "'1'+2", "12" };
-		object[i++] = new Object[] { engine, "'1'+'2'", "12" };
-		object[i++] = new Object[] { engine, "'1'+2+'1'", "121" };
-//		object[i++] = new Object[] { engine, "'1'*2+'1'", "121" };
-		object[i++] = new Object[] { engine, "1.5-1", 0.5 };
+		add(a, i, "5 % 10", 5 );
+		add(a, i, "5 % 2", 1 );
+		add(a, i, "11 % 5", 1 );
+		add(a, i, "a == b", Boolean.FALSE );
+		add(a, i, "a==true", Boolean.TRUE );
+		add(a, i, "a==false", Boolean.FALSE );
+		add(a, i, "1=='1'", Boolean.TRUE );
+		add(a, i, "1==1.0", Boolean.TRUE );
+		add(a, i, "1=='1.0'", Boolean.TRUE );
+		add(a, i, "1.0=='1.0'", Boolean.TRUE );
+		add(a, i, "true==false", Boolean.FALSE );
+		add(a, i, "1+'2'", "12" );
+		add(a, i, "1+'2'+1", "121" );
+		add(a, i, "'1'+2", "12" );
+		add(a, i, "'1'+'2'", "12" );
+		add(a, i, "'1'+2+'1'", "121" );
+//		add(object, i, "'1'*2+'1'", "121" );
+		add(a, i, "1.5-1", 0.5 );
+		add(a, i, "1/3", 1.0 / 3 );
 		
 		
-		object[i++] = new Object[] { engine, "2 < 3", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num < 5", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num < num", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num < null", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num < 2.5", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "now2 < now", Boolean.FALSE }; // test
+		add(a, i, "2 < 3", Boolean.TRUE );
+		add(a, i, "num < 5", Boolean.FALSE );
+		add(a, i, "num < num", Boolean.FALSE );
+		add(a, i, "num < null", Boolean.FALSE );
+		add(a, i, "num < 2.5", Boolean.FALSE );
+		add(a, i, "now2 < now", Boolean.FALSE ); // test
 		// comparable
 		// engine,
-		object[i++] = new Object[] { engine, "'6' <= '5'", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num <= 5", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num <= num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num <= null", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num <= 2.5", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "now2 <= now", Boolean.FALSE }; // test
+		add(a, i, "'6' <= '5'", Boolean.FALSE );
+		add(a, i, "num <= 5", Boolean.TRUE );
+		add(a, i, "num <= num", Boolean.TRUE );
+		add(a, i, "num <= null", Boolean.FALSE );
+		add(a, i, "num <= 2.5", Boolean.FALSE );
+		add(a, i, "now2 <= now", Boolean.FALSE ); // test
 		// comparable
 
-		object[i++] = new Object[] { engine, "'6' >= '5'", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= 5", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= null", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num >= 2.5", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "now2 >= now", Boolean.TRUE }; // test
+		add(a, i, "'6' >= '5'", Boolean.TRUE );
+		add(a, i, "num >= 5", Boolean.TRUE );
+		add(a, i, "num >= num", Boolean.TRUE );
+		add(a, i, "num >= null", Boolean.TRUE );
+		add(a, i, "num >= 2.5", Boolean.TRUE );
+		add(a, i, "now2 >= now", Boolean.TRUE ); // test
 		// comparable
 
-		object[i++] = new Object[] { engine, "'6' > '5'", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num > 4", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num > num", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "num > null", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num > 2.5", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "now2 > now", Boolean.TRUE }; // test
+		add(a, i, "'6' > '5'", Boolean.TRUE );
+		add(a, i, "num > 4", Boolean.TRUE );
+		add(a, i, "num > num", Boolean.FALSE );
+		add(a, i, "num > null", Boolean.TRUE );
+		add(a, i, "num > 2.5", Boolean.TRUE );
+		add(a, i, "now2 > now", Boolean.TRUE ); // test
 		// comparable
 
-		object[i++] = new Object[] { engine, "\"foo\" + \"bar\" == \"foobar\"",
-				Boolean.TRUE };
+		add(a, i, "\"foo\" + \"bar\" == \"foobar\"",
+				Boolean.TRUE );
 
-		object[i++] = new Object[] { engine, "bdec > num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "bdec >= num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num <= bdec", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num < bdec", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "bint > num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "bint == bdec", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "bint >= num", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num <= bint", Boolean.TRUE };
-		object[i++] = new Object[] { engine, "num < bint", Boolean.TRUE };
+		add(a, i, "bdec > num", Boolean.TRUE );
+		add(a, i, "bdec >= num", Boolean.TRUE );
+		add(a, i, "num <= bdec", Boolean.TRUE );
+		add(a, i, "num < bdec", Boolean.TRUE );
+		add(a, i, "bint > num", Boolean.TRUE );
+		add(a, i, "bint == bdec", Boolean.TRUE );
+		add(a, i, "bint >= num", Boolean.TRUE );
+		add(a, i, "num <= bint", Boolean.TRUE );
+		add(a, i, "num < bint", Boolean.TRUE );
+
+		add(a, i, "foo == foo", Boolean.TRUE);
+		add(a, i, "foo.foo !=null", Boolean.TRUE);
+		add(a, i, "foo != foo.foo", Boolean.TRUE);
+
+		add(a, i, "'A' == 'A' || 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
+				Boolean.TRUE);
+		add(a, i,
+				"'A' != 'A' && 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
+				Boolean.FALSE );
+		// add(a, i, "true?1:2", 1 );
+		// add(a, i, "true?false?2:3:1", 3 );
+
 
 		/*
 		*//** **************** Dot operator start **************** */
-		// object[i++] = new Object[] { engine, "foo.name", header.get("name")
-		// };
-		object[i++] = new Object[] { engine, "foo.foo", footer };
-		object[i++] = new Object[] { engine, "foo.getCount()",
-				new Integer(header.getCount()) };
+		// add(object, i, "foo.name", header.get("name")
+		// );
+		add(a, i, "foo.foo", footer );
+		add(a, i, "foo.getCount()",
+				new Integer(header.getCount()) );
 
-		object[i++] = new Object[] { engine, "foo.foo.foo", header };
-		object[i++] = new Object[] { engine, "foo.foo.getCount()",
-				new Integer(footer.getCount()) };
+		add(a, i, "foo.foo.foo", header );
+		add(a, i, "foo.foo.getCount()",
+				new Integer(footer.getCount()) );
 
-		object[i++] = new Object[] { engine, "foo.getFoo().foo", header };
-		object[i++] = new Object[] { engine, "foo.getFoo().getFoo()", header };
+		add(a, i, "foo.getFoo().foo", header );
+		add(a, i, "foo.getFoo().getFoo()", header );
 
-		object[i++] = new Object[] { engine, "foo.convertBoolean(true)",
-				header.convertBoolean(true) };
-		object[i++] = new Object[] { engine, "pc.cpu",m.get("cpu")};
-		object[i++] = new Object[] { engine, "pc.memory",m.get("memory")};
-		object[i++] = new Object[] { engine, "pc.get(null)",m.get(null)};
+		add(a, i, "foo.convertBoolean(true)",
+				header.convertBoolean(true) );
+		add(a, i, "pc.cpu",m.get("cpu"));
+		add(a, i, "pc.memory",m.get("memory"));
+		add(a, i, "pc.get(null)",m.get(null));
 		
 		/*
 		*//** **************** Dot operator end **************** */
 		/*
 */
-		object[i++] = new Object[] { engine, "true && 1==2 && (1>2 || 2>1)",
-				Boolean.FALSE };
-		object[i++] = new Object[] { engine, "true && 1==1 && (1>2 || 2>1)",
-				Boolean.TRUE };
-		object[i++] = new Object[] { engine, "true && null", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "null && null", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "null || null", Boolean.FALSE };
-		object[i++] = new Object[] { engine, "null || true", Boolean.TRUE };
+		add(a, i, "true && 1==2 && (1>2 || 2>1)",
+				Boolean.FALSE );
+		add(a, i, "true && 1==1 && (1>2 || 2>1)",
+				Boolean.TRUE );
+		add(a, i, "true && null", Boolean.FALSE );
+		add(a, i, "null && null", Boolean.FALSE );
+		add(a, i, "null || null", Boolean.FALSE );
+		add(a, i, "null || true", Boolean.TRUE );
 
-		i = addStringTest(engine, object, i);
+		addStringTest(a, i);
 
-		return subarray(object, i);
+		return subarray(a, i.intValue());
+	}
+
+	private void add(Object[][] array, AtomicInteger i, String exp, Object value) {
+		array[i.incrementAndGet()] = new Object[] { exp, value };
 	}
 
 	private Object[][] subarray(Object[][] object, int i) {
 		return ArrayUtils.subarray(object, 0, i);
 	}
 
-	private int addStringTest(FelEngineImpl engine, Object[][] object, int i) {
-		object[i++] = new Object[] { engine, "'abc'.indexOf('bc')", 1 };
-		object[i++] = new Object[] { engine, "'abc'.substring(1)", "bc" };
-		return i;
+	private void addStringTest(Object[][] object,
+			AtomicInteger i) {
+		object[i.incrementAndGet()] = new Object[] { "'abc'.indexOf('bc')", 1 };
+		object[i.incrementAndGet()] = new Object[] { "'abc'.substring(1)", "bc" };
 	}
 
 	/**
@@ -193,7 +212,7 @@ public class FelEngineImplTest {
 	 * @param expected
 	 */
 	@Test(dataProvider = "eval")
-	public void testEvalWithCompiler(FelEngine engine, String expr,
+	public void testEvalWithCompiler(String expr,
 			Object expected) {
 		Expression ins = engine.compile(expr, null);
 		Object actual = ins.eval(engine.getContext());
@@ -208,7 +227,7 @@ public class FelEngineImplTest {
 	 * @testng.test dataProvider="eval" group = "script"
 	 */
 	@Test(dataProvider = "eval")
-	protected void testEval(FelEngine engine, String expression, Object expected) {
+	protected void testEval(String expression, Object expected) {
 		Object actual = engine.eval(expression);
 		if (actual instanceof Object[]) {
 			Object[] objs = (Object[]) actual;
@@ -259,7 +278,7 @@ public class FelEngineImplTest {
 	/**
 	 * 
 	 */
-	@Test
+	// @Test
 	public void testConcurrent(){
 		int i = 100;
 		ExecutorService pool =

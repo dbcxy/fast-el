@@ -55,8 +55,8 @@ public class Example {
 	 * 入门
 	 */
 	public static void helloworld() {
-		FelEngine fel = new FelEngineImpl();
-		Object result = fel.eval("5000*12+7500");
+		// FelEngine fel = new FelEngineImpl();
+		Object result = FelEngine.instance.eval("5000*12+7500");
 		System.out.println(result);
 	}
 
@@ -82,18 +82,18 @@ public class Example {
 		ctx.set("out", System.out);
 		fel.eval("out.println('Hello Everybody'.substring(6))");
 	}
-	
+
 	/**
-	 *	自定义上下文环境 
+	 * 自定义上下文环境
 	 */
 	public static void context(){
-		//负责提供气象服务的上下文环境
+		// 负责提供气象服务的上下文环境
 		FelContext ctx = new AbstractConetxt() {
 			public Object get(Object name) {
-				if("天气".equals(name)){
+				if ("天气".equals(name)) {
 					return "晴";
 				}
-				if("温度".equals(name)){
+				if ("温度".equals(name)) {
 					return 25;
 				}
 				return NOT_FOUND;
@@ -110,9 +110,9 @@ public class Example {
 	public static void contexts() {
 		FelEngine fel = new FelEngineImpl();
 		String costStr = "成本";
-		String priceStr="价格";
+		String priceStr = "价格";
 		FelContext baseCtx = fel.getContext();
-		//父级上下文中设置成本和价格
+		// 父级上下文中设置成本和价格
 		baseCtx.set(costStr, 50);
 		baseCtx.set(priceStr,100);
 		
@@ -121,7 +121,7 @@ public class Example {
 		System.out.println("期望利润：" + baseCost);
 
 		FelContext ctx = new ContextChain(baseCtx, new MapContext());
-		//通货膨胀导致成本增加（子级上下文 中设置成本，会覆盖父级上下文中的成本）
+		// 通货膨胀导致成本增加（子级上下文 中设置成本，会覆盖父级上下文中的成本）
 		ctx.set(costStr,50+20 );
 		Object allCost = fel.eval(exp, ctx);
 		System.out.println("实际利润：" + allCost);
@@ -133,20 +133,20 @@ public class Example {
 		ctx.set("单价", 5000);
 		ctx.set("数量", 12);
 		ctx.set("运费", 7500);
-		Expression exp = fel.compile("单价*数量+运费",ctx);
+		Expression exp = fel.compile("单价*数量+运费", ctx);
 		Object result = exp.eval(ctx);
 		System.out.println(result);
 	}
 	
 	
 	public static void userFunction(){
-		//定义hello函数
+		// 定义hello函数
 		Function fun = new CommonFunction() {
 
 			public String getName() {
 				return "hello";
 			}
-			
+
 			/* 
 			 * 调用hello("xxx")时执行的代码
 			 */
@@ -161,13 +161,13 @@ public class Example {
 
 		};
 		FelEngine e = new FelEngineImpl();
-		//添加函数到引擎中。
+		// 添加函数到引擎中。
 		e.addFun(fun);
 		String exp = "hello('fel')";
-		//解释执行
+		// 解释执行
 		Object eval = e.eval(exp);
 		System.out.println("hello "+eval);
-		//编译执行
+		// 编译执行
 		Expression compile = e.compile(exp, null);
 		eval = compile.eval(null);
 		System.out.println("hello "+eval);
@@ -189,10 +189,10 @@ public class Example {
 		FelContext context = new AbstractConetxt() {
 
 			public Object get(Object name) {
-				if("单价".equals(name)){
+				if ("单价".equals(name)) {
 					return price[index.intValue()];
 				}
-				if("数量".equals(name)){
+				if ("数量".equals(name)) {
 					return number[index.intValue()];
 				}
 				return NOT_FOUND;
@@ -220,6 +220,7 @@ public class Example {
 		node.setInterpreter(new ConstInterpreter(rootContext, node));
 		System.out.println(node.eval(rootContext));
 	}
+
 	/**
 	 * 大数据量计算（计算1千万次)
 	 */
@@ -232,7 +233,7 @@ public class Example {
 		final double[] prices = new double[count];
 		Arrays.fill(counts, 10d);
 		Arrays.fill(prices, 2.5d);
-		opti.add("单价",new Interpreter() {
+		opti.add("单价", new Interpreter() {
 			public Object interpret(FelContext context, FelNode node) {
 				return prices[index.intValue()];
 			}
@@ -251,7 +252,7 @@ public class Example {
 		}
 		long end = System.currentTimeMillis();
 		
-		System.out.println("大数据量计算:"+result+";耗时:"+(end-start));
+		System.out.println("大数据量计算:" + result + ";耗时:" + (end - start));
 	}
 
 	/**
@@ -272,7 +273,7 @@ public class Example {
 		ctx.set("费用", cost);
 		String exp = "单价+费用";
 		InteOpt interpreters = new InteOpt();
-		//定义"+"操作符的解释方法。
+		// 定义"+"操作符的解释方法。
 		interpreters.add("+", new Interpreter() {
 			public Object interpret(FelContext context, FelNode node) {
 				List<FelNode> args = node.getChildren();
@@ -280,7 +281,8 @@ public class Example {
 				double[] rightArg = (double[]) args.get(1).eval(context);
 				return sum(leftArg)+sum(rightArg);
 			}
-			//对数组进行求和
+
+			// 对数组进行求和
 			public double sum(double[] array){
 				double d = 0;
 				for (int i = 0; i < array.length; i++) {
@@ -290,10 +292,10 @@ public class Example {
 			}
 		});
 		
-		//使用自定义解释器作为编译选项进行进行编译
+		// 使用自定义解释器作为编译选项进行进行编译
 		Expression expObj = fel.compile(exp, null, interpreters);
 		Object eval = expObj.eval(ctx);
-		System.out.println("数组相加:"+eval);
+		System.out.println("数组相加:" + eval);
 	}
 
 
