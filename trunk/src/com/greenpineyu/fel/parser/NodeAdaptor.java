@@ -9,10 +9,12 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 
 public class NodeAdaptor extends CommonTreeAdaptor {
+	@Override
 	public Object create(Token token) {
 		if (token == null) {
 			return new AbstFelNode(token){
 
+				@Override
 				public SourceBuilder toMethod(FelContext ctx) {
 					return null;
 				}};
@@ -48,51 +50,52 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 				}
 				break;
 
-			/* 函数、操作符 开始 */
+		/* 函数、操作符 开始 */
 			case FelParser.Dot://.
-			case FelParser.Additive:// +、-
-			case FelParser.Multiplicative:// *、/
-			case FelParser.Equals:// ==、!=
-			case FelParser.Relational://>、<、>=、<=
-			case FelParser.Logical://AND、OR
+		case FelParser.Additive:// +、-
+		case FelParser.Multiplicative:// *、/
+		case FelParser.Equals:// ==、!=
+		case FelParser.Relational:// >、<、>=、<=
+		case FelParser.And:// AND
+		case FelParser.Or:// OR
 				returnMe = new FunNode(token);
 				break;
-			/* 函数、操作符 结束 */
+		/* 函数、操作符 结束 */
 
 			/* 常量开始 */
 			case FelParser.DecimalLiteral:
-				// 数字-10进制
+			// 数字-10进制
 				returnMe = NumberUtil.parseNumber(new Long(text));
 				break;
 			case FelParser.HexLiteral:
-				// 数字-16进制
+			// 数字-16进制
 				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(text, 16)));
 				break;
 			case FelParser.OctalLiteral:
-				// 数字-8进制
+			// 数字-8进制
 				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(text, 8)));
 				break;
 
 			case FelParser.FloatingPointLiteral:
-				// 浮点型
+			// 浮点型
 				returnMe = new Double(text);
 				break;
 			case FelParser.BooleanLiteral:
-				// 布尔值
+			// 布尔值
 				returnMe = Boolean.valueOf(text);
 				break;
 			case FelParser.CharacterLiteral:
 			case FelParser.StringLiteral:
-				// 字符串
-				// 出掉字符串两端的单引号和双引号
+			// 字符串
+			// 出掉字符串两端的单引号和双引号
 				returnMe = text.substring(1, text.length() - 1);
 				break;
-			/* 常量结束 */
+		/* 常量结束 */
 			default:
 				break;
 		}
 		if (returnMe == null) {
-			//不能正确解析
+			// 不能正确解析
 			return CommonTree.INVALID_NODE;
 		}
 		if (returnMe instanceof CommonTree) {

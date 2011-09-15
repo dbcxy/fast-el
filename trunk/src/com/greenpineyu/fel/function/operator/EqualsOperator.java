@@ -12,13 +12,9 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
 
-/**
- * 包名 .script.function.operator 类名 EqualsOperator.java 创建日期 Oct 25, 20104:54:53
- * PM 作者 版权
- */
 public class EqualsOperator extends StableFunction {
 
-	private String operator;
+	private final String operator;
 
 	private EqualsOperator(String operator) {
 		this.operator = operator;
@@ -89,7 +85,11 @@ public class EqualsOperator extends StableFunction {
 		if(sb.length()==0){
 			String left = getChildCode(node, ctx,0);
 			String right = getChildCode(node, ctx, 1);
-			sb.append("ObjectUtils.equals(" + left + "," + right + ")");
+			if (this == EQUAL) {
+				sb.append("ObjectUtils.equals(" + left + "," + right + ")");
+			} else {
+				sb.append("ObjectUtils.notEqual(" + left + "," + right + ")");
+			}
 		}
 		return new FelMethod(Boolean.class, sb.toString());
 	}
