@@ -25,7 +25,7 @@ public class FunctionFactory {
 		funcMap = new HashMap<String, Function>();
 
 
-//		// 统计类(重载)
+		// // 统计类(重载)
 //		funcMap.put("sum", new Sum());
 //		funcMap.put("count", new Count());
 //		funcMap.put("avg", new Avg());
@@ -33,15 +33,15 @@ public class FunctionFactory {
 //		funcMap.put("min", new Min());
 //		
 //
-//		// 操作符函数
+		// // 操作符函数
 		funcMap.put(".", new Dot());
-//		//单元格区域函数
+		// //单元格区域函数
 //		funcMap.put(":", new Colon());
 		
 		funcMap.put(AdditiveOperator.ADD_STR, Add.getInstance());// +
 		funcMap.put(AdditiveOperator.SUB_STR, Sub.getInstance());// -
 		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
-//		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
+		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
 		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *
 		funcMap.put(MultiplicativeOperator.DIV_STR, MultiplicativeOperator.DIV);// /
 		funcMap.put(MultiplicativeOperator.MOD_STR, MultiplicativeOperator.MOD);// %
@@ -61,7 +61,8 @@ public class FunctionFactory {
 //		funcMap.put(In.getInstance().getName(), In.getInstance());// in
 //		
 //		
-//		//字符串函数
+
+		// //字符串函数
 //		funcMap.put("find", Find.getInstance());
 //		funcMap.put("left", Left.getInstance());
 //		funcMap.put("len", Len.getInstance());
@@ -78,7 +79,8 @@ public class FunctionFactory {
 //		funcMap.put("trim", Trim.getInstance());
 //		funcMap.put("upper", Upper.getInstance());
 //		
-//		// 数学函数
+
+		// // 数学函数
 //		funcMap.put("abs", new Abs());
 //		funcMap.put("cos", new Cos());
 //		funcMap.put("round", new Round());
@@ -90,7 +92,7 @@ public class FunctionFactory {
 	}
 
 	public Function getFun(String funName) {
-		return (Function) funcMap.get(funName.toLowerCase());
+		return funcMap.get(funName.toLowerCase());
 	}
 
 	public void add(Function fun) {
