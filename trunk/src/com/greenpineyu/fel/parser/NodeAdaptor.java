@@ -51,13 +51,15 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 				break;
 
 		/* 函数、操作符 开始 */
-			case FelParser.Dot://.
+		case FelParser.Dot://.
 		case FelParser.Additive:// +、-
 		case FelParser.Multiplicative:// *、/
 		case FelParser.Equals:// ==、!=
 		case FelParser.Relational:// >、<、>=、<=
 		case FelParser.And:// AND
 		case FelParser.Or:// OR
+		case FelParser.Ques:
+		case FelParser.Not:
 				returnMe = new FunNode(token);
 				break;
 		/* 函数、操作符 结束 */

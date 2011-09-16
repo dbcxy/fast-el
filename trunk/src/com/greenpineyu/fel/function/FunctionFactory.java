@@ -5,10 +5,12 @@ import java.util.Map;
 
 import com.greenpineyu.fel.function.operator.Add;
 import com.greenpineyu.fel.function.operator.AdditiveOperator;
+import com.greenpineyu.fel.function.operator.CondOperator;
 import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.function.operator.EqualsOperator;
 import com.greenpineyu.fel.function.operator.LogicalOperator;
 import com.greenpineyu.fel.function.operator.MultiplicativeOperator;
+import com.greenpineyu.fel.function.operator.NotOper;
 import com.greenpineyu.fel.function.operator.RelationalOperator;
 import com.greenpineyu.fel.function.operator.Sub;
 
@@ -37,6 +39,9 @@ public class FunctionFactory {
 		funcMap.put(".", new Dot());
 		// //单元格区域函数
 //		funcMap.put(":", new Colon());
+		
+		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
+		funcMap.put(NotOper.instance.getName(), NotOper.instance);
 		
 		funcMap.put(AdditiveOperator.ADD_STR, Add.getInstance());// +
 		funcMap.put(AdditiveOperator.SUB_STR, Sub.getInstance());// -
