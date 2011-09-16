@@ -22,6 +22,7 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 
 import com.greenpineyu.fel.Expression;
+import com.greenpineyu.fel.exception.CompileException;
 
 public class FelCompiler16<T> implements FelCompiler {
 	private final FelCompilerClassloader classLoader;
@@ -80,6 +81,7 @@ public class FelCompiler16<T> implements FelCompiler {
 		this.options = new ArrayList<String>();
 	}
 
+	@Override
 	public Expression compile(JavaSource src) {
 
 		Class<T> compile = compileToClass(src);
@@ -106,7 +108,9 @@ public class FelCompiler16<T> implements FelCompiler {
 		if (result == null || !result.booleanValue()) {
 			// diagnostics.
 			// 编译失败
-			return null;
+			// diagnostics.getDiagnostics()
+			throw new CompileException(src.getSource() + "\n"
+					+ diagnostics.getDiagnostics().toString());
 		}
 		try {
 			return loadClass(src.getName());
