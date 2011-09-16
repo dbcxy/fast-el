@@ -149,8 +149,12 @@ public class FelEngineImplTest {
 		add(a, i,
 				"'A' != 'A' && 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
 				Boolean.FALSE );
-		// add(a, i, "true?1:2", 1 );
-		// add(a, i, "true?false?2:3:1", 3 );
+		add(a, i, "true?1:2", 1);
+		add(a, i, "true?false?2:3:1", 3);
+		add(a,
+				i,
+				"6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199: 100%3",
+				1);
 
 
 		/*
@@ -289,6 +293,7 @@ public class FelEngineImplTest {
 		for (int j = 0; j < i; j++) {
 			final int pos = j;
 			pool.submit(new Runnable() {
+				@Override
 				public void run() {
 					final FelEngine e = new FelEngineImpl();
 					final FelContext ctx = e.getContext();
@@ -297,6 +302,7 @@ public class FelEngineImplTest {
 					String varName =String.valueOf((char)(65+(int)(Math.random()*3)));
 					final String varValue = varName+"_value";
 					inte.add(varName, new Interpreter() {
+						@Override
 						public Object interpret(FelContext context, FelNode node) {
 							return varValue;
 						}
