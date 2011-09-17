@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Foo {
 
+
 	private final String name;
 
 	private Foo foo = null;
@@ -16,6 +17,15 @@ public class Foo {
 	public Foo(String name) {
 		this.name = name;
 	}
+
+	public Foo() {
+		this("anonymity");
+	}
+
+	public static String sayHello(String str) {
+		return "hello" + str;
+	}
+
 
 	public class Cheezy {
 		public Iterator<String> iterator() {
