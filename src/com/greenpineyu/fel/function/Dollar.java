@@ -3,7 +3,6 @@ package com.greenpineyu.fel.function;
 import org.apache.commons.lang3.StringUtils;
 
 import com.greenpineyu.fel.FelEngine;
-import com.greenpineyu.fel.Foo;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -106,7 +105,6 @@ public class Dollar implements Function {
 	public static void main(String[] args) {
 		// System.out.println("abc.new".endsWith(".new"));
 		String exp = "$('Math').max($('Math').min(1,2),3).doubleValue()";
-		exp = "$('" + Foo.class.getName() + ".new').get('name')";
 		exp = "$('String.new').concat('abc')";
 		Object eval = FelEngine.instance
 .eval(exp);
