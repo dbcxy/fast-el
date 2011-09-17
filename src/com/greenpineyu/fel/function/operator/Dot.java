@@ -39,10 +39,12 @@ public class Dot implements Function {
 	public static final String DOT = ".";
 
 
+	@Override
 	public String getName() {
 		return DOT;
 	}
 
+	@Override
 	public Object call(FelNode node, FelContext context) {
 		//		System.out.println("call dot:" + node.toString());
 		List<FelNode> children = node.getChildren();
@@ -71,11 +73,14 @@ public class Dot implements Function {
 				}
 			}
 			Method method = null;
-				 method = ReflectUtil.findMethod(left.getClass(), right.getText(),argsType);
+		Class<?> cls = left instanceof Class ? (Class<?>) left : left
+				.getClass();
+
+				method = ReflectUtil.findMethod(cls, right.getText(),argsType);
 		// //是函数，调用left中的方法
 //				returnMe = callMethod(left, exp, context);
 			if(method == null){
-				method = ReflectUtil.findMethod(left.getClass(), "get", new Class<?>[]{String.class});
+				method = ReflectUtil.findMethod(cls, "get", new Class<?>[]{String.class});
 				args = new Object[]{exp.getText()};
 			// 是属性，调用left中的属性
 //				returnMe = callGet(left, exp.getText());
@@ -174,6 +179,7 @@ public class Dot implements Function {
 	
 	
 
+	@Override
 	public FelMethod toMethod(FelNode node, FelContext context) {
 		
 		StringBuilder sb = new StringBuilder();
@@ -181,9 +187,16 @@ public class Dot implements Function {
 		FelNode l = children.get(0);
 		SourceBuilder leftMethod = l.toMethod(context);
 		Class<?> cls = leftMethod.returnType(context, l);
-		sb.append("(");
-		sb.append(leftMethod.source(context, l));
-		sb.append(").");
+		String leftSrc = leftMethod.source(context, l);
+		if (cls.isPrimitive()) {
+			Class<?> wrapperClass = ReflectUtil.toWrapperClass(cls);
+			// 如果左边返回的值的基本类型，要转成包装类型[eg:((Integer)1).doubleValue()]
+			sb.append("((").append(wrapperClass.getSimpleName()).append(")")
+					.append(leftSrc).append(")");
+		} else {
+			sb.append(leftSrc);
+		}
+		sb.append(".");
 		Method method  = null;
 		FelNode rightNode = children.get(1);
 		List<FelNode> params = getParamNodes(rightNode);
