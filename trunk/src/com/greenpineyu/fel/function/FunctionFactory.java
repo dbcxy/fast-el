@@ -41,6 +41,7 @@ public class FunctionFactory {
 //		funcMap.put(":", new Colon());
 		
 		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
+		funcMap.put(Dollar.instance.getName(), Dollar.instance);
 		funcMap.put(NotOper.instance.getName(), NotOper.instance);
 		
 		funcMap.put(AdditiveOperator.ADD_STR, Add.getInstance());// +
