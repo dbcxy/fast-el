@@ -161,6 +161,11 @@ public class FelEngineImplTest {
 		*//** **************** Dot operator start **************** */
 		// add(object, i, "foo.name", header.get("name")
 		// );
+		add(a, i, "$('Math').max($('Math').min(1,2),3).doubleValue()", 3.0);
+		add(a, i, "$('" + Foo.class.getName() + "').sayHello('fel')",
+				Foo.sayHello("fel"));
+		add(a, i, "$('" + Foo.class.getName() + ".new').get('name')",
+				new Foo().get("name"));
 		add(a, i, "foo.foo", footer );
 		add(a, i, "foo.getCount()",
 				new Integer(header.getCount()) );
