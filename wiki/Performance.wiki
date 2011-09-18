@@ -65,7 +65,7 @@ vars.put("s","hello world");
 ||fel   ||613||
 ||jexl	||16907||
 
-==场景4：调用JAVA方法[/size]==
+==场景4：调用JAVA方法==
 表达式：{{{s.substring(m.d)}}}
 
 执行结果： world
