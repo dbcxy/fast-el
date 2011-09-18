@@ -17,7 +17,7 @@ Jexl毕竟没有将表达式编译成字节码，所以效率不是非常高，�
 ||CPU 	||Intel(R) Core(TM) i3-2310M CPU@2.10GHz||
 ||内存 	||4G ddr3-1333 ||
 ||JDK 	||java version "1.6.0_26"||
-||Fel   ||0.4||
+||Fel   ||0.5||
 ||Jexl  ||2.0.1||
 
 = 变量 =
