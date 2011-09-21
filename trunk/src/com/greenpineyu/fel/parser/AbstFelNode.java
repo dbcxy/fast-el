@@ -155,6 +155,7 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 
 
+	@Override
 	public Object eval(FelContext context) {
 		return interpreter.interpret(context, this);
 		//		if (cached) {
@@ -195,14 +196,17 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	}
 
 
+	@Override
 	public Interpreter getInterpreter() {
 		return this.interpreter;
 	}
 
+	@Override
 	public void setInterpreter(Interpreter interpreter) {
 		this.interpreter = interpreter;
 	}
 
+	@Override
 	public void resetInterpreter() {
 		this.interpreter = this.defaultInter;
 	}
@@ -212,28 +216,34 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	 * 
 	 * @return
 	 */
+	@Override
 	public boolean isDefaultInterpreter(){
 		return this.interpreter == this.defaultInter;
 	}
 	
 	
 
+	@Override
 	public Object interpret(FelContext context, FelNode node) {
 		throw new UnsupportedOperationException("还没有实现[2011-1-13]");
 	}
 	
+	@Override
 	public SourceBuilder toMethod(FelContext ctx){
 		return this.builder;
 	}
 	
+	@Override
 	public void setSourcebuilder(SourceBuilder builder) {
 		this.builder = builder;
 	}
 	
+	@Override
 	public boolean stable() {
 		return false;
 	}
-	protected boolean isChildrenStable() {
+
+	public boolean isChildrenStable() {
 		if(this.children!=null){
 			// 子节点有一个不是稳定的，就返回false
 			for (int i = 0; i < children.size(); i++) {
@@ -245,8 +255,6 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 		}
 		return true;
 	}
-	
-	
 	
 	
 //	public void resetSourceBuilder(){
