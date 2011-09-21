@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.ReflectUtil;
+import com.greenpineyu.fel.compile.opti.ConstOpti;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.ConstNode;
@@ -60,6 +61,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		template = sb.toString();
 	}
 
+	@Override
 	public JavaSource getSource(FelContext ctx, FelNode node) {
 
 		String src = "";
@@ -71,7 +73,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			src = buildsource(exp, className);
 			this.localvars.clear();
 		}
-//		System.out.println("****************\n" + src);
+		System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
@@ -143,6 +145,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 	/**
 	 * 对节点进行优化
+	 * 
 	 * @param ctx
 	 * @param node
 	 * @return
@@ -155,25 +158,28 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	}
 
 	private void initOpti() {
-		//进行常量优化(计算表达式中的常量节点)
+		// 进行常量优化(计算表达式中的常量节点)
 		Optimizer constOpti = new ConstOpti();
 		this.addOpti(constOpti);
 		
-		//如果整个表达式是一个常量，再进行一次优化(可以减少装包拆包花费的时间)
+		// 如果整个表达式是一个常量，再进行一次优化(可以减少装包拆包花费的时间)
 		Optimizer constExpOpti = new Optimizer() {
 			
+			@Override
 			public FelNode call(FelContext ctx, FelNode node) {
 				if(node instanceof ConstNode){
 					final Object value = node.eval(ctx);
 					
-					//重新构建常量节点的java源码
+					// 重新构建常量节点的java源码
 					node.setSourcebuilder(new SourceBuilder() {
 						
+						@Override
 						public String source(FelContext ctx, FelNode node) {
 							Class<?> type = returnType(ctx, node);
 							return VarBuffer.push(value,type);
 						}
 						
+						@Override
 						public Class<?> returnType(FelContext ctx, FelNode node) {
 							if(value != null){
 								Class<?> cls = value.getClass();
@@ -193,18 +199,20 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		this.addOpti(constExpOpti);
 		
 		
-		//进行变量优化
+		// 进行变量优化
 		Optimizer optimizVars = getVarOpti();
 		this.addOpti(optimizVars);
 	}
 
 	/**
 	 * 获取变量优化方案
+	 * 
 	 * @return
 	 */
 	private Optimizer getVarOpti() {
 		Optimizer optimizVars = new Optimizer() {
 
+			@Override
 			public FelNode call(FelContext ctx, FelNode node) {
 				setVarSourceBuilder(ctx, node);
 				return node;
@@ -234,6 +242,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 				return new SourceBuilder() {
 
+					@Override
 					public String source(FelContext ctx, FelNode node) {
 						String text = node.getText();
 						if (localvars.containsKey(text)) {
@@ -254,6 +263,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 						return varName;
 					}
 
+					@Override
 					public Class<?> returnType(FelContext ctx, FelNode n) {
 //						VarAstNode node = (VarAstNode) old;
 						return old.returnType(ctx, n);
@@ -264,6 +274,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		return optimizVars;
 	}
 
+	@Override
 	public void addOpti(Optimizer opti) {
 		this.opt.add(opti);
 	}

@@ -9,14 +9,13 @@ import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
  * 逻辑操作符
  */
-public class LogicalOperator implements Function{
+public class LogicalOperator extends StableFunction {
 
 	private final String operator;
 
@@ -51,6 +50,7 @@ public class LogicalOperator implements Function{
 		return this.getName();
 	}
 
+	@Override
 	public Object call(FelNode node, FelContext context) {
 		List<FelNode> children = node.getChildren();
 		if (children != null && children.size() == 2) {
@@ -120,10 +120,12 @@ public class LogicalOperator implements Function{
 	 * NumberUtil.toBoolean(right); if (r) { return true; } return false; }
 	 */
 
+	@Override
 	public String getName() {
 		return this.operator;
 	}
 
+	@Override
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		String code = toBoolean(node, ctx, 0)+this.toJavaOper()+toBoolean(node, ctx, 1);
 		return new FelMethod(Boolean.class, code);
