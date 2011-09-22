@@ -86,6 +86,7 @@ public class Dot implements Function {
 //				returnMe = callGet(left, exp.getText());
 			}
 			if(method != null){
+				method.setAccessible(true);
 				return invoke(left, method, args);
 			}
 			return null;
