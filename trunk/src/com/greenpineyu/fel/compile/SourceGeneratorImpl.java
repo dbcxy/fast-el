@@ -6,17 +6,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
 
+import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
+import com.greenpineyu.fel.common.Callable;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.opti.ConstOpti;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.optimizer.Optimizer;
+import com.greenpineyu.fel.parser.AbstFelNode;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.VarAstNode;
@@ -73,7 +78,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			src = buildsource(exp, className);
 			this.localvars.clear();
 		}
-		// System.out.println("****************\n" + src);
+		 System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
@@ -204,6 +209,12 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		this.addOpti(optimizVars);
 	}
 
+	public static final	Callable<Boolean, FelNode> varsFilter = new Callable<Boolean, FelNode>() {
+		@Override
+		public Boolean call(FelNode... node) {
+			return node[0] instanceof VarAstNode;
+		}
+	};
 	/**
 	 * 获取变量优化方案
 	 * 
@@ -211,10 +222,34 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	 */
 	private Optimizer getVarOpti() {
 		Optimizer optimizVars = new Optimizer() {
-
 			@Override
 			public FelNode call(FelContext ctx, FelNode node) {
-				setVarSourceBuilder(ctx, node);
+				List<FelNode> nodes = AbstFelNode.getNodes(node,varsFilter);
+				//多次出现的变量
+				List<FelNode> repeatNodes = new ArrayList<FelNode>();
+				
+				Map<String,MutableInt> varCount = new HashMap<String, MutableInt>();
+				for (FelNode n : nodes) {
+					String name = n.getText();
+					MutableInt count = varCount.get(name);
+					if(count != null){
+						repeatNodes.add(n);
+						count.increment();
+					}else{
+						count = new MutableInt(1);
+						varCount.put(name, count);
+					}
+				}
+				
+				if(true){
+					for (FelNode n : repeatNodes) {
+						n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
+					}
+					
+				}else{
+					setVarSourceBuilder(ctx, node);
+				}
+				
 				return node;
 			}
 
@@ -282,10 +317,24 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	public static void main(String[] args) {
 		FelEngine engine = new FelEngineImpl();
 		FelContext ctx = engine.getContext();
-		ctx.set("a", 1);
-		ctx.set("b", 1);
-		String exp = "a+b";
-		Object eval = engine.compile(exp, ctx).eval(ctx);
+		ctx.set("i", 100);
+		ctx.set("pi", 3.14f);
+		String exp = "pi*i";
+		Expression expObj = engine.compile(exp, ctx);
+		Object eval = expObj.eval(ctx);
+//		cost(ctx, new Abcd());
+		cost(ctx, expObj);
 		System.out.println(eval);
 	}
+
+	private static void cost(FelContext ctx, Expression expObj) {
+		int count = 10*1000*1000;
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < count; i++) {
+			expObj.eval(ctx);
+		}
+		long end = System.currentTimeMillis();
+		System.out.println(end-start);
+	}
 }
+

@@ -9,6 +9,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 import org.apache.commons.lang3.ObjectUtils.Null;
 
+import com.greenpineyu.fel.common.Callable;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -171,14 +172,28 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 	//	abstract public Object evalWithoutCache(FelContext context);
 
+	static final Callable<Boolean,FelNode> empty = new Callable<Boolean, FelNode>() {
+		@Override
+		public Boolean call(FelNode... arg) {
+			return Boolean.TRUE;
+		}
+	};
 
 	public static List<FelNode> getNodes(FelNode node) {
 		List<FelNode> returnMe = new ArrayList<FelNode>();
-		getNodes(node, returnMe);
+		getNodes(node, returnMe,empty);
+		return returnMe;
+	}
+	
+	public static List<FelNode> getNodes(FelNode node,Callable<Boolean, FelNode> filter) {
+		List<FelNode> returnMe = new ArrayList<FelNode>();
+		if(filter.call(node)){
+			getNodes(node, returnMe,filter);
+		}
 		return returnMe;
 	}
 
-	public static void getNodes(FelNode node, List<FelNode> returnMe) {
+	public static void getNodes(FelNode node, List<FelNode> returnMe,Callable<Boolean, FelNode> filter) {
 		if (node != null) {
 			returnMe.add(node);
 			List<FelNode> nodeChildren = node.getChildren();
@@ -186,7 +201,9 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 				for (Iterator<FelNode> iterator = nodeChildren.iterator(); iterator.hasNext();) {
 					try {
 						FelNode child = iterator.next();
-						getNodes(child, returnMe);
+						if(filter.call(child)){
+							getNodes(child, returnMe,filter);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
