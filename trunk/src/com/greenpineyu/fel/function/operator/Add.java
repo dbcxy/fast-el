@@ -37,7 +37,6 @@ public class Add extends StableFunction  {
 	@Override
 	public Object call(FelNode node, FelContext context) {
 		Object returnMe = null;
-		boolean isAdd = node.getText().equals("+");
 		for (Iterator<FelNode> iterator = node.getChildren().iterator(); iterator
 				.hasNext();) {
 			Object child = iterator.next();
@@ -50,11 +49,7 @@ public class Add extends StableFunction  {
 					returnMe = child;
 					continue;
 				}
-				if (isAdd) {
 					returnMe = returnMe + (String) child;
-				} else {
-					throw new IllegalStateException("calc " + node + " error!");
-				}
 			}
 			if (child instanceof Number) {
 				if (returnMe == null) {
@@ -64,9 +59,7 @@ public class Add extends StableFunction  {
 				Number value = (Number) child;
 				if (returnMe instanceof Number) {
 					Number r = (Number) returnMe;
-					returnMe = new Double(isAdd ? toDouble(r)
-							+ toDouble(value):toDouble(r)
-							- toDouble(value));
+					returnMe = toDouble(r) + toDouble(value);
 				}else if(returnMe instanceof String){
 					String r = (String) returnMe;
 					returnMe=r+value;
@@ -87,40 +80,10 @@ public class Add extends StableFunction  {
 	public String getName() {
 		return "+";
 	}
-/*
-	public String toJavaSrc(FelNode node, FelContext context) {
-		List<FelNode> children = node.getChildren();
-		StringBuilder sb = new StringBuilder();
-
-		for (FelNode n : children) {
-			sb.append("(");
-			sb.append(n.toJavaSrc(null));
-			sb.append(")");
-			sb.append("+");
-		}
-		if (sb.length() > 0) {
-			sb.deleteCharAt(sb.length() - 1);
-		}
-		return sb.toString();
-	}*/
 
 	@Override
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		Class<?> type = null;
-		/*
-		 * List<FelNode> children = node.getChildren(); StringBuilder code = new
-		 * StringBuilder();
-		 * 
-		 * Iterator<FelNode> it = children.iterator(); FelNode first = null; if
-		 * (it.hasNext()) { first = it.next(); FelMethod argMethod =
-		 * first.toMethod(ctx); appendArg(code, argMethod); Class<?> t =
-		 * argMethod.getReturnType(); // 将第一个参数的类型作为返回值的类型 type =
-		 * t.isAssignableFrom(Number.class) ? t : String.class; } boolean
-		 * hasNext = it.hasNext(); while (hasNext) { code.append("+"); FelNode n
-		 * = it.next(); FelMethod argMethod = n.toMethod(ctx); appendArg(code,
-		 * argMethod); hasNext = it.hasNext(); } return new FelMethod(type,
-		 * code.toString());
-		 */
 		
 		List<FelNode> children = node.getChildren();
 		StringBuilder sb = new StringBuilder();
@@ -142,13 +105,6 @@ public class Add extends StableFunction  {
 		appendArg(sb, rm,ctx,right);
 		FelMethod m = new FelMethod(type, sb.toString());
 		return m;
-
-		/*
-		 * for (FelNode n : children) { sb.append("(");
-		 * sb.append(n.toJavaSrc(null)); sb.append(")"); sb.append("+"); }
-		 * if(sb.length()>0){ sb.deleteCharAt(sb.length()-1); children.get(0) }
-		 */
-		// return sb.toString();
 	}
 
 	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
@@ -167,6 +123,7 @@ public class Add extends StableFunction  {
 
 	/**
 	 * 加法
+	 * 
 	 * @param left
 	 * @param right
 	 * @return
@@ -182,8 +139,6 @@ public class Add extends StableFunction  {
 			if (right instanceof Object[]){
 				right = NumberUtil.calArray(right);
 			}
-			if (left.equals("∞") || right.equals("∞"))
-				return "∞";
 			
 			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
 				double l = NumberUtil.toDouble(left);
