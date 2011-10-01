@@ -1,4 +1,4 @@
-package com.greenpineyu.fel.compile.opti;
+package com.greenpineyu.fel.optimizer;
 
 import java.util.List;
 
@@ -9,7 +9,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.operator.LogicalOperator;
-import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.FunNode;
