@@ -15,7 +15,8 @@ import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.FunNode;
 
 /**
- * 常量节点优化，表达式："1+2+var",当var是变量时，可以优化成"3+var";当var是常量，其值为3时，可以优化成"6"
+ * 常量节点优化，优化表达式中的常量部分。
+ * 表达式："1+2+var",当var是变量时，可以优化成"3+var";当var是常量，其值为3时，可以优化成"6"
  * 
  * @author yuqingsong
  * 

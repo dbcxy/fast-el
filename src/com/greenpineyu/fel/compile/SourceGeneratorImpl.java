@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.Callable;
-import com.greenpineyu.fel.common.ReflectUtil;
+import com.greenpineyu.fel.compile.opti.ConstExpOpti;
 import com.greenpineyu.fel.compile.opti.ConstOpti;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.optimizer.Optimizer;
@@ -73,12 +72,16 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		String className = getClassName();
 		synchronized(this){
 			node = optimize(ctx, node);
+			if (node instanceof ConstNode) {
+				ConstNode n = (ConstNode) node;
+				return new ConstExpSrc(n.interpret(null, null));
+			}
 			SourceBuilder builder = node.toMethod(ctx);
 			String 	exp = builder.source(ctx, node);
 			src = buildsource(exp, className);
 			this.localvars.clear();
 		}
-		 System.out.println("****************\n" + src);
+		// System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
@@ -168,39 +171,8 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		this.addOpti(constOpti);
 		
 		// 如果整个表达式是一个常量，再进行一次优化(可以减少装包拆包花费的时间)
-		Optimizer constExpOpti = new Optimizer() {
-			
-			@Override
-			public FelNode call(FelContext ctx, FelNode node) {
-				if(node instanceof ConstNode){
-					final Object value = node.eval(ctx);
-					
-					// 重新构建常量节点的java源码
-					node.setSourcebuilder(new SourceBuilder() {
-						
-						@Override
-						public String source(FelContext ctx, FelNode node) {
-							Class<?> type = returnType(ctx, node);
-							return VarBuffer.push(value,type);
-						}
-						
-						@Override
-						public Class<?> returnType(FelContext ctx, FelNode node) {
-							if(value != null){
-								Class<?> cls = value.getClass();
-								if(cls.isPrimitive()){
-									return ReflectUtil.toWrapperClass(cls);
-								}
-								return cls;
-							}
-							return FelContext.NULL.getClass();
-						}
-					});
-				}
-				return node;
-			}
-		};
-		
+		Optimizer constExpOpti = new ConstExpOpti();
+
 		this.addOpti(constExpOpti);
 		
 		
@@ -215,6 +187,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			return node[0] instanceof VarAstNode;
 		}
 	};
+
 	/**
 	 * 获取变量优化方案
 	 * 
@@ -225,7 +198,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			@Override
 			public FelNode call(FelContext ctx, FelNode node) {
 				List<FelNode> nodes = AbstFelNode.getNodes(node,varsFilter);
-				//多次出现的变量
+				// 多次出现的变量
 				List<FelNode> repeatNodes = new ArrayList<FelNode>();
 				
 				Map<String,MutableInt> varCount = new HashMap<String, MutableInt>();
@@ -241,7 +214,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 					}
 				}
 				
-				if(true){
+				if (true) {
 					for (FelNode n : repeatNodes) {
 						n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
 					}

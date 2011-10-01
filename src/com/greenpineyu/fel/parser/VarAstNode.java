@@ -27,6 +27,7 @@ public class VarAstNode extends AbstFelNode  {
 	{
 		this.builder = new SourceBuilder() {
 			
+			@Override
 			public String source(FelContext ctx, FelNode node) {
 				if(!node.isDefaultInterpreter()){
 					// 用户自定义解析器
@@ -40,10 +41,11 @@ public class VarAstNode extends AbstFelNode  {
 					// 当float转double时，会丢失精度
 					code = "(("+type.getName()+")"+getVarCode+").doubleValue()";
 				}else{
-					code = "(" + type.getName() + ")" + getVarCode;
+					code = "((" + type.getName() + ")" + getVarCode + ")";
 				}
 				return code;
 			}
+			@Override
 			public Class<?> returnType(FelContext ctx, FelNode node) {
 				Class<?> type = InterpreterSourceBuilder.getInstance().returnType(ctx, node);
 				if(type == null){

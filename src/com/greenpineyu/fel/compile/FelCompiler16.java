@@ -79,6 +79,7 @@ public class FelCompiler16<T> implements FelCompiler {
 			 }
 		};
 		this.options = new ArrayList<String>();
+		// this.options.add("-O");
 	}
 
 	@Override
