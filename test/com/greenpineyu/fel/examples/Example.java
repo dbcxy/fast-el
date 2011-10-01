@@ -89,7 +89,8 @@ public class Example {
 	public static void context(){
 		// 负责提供气象服务的上下文环境
 		FelContext ctx = new AbstractConetxt() {
-			public Object get(Object name) {
+			@Override
+			public Object get(String name) {
 				if ("天气".equals(name)) {
 					return "晴";
 				}
@@ -143,6 +144,7 @@ public class Example {
 		// 定义hello函数
 		Function fun = new CommonFunction() {
 
+			@Override
 			public String getName() {
 				return "hello";
 			}
@@ -188,7 +190,8 @@ public class Example {
 		final double[] number = new double[] { 10.99, 20.99, 9.9 };
 		FelContext context = new AbstractConetxt() {
 
-			public Object get(Object name) {
+			@Override
+			public Object get(String name) {
 				if ("单价".equals(name)) {
 					return price[index.intValue()];
 				}
@@ -234,11 +237,13 @@ public class Example {
 		Arrays.fill(counts, 10d);
 		Arrays.fill(prices, 2.5d);
 		opti.add("单价", new Interpreter() {
+			@Override
 			public Object interpret(FelContext context, FelNode node) {
 				return prices[index.intValue()];
 			}
 		});
 		opti.add("数量", new Interpreter() {
+			@Override
 			public Object interpret(FelContext context, FelNode node) {
 				return counts[index.intValue()];
 			}
@@ -275,6 +280,7 @@ public class Example {
 		Interpreters interpreters = new Interpreters();
 		// 定义"+"操作符的解释方法。
 		interpreters.add("+", new Interpreter() {
+			@Override
 			public Object interpret(FelContext context, FelNode node) {
 				List<FelNode> args = node.getChildren();
 				double[] leftArg = (double[]) args.get(0).eval(context);
@@ -325,6 +331,7 @@ class ColumnInterpreter implements Interpreter {
 		this.records = records;
 	}
 
+	@Override
 	public Object interpret(FelContext context, FelNode node) {
 		return records[index.intValue()];
 	}
