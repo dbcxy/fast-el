@@ -99,10 +99,10 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
         }
         try {
         	if (left instanceof Object[]){
-				left = AdditiveOperator.calArray(left);
+				left = NumberUtil.calArray(left);
 			}
 			if (right instanceof Object[]){
-				right = AdditiveOperator.calArray(right);
+				right = NumberUtil.calArray(right);
 			}
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
@@ -143,10 +143,10 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
         }
         try {
         	if (left instanceof Object[]){
-				left = AdditiveOperator.calArray(left);
+				left = NumberUtil.calArray(left);
 			}
 			if (right instanceof Object[]){
-				right = AdditiveOperator.calArray(right);
+				right = NumberUtil.calArray(right);
 			}
 			if (left.equals("∞") || right.equals("∞")) {
 				return "∞";
@@ -203,10 +203,10 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
         }
         try {
         	if (left instanceof Object[]){
-				left = AdditiveOperator.calArray(left);
+				left = NumberUtil.calArray(left);
 			}
 			if (right instanceof Object[]){
-				right = AdditiveOperator.calArray(right);
+				right = NumberUtil.calArray(right);
 			}
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";

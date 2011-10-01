@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
+import com.greenpineyu.fel.function.operator.AdditiveOperator;
+
 /**
  * 包名				.common
  * 类名				NumberUtil.java
@@ -403,6 +405,24 @@ public class NumberUtil {
 			return a.compareTo(b);
 		}
 		return a==null?-1:1;
+	}
+
+	/**
+	 * 计算对象数组
+	 * @param obj
+	 * @return
+	 */
+	public static Object calArray(Object obj) {
+		if (!(obj instanceof Object[]))
+			return obj;
+		
+		Object result = new Integer(0);
+		if (!ArrayUtils.isEmpty((Object[])obj)){
+			for (int i=0; i< ((Object[])obj).length;i++){
+				result = AdditiveOperator.add(result,((Object[])obj)[i]);
+			}
+		}
+		return result;
 	}
 	
 }

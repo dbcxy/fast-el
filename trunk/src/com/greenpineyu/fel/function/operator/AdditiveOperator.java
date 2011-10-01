@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.compile.FelMethod;
@@ -82,10 +81,10 @@ public class AdditiveOperator extends CommonFunction {
 		}
 		try {
 			if (left instanceof Object[]){
-				left = calArray(left);
+				left = NumberUtil.calArray(left);
 			}
 			if (right instanceof Object[]){
-				right = calArray(right);
+				right = NumberUtil.calArray(right);
 			}
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";
@@ -126,24 +125,6 @@ public class AdditiveOperator extends CommonFunction {
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	/**
-	 * 计算对象数组
-	 * @param obj
-	 * @return
-	 */
-	public static Object calArray(Object obj) {
-		if (!(obj instanceof Object[]))
-			return obj;
-		
-		Object result = new Integer(0);
-		if (!ArrayUtils.isEmpty((Object[])obj)){
-			for (int i=0; i< ((Object[])obj).length;i++){
-				result = add(result,((Object[])obj)[i]);
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * 减法
 	 * @param left
 	 * @param right
@@ -155,10 +136,10 @@ public class AdditiveOperator extends CommonFunction {
 		}
 		try {
 			if (left instanceof Object[]){
-				left = calArray(left);
+				left = NumberUtil.calArray(left);
 			}
 			if (right instanceof Object[]){
-				right = calArray(right);
+				right = NumberUtil.calArray(right);
 			}
 			if (left.equals("∞") || right.equals("∞"))
 				return "∞";

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.greenpineyu.fel.function.operator.Add;
-import com.greenpineyu.fel.function.operator.AdditiveOperator;
 import com.greenpineyu.fel.function.operator.CondOperator;
 import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.function.operator.EqualsOperator;
@@ -44,8 +43,8 @@ public class FunctionFactory {
 		funcMap.put(Dollar.instance.getName(), Dollar.instance);
 		funcMap.put(NotOper.instance.getName(), NotOper.instance);
 		
-		funcMap.put(AdditiveOperator.ADD_STR, Add.getInstance());// +
-		funcMap.put(AdditiveOperator.SUB_STR, Sub.getInstance());// -
+		funcMap.put(Add.getInstance().getName(), Add.getInstance());// +
+		funcMap.put(Sub.getInstance().getName(), Sub.getInstance());// -
 		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
 		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
 		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *

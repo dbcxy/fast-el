@@ -28,6 +28,7 @@ public class Add extends StableFunction  {
 	 * @see .script.function.Function#call(.script.AstNode,
 	 * .script.context.ScriptContext)
 	 */
+	@Override
 	public Object call(FelNode node, FelContext context) {
 		Object returnMe = null;
 		boolean isAdd = node.getText().equals("+");
@@ -76,8 +77,9 @@ public class Add extends StableFunction  {
 		return instance;
 	}
 
+	@Override
 	public String getName() {
-		throw new UnsupportedOperationException("还没有实现[2010-10-19]");
+		return "+";
 	}
 /*
 	public String toJavaSrc(FelNode node, FelContext context) {
@@ -96,6 +98,7 @@ public class Add extends StableFunction  {
 		return sb.toString();
 	}*/
 
+	@Override
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		Class<?> type = null;
 		/*
