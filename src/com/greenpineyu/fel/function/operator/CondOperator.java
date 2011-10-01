@@ -11,8 +11,9 @@ import com.greenpineyu.fel.parser.FelNode;
 
 /**
  * 三元表达式操作符
+ * 
  * @author Administrator
- *
+ * 
  */
 public class CondOperator extends StableFunction {
 	
@@ -30,7 +31,7 @@ public class CondOperator extends StableFunction {
 		FelNode result1 = args.get(1);
 		FelNode result2 = args.get(2);
 		Object eval = cond.eval(context);
-		//当cond是boolean型，并且值是true的,返回result1,否则返回result2
+		// 当cond是boolean型，并且值是true的,返回result1,否则返回result2
 		if(eval !=null && eval instanceof Boolean){
 			Boolean b = (Boolean)eval;
 			if(b.booleanValue()){
@@ -58,7 +59,7 @@ public class CondOperator extends StableFunction {
 		Class<?> type = null;
 		SourceBuilder r2 = result2.toMethod(ctx);
 		if(Boolean.class.isAssignableFrom(class1)|| boolean.class.isAssignableFrom(class1)){
-			//FIXME 需要判断两个结果中的父类型
+			// FIXME 需要判断两个结果中的父类型
 			sb.append(source.source(ctx, node));
 			sb.append("?");
 			SourceBuilder r1 = result1.toMethod(ctx);
@@ -85,8 +86,9 @@ public class CondOperator extends StableFunction {
 	public static void main(String[] args) {
 		String exp = "true?false?2:3:2";
 		System.out.println(!(100%3-39.0<27));
-		Object a =6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199: 100%3;
-		System.out.println(a);
+		// Object a =6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199:
+		// 100%3;
+		// System.out.println(a);
 		exp = "6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199: 100%3";
 		eval(exp);
 	}
