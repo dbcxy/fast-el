@@ -17,7 +17,7 @@ import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.interpreter.ConstInterpreter;
 import com.greenpineyu.fel.interpreter.Interpreter;
-import com.greenpineyu.fel.optimizer.InteOpt;
+import com.greenpineyu.fel.optimizer.Interpreters;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class Example {
@@ -226,7 +226,7 @@ public class Example {
 	 */
 	public static void massData() {
 		FelEngine fel = new FelEngineImpl();
-		final InteOpt opti = new InteOpt();
+		final Interpreters opti = new Interpreters();
 		final MutableInt index = new MutableInt(0);
 		int count = 10*1000*1000;
 		final double[] counts = new double[count];
@@ -272,7 +272,7 @@ public class Example {
 		ctx.set("单价", price);
 		ctx.set("费用", cost);
 		String exp = "单价+费用";
-		InteOpt interpreters = new InteOpt();
+		Interpreters interpreters = new Interpreters();
 		// 定义"+"操作符的解释方法。
 		interpreters.add("+", new Interpreter() {
 			public Object interpret(FelContext context, FelNode node) {

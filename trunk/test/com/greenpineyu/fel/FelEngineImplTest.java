@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
-import com.greenpineyu.fel.optimizer.InteOpt;
+import com.greenpineyu.fel.optimizer.Interpreters;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class FelEngineImplTest {
@@ -304,7 +304,7 @@ public class FelEngineImplTest {
 				public void run() {
 					final FelEngine e = new FelEngineImpl();
 					final FelContext ctx = e.getContext();
-					InteOpt inte = new InteOpt();
+					Interpreters inte = new Interpreters();
 					// 随机生成A,B,C三个字母
 					String varName =String.valueOf((char)(65+(int)(Math.random()*3)));
 					final String varValue = varName+"_value";
