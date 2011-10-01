@@ -63,6 +63,10 @@ public class CompileService {
 	public Expression compile(FelContext ctx,FelNode node){
 		try {
 			JavaSource src = srcGen.getSource(ctx, node);
+			if (src instanceof ConstExpSrc) {
+				ConstExpSrc s = (ConstExpSrc) src;
+				return s.getValue();
+			}
 			return complier.compile(src);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -17,9 +17,10 @@ public  class  VarBuffer {
 	}
 	
 	private static int  count;
-	
+
 	/**
 	 * 获取当前线程中的变量代码(类的属性代码)stack
+	 * 
 	 * @return
 	 */
 	private static Stack<String> getVarCodes(){
@@ -30,8 +31,10 @@ public  class  VarBuffer {
 		}
 		return stack;
 	}
+
 	/**
 	 * 获取当前线程中的保存的对象Map。
+	 * 
 	 * @return
 	 */
 	private static Map<String, Object> getVars(){
@@ -42,11 +45,10 @@ public  class  VarBuffer {
 		}
 		return map;
 	}
-	
-	
-	
+
 	/**
 	 * 将变量存入线程
+	 * 
 	 * @param attrCode
 	 */
 	static public String push(Object var){
@@ -60,7 +62,7 @@ public  class  VarBuffer {
 		String varId = UUID.randomUUID().toString();
 		
 		getVars().put(varId, var);
-		String code = type+" "+varName
+		String code = "private static final " + type + " " + varName
 		+" = ("+type+")"+VarBuffer.class.getSimpleName()+".pop(\""+varId+"\");";
 		getVarCodes().push(code);
 		return varName;
@@ -71,9 +73,10 @@ public  class  VarBuffer {
 	synchronized static private String getVarName(){
 		return "attr_"+count++;
 	}
-	
+
 	/**
 	 * 从线程取出变量
+	 * 
 	 * @param attrCode
 	 * @return
 	 */
@@ -96,6 +99,7 @@ public  class  VarBuffer {
 	for (int j = 0; j < i; j++) {
 		pool.submit(new Runnable() {
 			
+			@Override
 			public void run() {
 				String name = Thread.currentThread().getName();
 				System.out.println("*******************"+name+" start************************");

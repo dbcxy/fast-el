@@ -187,23 +187,21 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 	
 	public static List<FelNode> getNodes(FelNode node,Callable<Boolean, FelNode> filter) {
 		List<FelNode> returnMe = new ArrayList<FelNode>();
-		if(filter.call(node)){
-			getNodes(node, returnMe,filter);
-		}
+		getNodes(node, returnMe, filter);
 		return returnMe;
 	}
 
 	public static void getNodes(FelNode node, List<FelNode> returnMe,Callable<Boolean, FelNode> filter) {
 		if (node != null) {
-			returnMe.add(node);
+			if (filter.call(node)) {
+				returnMe.add(node);
+			}
 			List<FelNode> nodeChildren = node.getChildren();
 			if (nodeChildren != null) {
 				for (Iterator<FelNode> iterator = nodeChildren.iterator(); iterator.hasNext();) {
 					try {
 						FelNode child = iterator.next();
-						if(filter.call(child)){
-							getNodes(child, returnMe,filter);
-						}
+						getNodes(child, returnMe, filter);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
