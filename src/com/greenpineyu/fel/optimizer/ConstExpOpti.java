@@ -1,17 +1,17 @@
-package com.greenpineyu.fel.compile.opti;
+package com.greenpineyu.fel.optimizer;
 
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.compile.VarBuffer;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * 当
+ * 当表达式是常量表达式，对表达式进行优化（目前未使用）
+ * 
  * @author yuqingsong
- *
+ * 
  */
 public class ConstExpOpti implements Optimizer {
 

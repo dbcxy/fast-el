@@ -15,7 +15,7 @@ import com.greenpineyu.fel.parser.FelNode;
  * @author yuqingsong
  *
  */
-public class InteOpt implements Optimizer {
+public class Interpreters implements Optimizer {
 
 	private Map<String,Interpreter> inteMap;
 	{
