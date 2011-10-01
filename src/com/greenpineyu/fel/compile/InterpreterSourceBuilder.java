@@ -23,24 +23,29 @@ public class InterpreterSourceBuilder implements SourceBuilder {
 	
 	
 	
+	@Override
 	public Class<?> returnType(FelContext ctx, FelNode node) {
 			return  AbstractConetxt.getVarType(node.getInterpreter().interpret(ctx, node));
 	}
 
 	/**
 	 * 用户自定义解析器生成的java代码
+	 * 
 	 * @param ctx
 	 * @param node
 	 * @return
 	 */
+	@Override
 	public String source(FelContext ctx, FelNode node) {
-			//用户设置了解释器
-			Interpreter inte = new ProxyInterpreter(node.getInterpreter(), node);
+		// 用户设置了解释器
+//			Interpreter inte = new ProxyInterpreter(node.getInterpreter(), node);
+		Interpreter inte = node.getInterpreter();
 			SourceBuilder nodeBuilder = node.toMethod(ctx);
 			Class<?> type =nodeBuilder.returnType(ctx, node);
 			String code = "("+type.getName()+")";
 			String varName = VarBuffer.push(inte,Interpreter.class);
-			code+=varName+".interpret(context,null)";
+			String nodeVarName = VarBuffer.push(node, FelNode.class);
+			code += varName + ".interpret(context," + nodeVarName + ")";
 			boolean isNumber = Number.class.isAssignableFrom(type);
 			if(isNumber){
 				code="("+code+").doubleValue()";
