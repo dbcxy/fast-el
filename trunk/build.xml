@@ -28,12 +28,13 @@
 			</classpath>
 		</javac>
 		<copy todir="${destClassDir}">
+			<fileset dir="${srcDir}" excludes="**/*.java/" />
 			<fileset dir="${classpathDir}" excludes="**/*.java/" />
 		</copy>
 		<echo>compile success</echo>
 	</target>
 	<target name="jar" depends="compile">
-		<jar compress="false" destfile="${destLibPath}">
+		<jar compress="true" destfile="${destLibPath}">
 			<fileset dir="${destClassDir}">
 			</fileset>
 		</jar>
@@ -48,5 +49,8 @@
 				<exclude name="*fel*.jar" />
 			</fileset>
 		</delete>
+		<copy todir="E:\workspace\yuqingsong\WebContent\WEB-INF\lib">
+			<fileset file="${destLibPath}"></fileset>
+		</copy>
 	</target>
 </project>
