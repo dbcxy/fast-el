@@ -70,6 +70,7 @@ public class FelEngineImplTest {
 //			return subarray(object, i);
 //		}
 		add(a, i, "-1", new Integer(-1) );
+		add(a, i, "2*(-1)", -2);
 //		add(object, i, "f+1", 2.1 );
 		add(a, i, "A4*B5", new Integer(4 * 5) );
 
@@ -93,6 +94,7 @@ public class FelEngineImplTest {
 //		add(object, i, "'1'*2+'1'", "121" );
 		add(a, i, "1.5-1", 0.5 );
 		add(a, i, "1/3", 1.0 / 3 );
+		add(a, i, "2*(4+3)", 14);
 		
 		
 		add(a, i, "2 < 3", Boolean.TRUE );

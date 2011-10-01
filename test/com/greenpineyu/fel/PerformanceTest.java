@@ -70,7 +70,7 @@ public class PerformanceTest {
 		exps[i++] = "pi*d+b-(1000-d*b/pi)/(pi+99-i*d)-i*pi*d/b";
 		exps[i++] = "s.substring(m.d)";
 		exps[i++] = "s.substring(1).substring(2).indexOf('world')";
-		int times = 10 * 1000 *1000;
+		int times = 10 * 1000 * 1000;
 		// times =1;
 		for (String exp : exps) {
 			if (exp == null) {
@@ -94,9 +94,9 @@ public class PerformanceTest {
 		Object evalResult = null;
 		long start = System.currentTimeMillis();
 		Object result = null;
-		for (int i = 0; i < times; i++) {
+		int i = 0;
+		while (i++ < times) {
 			result = expObj.eval(ctx);
-			// evalResult = engine.eval(exp,ctx);
 		}
 		long end = System.currentTimeMillis();
 		// System.out.println(result + " == " + evalResult + "："
@@ -160,6 +160,7 @@ public class PerformanceTest {
 					vars[i] = Math.random() * 100;
 				}
 			}
+			@Override
 			public Object get(Object name) {
 				return vars[index++ % size];
 			}
@@ -170,6 +171,7 @@ public class PerformanceTest {
 			final int current=j%i;
 			FutureTask<Long> f = new FutureTask<Long>(new Callable<Long>() {
 				
+				@Override
 				public Long call() throws Exception {
 					return fel(exps[current], ctx, times);
 				}
