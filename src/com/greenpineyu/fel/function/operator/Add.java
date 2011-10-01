@@ -2,6 +2,10 @@ package com.greenpineyu.fel.function.operator;
 
 import static com.greenpineyu.fel.common.NumberUtil.toDouble;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +22,8 @@ public class Add extends StableFunction  {
 	static {
 		instance = new Add();
 	}
+
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private Add() {
 	}
@@ -157,6 +163,59 @@ public class Add extends StableFunction  {
 					.append(")");
 		}
 		sb.append(")");
+	}
+
+	/**
+	 * 加法
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	public static Object add(Object left, Object right){
+		if(left == null || right == null){
+			throw new NullPointerException("调用add()方法出错！,原因：当前参数为空");
+		}
+		try {
+			if (left instanceof Object[]){
+				left = NumberUtil.calArray(left);
+			}
+			if (right instanceof Object[]){
+				right = NumberUtil.calArray(right);
+			}
+			if (left.equals("∞") || right.equals("∞"))
+				return "∞";
+			
+			if (NumberUtil.isFloatingPointNumber(left) || NumberUtil.isFloatingPointNumber(right)) {
+				double l = NumberUtil.toDouble(left);
+				double r = NumberUtil.toDouble(right);
+				return new Double(l + r);
+			}
+			
+			if(left instanceof BigInteger && right instanceof BigInteger){
+				BigInteger l = NumberUtil.toBigInteger(left);
+				BigInteger r = NumberUtil.toBigInteger(right);
+				return l.add(r);
+			}
+			
+			if(left instanceof BigDecimal || right instanceof BigDecimal){
+				BigDecimal l = NumberUtil.toBigDecimal(left);
+				BigDecimal r = NumberUtil.toBigDecimal(right);
+				return l.add(r);
+			}
+			
+			if (left instanceof String && right instanceof Date) {
+				return left + Add.DATE_FORMAT.format((Date) right);
+			} else if (left instanceof Date && right instanceof String) {
+				return Add.DATE_FORMAT.format((Date) left) + right;
+			}
+	
+			BigInteger l = NumberUtil.toBigInteger(left);
+			BigInteger r = NumberUtil.toBigInteger(right);
+			BigInteger result = l.add(r);
+			return NumberUtil.narrowBigInteger(left, right, result);
+		} catch (Exception e) {
+			return NumberUtil.toString(left).concat(NumberUtil.toString(right));
+		}
 	}
 
 }
