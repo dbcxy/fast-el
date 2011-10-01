@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 
-import com.greenpineyu.fel.function.operator.AdditiveOperator;
+import com.greenpineyu.fel.function.operator.Add;
 
 /**
  * 包名				.common
@@ -419,7 +419,7 @@ public class NumberUtil {
 		Object result = new Integer(0);
 		if (!ArrayUtils.isEmpty((Object[])obj)){
 			for (int i=0; i< ((Object[])obj).length;i++){
-				result = AdditiveOperator.add(result,((Object[])obj)[i]);
+				result = Add.add(result,((Object[])obj)[i]);
 			}
 		}
 		return result;
