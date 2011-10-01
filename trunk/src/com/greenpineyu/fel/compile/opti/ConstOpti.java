@@ -109,6 +109,7 @@ public class ConstOpti implements Optimizer {
 		return constNode;
 	}
 
+	@SuppressWarnings("unused")
 	private void setConstValue(List<FelNode> children, FelNode left,
 			Object leftValue) {
 		children.remove(1);

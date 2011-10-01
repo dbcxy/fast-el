@@ -3,7 +3,6 @@ package com.greenpineyu.fel.compile;
 import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
-import com.greenpineyu.fel.interpreter.ProxyInterpreter;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class InterpreterSourceBuilder implements SourceBuilder {

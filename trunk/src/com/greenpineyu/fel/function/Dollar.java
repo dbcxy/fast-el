@@ -53,9 +53,9 @@ public class Dollar implements Function {
 
 	private static final String suffix = ".new";
 
+	@SuppressWarnings("unused")
 	private Class<?> getClass(FelNode node) {
 		String txt = getChildText(node);
-
 		boolean isNew = isNew(txt);
 		return getClass(txt, isNew);
 	}

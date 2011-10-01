@@ -213,14 +213,8 @@ public class SourceGeneratorImpl implements SourceGenerator {
 						varCount.put(name, count);
 					}
 				}
-				
-				if (true) {
-					for (FelNode n : repeatNodes) {
-						n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
-					}
-					
-				}else{
-					setVarSourceBuilder(ctx, node);
+				for (FelNode n : repeatNodes) {
+					n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
 				}
 				
 				return node;
@@ -232,6 +226,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			 * @param ctx
 			 * @param node
 			 */
+			@SuppressWarnings("unused")
 			private void setVarSourceBuilder(FelContext ctx, FelNode node) {
 				if (node instanceof VarAstNode) {
 					node.setSourcebuilder(getVarSrcBuilder(node.toMethod(ctx)));
