@@ -161,7 +161,7 @@ public class PerformanceTest {
 				}
 			}
 			@Override
-			public Object get(Object name) {
+			public Object get(String name) {
 				return vars[index++ % size];
 			}
 		};

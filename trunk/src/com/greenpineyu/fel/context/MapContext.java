@@ -7,7 +7,7 @@ public class MapContext implements FelContext {
 	/**
 	 * 保存脚本上下文的变量
 	 */
-	private Map<String, Object> varMap;
+	private final Map<String, Object> varMap;
 
 	public MapContext() {
 		this(new HashMap<String, Object>());
@@ -17,16 +17,18 @@ public class MapContext implements FelContext {
 		this.varMap = map;
 	}
 
-	public Object get(Object name) {
+	@Override
+	public Object get(String name) {
 		Object object = this.varMap.get(name);
 		if(object!=null || this.varMap.containsKey(name)){
-			//对象有值，或者包含此变量时，返回object
+			// 对象有值，或者包含此变量时，返回object
 			return object;
 		}
-		//map中不包含此变量返回NOT_FOUND
+		// map中不包含此变量返回NOT_FOUND
 		return NOT_FOUND;
 	}
 
+	@Override
 	public Class<?> getVarType(String varName) {
 		return AbstractConetxt.getVarType(varName,this);
 	}
@@ -35,10 +37,12 @@ public class MapContext implements FelContext {
 		return var == null ? null : var.toString();
 	}
 
+	@Override
 	public void set(String name, Object value) {
 		this.varMap.put(name, value);
 	}
 
+	@Override
 	public Object clone() {
 		try {
 			MapContext clone = (MapContext) super.clone();
