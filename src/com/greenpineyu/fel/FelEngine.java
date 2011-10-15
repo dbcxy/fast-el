@@ -6,7 +6,7 @@ import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * 脚本引擎
+ * 表达式引擎
  * 
  * @author yqs
  */
@@ -29,8 +29,7 @@ public interface FelEngine {
 	 * 使用指定的引擎上下文执行表达式，获取结果
 	 * 
 	 * @param exp
-	 * @param ctx
-	 *            引擎上下文
+	 * @param ctx 引擎上下文
 	 * @return
 	 */
 	Object eval(String exp, FelContext ctx);
@@ -42,9 +41,20 @@ public interface FelEngine {
 	 * @return
 	 */
 	FelNode parse(String exp);
-	
-	Expression compile(String exp,FelContext ctx,Optimizer... opts);
 
+	/**
+	 * 编译表达式
+	 * 
+	 * @param exp
+	 * @param ctx
+	 * @param opts 编译优化选项
+	 * @return
+	 */
+	Expression compile(String exp, FelContext ctx, Optimizer... opts);
+
+	/**
+	 * @return 引擎执行环境
+	 */
 	FelContext getContext();
 
 	/**
@@ -54,7 +64,5 @@ public interface FelEngine {
 	 * @return
 	 */
 	boolean addFun(Function fun);
-	
-	
 
 }
