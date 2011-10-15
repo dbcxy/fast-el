@@ -3,24 +3,28 @@ package com.greenpineyu.fel.context;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapContext implements FelContext {
-	/**
-	 * 保存脚本上下文的变量
-	 */
-	private final Map<String, Object> varMap;
+/**
+ * 
+ * @author yuqingsong
+ * 
+ */
+/*
+ * 更合适的实现方式是使用组合，而不是继承，这里继承HashMap是为了提供get方法的效率。
+ */
+@SuppressWarnings("serial")
+public class MapContext extends HashMap<String, Object> implements FelContext {
 
 	public MapContext() {
-		this(new HashMap<String, Object>());
 	}
 	
 	public MapContext(Map<String,Object> map){
-		this.varMap = map;
+		this.putAll(map);
 	}
 
 	@Override
 	public Object get(String name) {
-		Object object = this.varMap.get(name);
-		if(object!=null || this.varMap.containsKey(name)){
+		Object object = super.get(name);
+		if (object != null || this.containsKey(name)) {
 			// 对象有值，或者包含此变量时，返回object
 			return object;
 		}
@@ -33,23 +37,14 @@ public class MapContext implements FelContext {
 		return AbstractConetxt.getVarType(varName,this);
 	}
 
+
+	@Override
+	public void set(String name, Object value) {
+		this.put(name, value);
+	}
+
 	public static String toString(Object var) {
 		return var == null ? null : var.toString();
 	}
 
-	@Override
-	public void set(String name, Object value) {
-		this.varMap.put(name, value);
-	}
-
-	@Override
-	public Object clone() {
-		try {
-			MapContext clone = (MapContext) super.clone();
-			return clone;
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 }
