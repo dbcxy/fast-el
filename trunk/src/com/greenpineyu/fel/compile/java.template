@@ -7,9 +7,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class ${classname}  implements Expression{
-${attrs}
+    ${attrs}
     public Object eval(FelContext context) {
-${localVars}
+        ${localVars}
         return ${expression};
     }
 }

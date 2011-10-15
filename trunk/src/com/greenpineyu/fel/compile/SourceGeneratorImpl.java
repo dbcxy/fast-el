@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,11 +95,16 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		// src = src.replaceAll("\\$\\{extends\\}", "Object");
 		StringBuilder attrs = new StringBuilder();
 		String pop = VarBuffer.pop();
-		while(pop!=null){
-		  attrs.append("    ").append(pop).append("\r\n");
-		  pop = VarBuffer.pop();
+		if (pop != null) {
+			// 第一行不需要添加空格
+			attrs.append(pop).append("\r\n");
+			pop = VarBuffer.pop();
 		}
-		removeLastEnter(attrs);
+		while(pop!=null){
+			attrs.append("    ").append(pop).append("\r\n");
+			pop = VarBuffer.pop();
+		}
+		// removeLastEnter(attrs);
 		src = StringUtils.replace(src, "${attrs}", attrs.toString());
 		src = StringUtils.replace(src, "${localVars}", getLocalVarsCode());
 		src = StringUtils.replace(src, "${expression}", expression);
@@ -118,8 +124,16 @@ public class SourceGeneratorImpl implements SourceGenerator {
 
 	private String getLocalVarsCode() {
 		StringBuilder sb = new StringBuilder();
-		for (StringKeyValue code : localvars.values()) {
-			sb.append("        ").append(code.value).append("\r\n");
+		Collection<StringKeyValue> values = localvars.values();
+		boolean isFirst = true;
+		for (StringKeyValue code : values) {
+			if (isFirst) {
+				// 第一行不需要添加空格
+				isFirst = false;
+			} else {
+				sb.append("        ");
+			}
+			sb.append(code.value).append("\r\n");
 		}
 		removeLastEnter(sb);
 		return sb.toString();
@@ -287,7 +301,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		FelContext ctx = engine.getContext();
 		ctx.set("i", 100);
 		ctx.set("pi", 3.14f);
-		String exp = "pi*i";
+		String exp = "pi*i*i*pi";
 		Expression expObj = engine.compile(exp, ctx);
 		Object eval = expObj.eval(ctx);
 //		cost(ctx, new Abcd());
