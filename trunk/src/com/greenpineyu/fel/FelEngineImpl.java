@@ -17,10 +17,9 @@ import com.greenpineyu.fel.parser.Parser;
  * 
  */
 public class FelEngineImpl implements FelEngine {
-	
 
 	private final FelContext context;
-	
+
 	private final CompileService compiler;
 
 	private final Parser parser;
@@ -36,7 +35,6 @@ public class FelEngineImpl implements FelEngine {
 		this(new MapContext());
 	}
 
-
 	public FelNode parse(String exp) {
 		return parser.parse(exp);
 	}
@@ -48,22 +46,19 @@ public class FelEngineImpl implements FelEngine {
 	public Object eval(String exp, FelContext ctx) {
 		return parse(exp).eval(ctx);
 	}
-	
-	public Expression compile(String exp,FelContext ctx,Optimizer... opts){
-		if(ctx == null){
+
+	public Expression compile(String exp, FelContext ctx, Optimizer... opts) {
+		if (ctx == null) {
 			ctx = this.context;
 		}
 		FelNode node = parse(exp);
-		if(opts!= null){
+		if (opts != null) {
 			for (Optimizer opt : opts) {
 				node = opt.call(ctx, node);
 			}
 		}
 		return compiler.compile(ctx, node);
 	}
-
-
-
 
 	@Override
 	public String toString() {
@@ -73,15 +68,15 @@ public class FelEngineImpl implements FelEngine {
 	public static void main(String[] args) {
 		FelEngineImpl engine = new FelEngineImpl();
 		Object eval = engine.eval("1+2");
-		Expression expr = engine.compile("1+(2-(5+6))",engine.context);
-		
-		int count = 1000*1000*100;
-		long start =  System.currentTimeMillis();
+		Expression expr = engine.compile("1+(2-(5+6))", engine.context);
+
+		int count = 1000 * 1000 * 100;
+		long start = System.currentTimeMillis();
 		for (int i = 0; i < count; i++) {
 			eval = expr.eval(engine.getContext());
 		}
 		long end = System.currentTimeMillis();
-		long cost = end-start;
+		long cost = end - start;
 		System.out.println(cost);
 		System.out.println("result:" + eval + ",每秒执行：" + (count / 10 / cost));
 		System.out.println(eval);
@@ -92,11 +87,11 @@ public class FelEngineImpl implements FelEngine {
 	}
 
 	public boolean addFun(Function fun) {
-		if(fun != null){
+		if (fun != null) {
 			String name = fun.getName();
-			if(name != null){
+			if (name != null) {
 				FunctionFactory instance = FunctionFactory.getInstance();
-				if(instance.getFun(name)!=null){
+				if (instance.getFun(name) != null) {
 					return false;
 				}
 				instance.add(fun);
@@ -104,7 +99,5 @@ public class FelEngineImpl implements FelEngine {
 		}
 		return true;
 	}
-
-
 
 }
