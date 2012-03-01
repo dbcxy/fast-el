@@ -80,7 +80,7 @@ public class Sub extends StableFunction {
 			Object rightValue = right.eval(context);
 			if (rightValue instanceof Number) {
 				if (NumberUtil.isFloatingPoint(rightValue)) {
-					return NumberUtil.toDouble(right) * -1;
+					return NumberUtil.toDouble(rightValue) * -1;
 				}
 				return NumberUtil.parseNumber(((Number) rightValue).longValue() * -1);
 			}
