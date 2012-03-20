@@ -45,6 +45,8 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 			case FelParser.Identifier:
 				if("null".equals(text)){
 					returnMe = AbstFelNode.NULL;
+			} else if ("$".equals(text)) {
+				returnMe = new FunNode(token);
 				}else{
 					returnMe = new VarAstNode(token);
 				}

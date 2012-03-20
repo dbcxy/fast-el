@@ -10,6 +10,11 @@ import org.antlr.runtime.RecognitionException;
 
 import com.greenpineyu.fel.exception.ParseException;
 
+/**
+ * 使用Antlr进行语法分析
+ * @author yuqingsong
+ * 
+ */
 public class AntlrParser implements Parser {
 	public FelNode parse(String exp) {
 		if (exp == null || "".equals(exp)) {

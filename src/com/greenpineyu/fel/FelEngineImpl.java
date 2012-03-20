@@ -67,7 +67,15 @@ public class FelEngineImpl implements FelEngine {
 
 	public static void main(String[] args) {
 		FelEngineImpl engine = new FelEngineImpl();
+		temp(engine);
+	}
+
+	private static void temp(FelEngineImpl engine) {
 		Object eval = engine.eval("1+2");
+		Object e = engine.eval("-1.23-1");
+		System.out.println(e);
+		e = engine.eval("123*(-123)");
+		System.out.println(e);
 		Expression expr = engine.compile("1+(2-(5+6))", engine.context);
 
 		int count = 1000 * 1000 * 100;
