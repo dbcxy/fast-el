@@ -61,103 +61,105 @@ public class FelEngineImplTest {
 		Object[][] a = new Object[1000][];
 		AtomicInteger i = new AtomicInteger(-1);
 
-
-		add(a, i, "foo.getCount()", new Integer(header.getCount()));
-		
+				add(a, i, "foo.getCount()", new Integer(header.getCount()));
+				
 		// 算术运算
-		add(a, i, "+1", new Integer(1));
-//		if(true){
-//			return subarray(object, i);
-//		}
-		add(a, i, "-1", new Integer(-1) );
-		add(a, i, "2*(-1)", -2);
-//		add(object, i, "f+1", 2.1 );
-		add(a, i, "A4*B5", new Integer(4 * 5) );
+				add(a, i, "+1", new Integer(1));
+		//		if(true){
+		//			return subarray(object, i);
+		//		}
+				add(a, i, "-1", new Integer(-1) );
+		add(a, i, "2*-1", -2);
+		add(a, i, "1--1", 2);
+		add(a, i, "-1--1", 0);
+		add(a, i, "+1-+1", 0);
+		add(a, i, "-1.23-1", -2.23);
+		//		add(object, i, "f+1", 2.1 );
+				add(a, i, "A4*B5", new Integer(4 * 5) );
 
 		// 逻辑运算
-		add(a, i, "5 % 10", 5 );
-		add(a, i, "5 % 2", 1 );
-		add(a, i, "11 % 5", 1 );
-		add(a, i, "a == b", Boolean.FALSE );
-		add(a, i, "a==true", Boolean.TRUE );
-		add(a, i, "a==false", Boolean.FALSE );
-		add(a, i, "1=='1'", Boolean.TRUE );
-		add(a, i, "1==1.0", Boolean.TRUE );
-		add(a, i, "1=='1.0'", Boolean.TRUE );
-		add(a, i, "1.0=='1.0'", Boolean.TRUE );
-		add(a, i, "true==false", Boolean.FALSE );
-		add(a, i, "1+'2'", "12" );
-		add(a, i, "1+'2'+1", "121" );
-		add(a, i, "'1'+2", "12" );
-		add(a, i, "'1'+'2'", "12" );
-		add(a, i, "'1'+2+'1'", "121" );
-//		add(object, i, "'1'*2+'1'", "121" );
-		add(a, i, "1.5-1", 0.5 );
-		add(a, i, "1/3", 1.0 / 3 );
-		add(a, i, "2*(4+3)", 14);
-		
-		
-		add(a, i, "2 < 3", Boolean.TRUE );
-		add(a, i, "num < 5", Boolean.FALSE );
-		add(a, i, "num < num", Boolean.FALSE );
-		add(a, i, "num < null", Boolean.FALSE );
-		add(a, i, "num < 2.5", Boolean.FALSE );
-		add(a, i, "now2 < now", Boolean.FALSE ); // test
-		// comparable
-		// engine,
-		add(a, i, "'6' <= '5'", Boolean.FALSE );
-		add(a, i, "num <= 5", Boolean.TRUE );
-		add(a, i, "num <= num", Boolean.TRUE );
-		add(a, i, "num <= null", Boolean.FALSE );
-		add(a, i, "num <= 2.5", Boolean.FALSE );
-		add(a, i, "now2 <= now", Boolean.FALSE ); // test
-		// comparable
+				add(a, i, "5 % 10", 5 );
+				add(a, i, "5 % 2", 1 );
+				add(a, i, "11 % 5", 1 );
+				add(a, i, "a == b", Boolean.FALSE );
+				add(a, i, "a==true", Boolean.TRUE );
+				add(a, i, "a==false", Boolean.FALSE );
+				add(a, i, "1=='1'", Boolean.TRUE );
+				add(a, i, "1==1.0", Boolean.TRUE );
+				add(a, i, "1=='1.0'", Boolean.TRUE );
+				add(a, i, "1.0=='1.0'", Boolean.TRUE );
+				add(a, i, "true==false", Boolean.FALSE );
+				add(a, i, "1+'2'", "12" );
+				add(a, i, "1+'2'+1", "121" );
+				add(a, i, "'1'+2", "12" );
+				add(a, i, "'1'+'2'", "12" );
+				add(a, i, "'1'+2+'1'", "121" );
+		//		add(object, i, "'1'*2+'1'", "121" );
+				add(a, i, "1.5-1", 0.5 );
+				add(a, i, "1/3", 1.0 / 3 );
+				add(a, i, "2*(4+3)", 14);
+				
+				
+				add(a, i, "2 < 3", Boolean.TRUE );
+				add(a, i, "num < 5", Boolean.FALSE );
+				add(a, i, "num < num", Boolean.FALSE );
+				add(a, i, "num < null", Boolean.FALSE );
+				add(a, i, "num < 2.5", Boolean.FALSE );
+				add(a, i, "now2 < now", Boolean.FALSE ); // test
+				// comparable
+				// engine,
+				add(a, i, "'6' <= '5'", Boolean.FALSE );
+				add(a, i, "num <= 5", Boolean.TRUE );
+				add(a, i, "num <= num", Boolean.TRUE );
+				add(a, i, "num <= null", Boolean.FALSE );
+				add(a, i, "num <= 2.5", Boolean.FALSE );
+				add(a, i, "now2 <= now", Boolean.FALSE ); // test
+				// comparable
 
-		add(a, i, "'6' >= '5'", Boolean.TRUE );
-		add(a, i, "num >= 5", Boolean.TRUE );
-		add(a, i, "num >= num", Boolean.TRUE );
-		add(a, i, "num >= null", Boolean.TRUE );
-		add(a, i, "num >= 2.5", Boolean.TRUE );
-		add(a, i, "now2 >= now", Boolean.TRUE ); // test
-		// comparable
+				add(a, i, "'6' >= '5'", Boolean.TRUE );
+				add(a, i, "num >= 5", Boolean.TRUE );
+				add(a, i, "num >= num", Boolean.TRUE );
+				add(a, i, "num >= null", Boolean.TRUE );
+				add(a, i, "num >= 2.5", Boolean.TRUE );
+				add(a, i, "now2 >= now", Boolean.TRUE ); // test
+				// comparable
 
-		add(a, i, "'6' > '5'", Boolean.TRUE );
-		add(a, i, "num > 4", Boolean.TRUE );
-		add(a, i, "num > num", Boolean.FALSE );
-		add(a, i, "num > null", Boolean.TRUE );
-		add(a, i, "num > 2.5", Boolean.TRUE );
-		add(a, i, "now2 > now", Boolean.TRUE ); // test
-		// comparable
+				add(a, i, "'6' > '5'", Boolean.TRUE );
+				add(a, i, "num > 4", Boolean.TRUE );
+				add(a, i, "num > num", Boolean.FALSE );
+				add(a, i, "num > null", Boolean.TRUE );
+				add(a, i, "num > 2.5", Boolean.TRUE );
+				add(a, i, "now2 > now", Boolean.TRUE ); // test
+				// comparable
 
-		add(a, i, "\"foo\" + \"bar\" == \"foobar\"",
-				Boolean.TRUE );
+				add(a, i, "\"foo\" + \"bar\" == \"foobar\"",
+						Boolean.TRUE );
 
-		add(a, i, "bdec > num", Boolean.TRUE );
-		add(a, i, "bdec >= num", Boolean.TRUE );
-		add(a, i, "num <= bdec", Boolean.TRUE );
-		add(a, i, "num < bdec", Boolean.TRUE );
-		add(a, i, "bint > num", Boolean.TRUE );
-		add(a, i, "bint == bdec", Boolean.TRUE );
-		add(a, i, "bint >= num", Boolean.TRUE );
-		add(a, i, "num <= bint", Boolean.TRUE );
-		add(a, i, "num < bint", Boolean.TRUE );
+				add(a, i, "bdec > num", Boolean.TRUE );
+				add(a, i, "bdec >= num", Boolean.TRUE );
+				add(a, i, "num <= bdec", Boolean.TRUE );
+				add(a, i, "num < bdec", Boolean.TRUE );
+				add(a, i, "bint > num", Boolean.TRUE );
+				add(a, i, "bint == bdec", Boolean.TRUE );
+				add(a, i, "bint >= num", Boolean.TRUE );
+				add(a, i, "num <= bint", Boolean.TRUE );
+				add(a, i, "num < bint", Boolean.TRUE );
 
-		add(a, i, "foo == foo", Boolean.TRUE);
-		add(a, i, "foo.foo !=null", Boolean.TRUE);
-		add(a, i, "foo != foo.foo", Boolean.TRUE);
+				add(a, i, "foo == foo", Boolean.TRUE);
+				add(a, i, "foo.foo !=null", Boolean.TRUE);
+				add(a, i, "foo != foo.foo", Boolean.TRUE);
 
-		add(a, i, "'A' == 'A' || 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
-				Boolean.TRUE);
-		add(a, i,
-				"'A' != 'A' && 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
-				Boolean.FALSE );
-		add(a, i, "true?1:2", 1);
-		add(a, i, "true?false?2:3:1", 3);
-		add(a,
-				i,
-				"6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199: 100%3",
-				1);
-
+				add(a, i, "'A' == 'A' || 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
+						Boolean.TRUE);
+				add(a, i,
+						"'A' != 'A' && 'B' == 'B' && 'A' == 'A' && 'A' == 'A'",
+						Boolean.FALSE );
+				add(a, i, "true?1:2", 1);
+				add(a, i, "true?false?2:3:1", 3);
+				add(a,
+						i,
+						"6.7-100>39.6 ? 5==5? 4+5:6-1 : !(100%3-39.0<27) ? 8*2-199: 100%3",
+						1);
 
 		/*
 		*//** **************** Dot operator start **************** */
@@ -338,6 +340,11 @@ public class FelEngineImplTest {
 	public static void main(String[] args) {
 		
 		FelEngineImplTest test = new FelEngineImplTest();
-		test.testConcurrent();
+		// test.testConcurrent();
+
+		FelEngineImpl engine = new FelEngineImpl();
+		Object eval = engine.eval("$('Math').max(1,2)");
+		System.out.println(eval);
+
 	}
 }
