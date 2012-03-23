@@ -10,8 +10,16 @@ import org.apache.commons.lang3.ObjectUtils.Null;
 public class ReflectUtil {
 	
 	static final Map<Class<?>,Class<?>> cls;
+	static final Map<Class<?>,Class<?>> numberClassMap;
 	static{
-		 cls = new HashMap<Class<?>, Class<?>>();
+		 numberClassMap = numberClassMap();
+		 cls = new HashMap<Class<?>, Class<?>>(numberClassMap());
+		 cls.put(boolean.class, Boolean.class);
+		 cls.put(Boolean.class, Boolean.class);
+	}
+
+	private static Map<Class<?>,Class<?>> numberClassMap() {
+		Map<Class<?>,Class<?>> cls = new HashMap<Class<?>, Class<?>>();
 		 cls.put(byte.class, Byte.class);
 		 cls.put(Byte.class, Byte.class);
 		 
@@ -30,11 +38,17 @@ public class ReflectUtil {
 		 cls.put(double.class, Double.class);
 		 cls.put(Double.class, Double.class);
 		 
-		 cls.put(boolean.class, Boolean.class);
-		 cls.put(Boolean.class, Boolean.class);
-		 
 		 cls.put(char.class, Character.class);
 		 cls.put(Character.class, Character.class);
+		 return cls;
+	}
+	
+	/**
+	 * 是基本类型中的数值类型(包含包装类型)
+	 * @return
+	 */
+	public static boolean isPrimitiveOrWrapNumber(Class<?> c){
+		return numberClassMap.containsKey(c);
 	}
 	
 	public static Class<?> toWrapperClass(Class<?> c){
