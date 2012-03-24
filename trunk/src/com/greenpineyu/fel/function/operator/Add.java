@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -84,7 +85,6 @@ public class Add extends StableFunction  {
 	@Override
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		Class<?> type = null;
-		
 		List<FelNode> children = node.getChildren();
 		StringBuilder sb = new StringBuilder();
 		FelNode right = null;
@@ -110,7 +110,7 @@ public class Add extends StableFunction  {
 	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
 		Class<?> t = argMethod.returnType(ctx, node);
 		sb.append("(");
-		if (Number.class.isAssignableFrom(t)
+		if (ReflectUtil.isPrimitiveOrWrapNumber(t)
 				|| CharSequence.class.isAssignableFrom(t)) {
 			// 数值型和字符型时，直接添加
 			sb.append(argMethod.source(ctx, node));

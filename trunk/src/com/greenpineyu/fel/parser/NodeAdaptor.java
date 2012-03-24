@@ -45,11 +45,9 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 			case FelParser.Identifier:
 				if("null".equals(text)){
 					returnMe = AbstFelNode.NULL;
-			} else if ("$".equals(text)) {
-				returnMe = new FunNode(token);
-				}else{
-					returnMe = new VarAstNode(token);
-				}
+			} else {
+				returnMe = new VarAstNode(token);
+			}
 				break;
 
 		/* 函数、操作符 开始 */
@@ -61,6 +59,7 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 		case FelParser.And:// AND
 		case FelParser.Or:// OR
 		case FelParser.Ques:
+		case FelParser.Bracket:
 		case FelParser.Not:
 				returnMe = new FunNode(token);
 				break;
