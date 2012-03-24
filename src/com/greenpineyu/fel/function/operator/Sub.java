@@ -3,6 +3,7 @@ package com.greenpineyu.fel.function.operator;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -24,7 +25,7 @@ public class Sub extends StableFunction {
 	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
 		Class<?> t = argMethod.returnType(ctx, node);
 		sb.append("(");
-		if (Number.class.isAssignableFrom(t)) {
+		if (ReflectUtil.isPrimitiveOrWrapNumber(t)) {
 			// 数值型和字符型时，直接添加
 			sb.append(argMethod.source(ctx, node));
 		} else if (CharSequence.class.isAssignableFrom(t)) {

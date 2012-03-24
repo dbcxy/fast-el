@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.greenpineyu.fel.function.operator.Add;
+import com.greenpineyu.fel.function.operator.CollectionGet;
 import com.greenpineyu.fel.function.operator.CondOperator;
 import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.function.operator.EqualsOperator;
@@ -38,6 +39,8 @@ public class FunctionFactory {
 		funcMap.put(".", new Dot());
 		// //单元格区域函数
 //		funcMap.put(":", new Colon());
+		
+		funcMap.put(CollectionGet.instance.getName(), CollectionGet.instance);
 		
 		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
 		funcMap.put(Dollar.instance.getName(), Dollar.instance);

@@ -37,11 +37,12 @@ public class VarAstNode extends AbstFelNode  {
 				Class<?> type = returnType(ctx, node);
 				boolean isNumber = Number.class.isAssignableFrom(type);
 				String getVarCode = "context.get(\""+node.getText()+"\")";
+				String typeName = type.getCanonicalName();
 				if(isNumber){
 					// 当float转double时，会丢失精度
-					code = "(("+type.getName()+")"+getVarCode+").doubleValue()";
+					code = "(("+typeName+")"+getVarCode+").doubleValue()";
 				}else{
-					code = "((" + type.getName() + ")" + getVarCode + ")";
+					code = "((" + typeName + ")" + getVarCode + ")";
 				}
 				return code;
 			}
