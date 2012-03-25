@@ -229,6 +229,10 @@ public class FelEngineImplTest {
 			Object expected) {
 		Expression ins = engine.compile(expr, null);
 		Object actual = ins.eval(engine.getContext());
+		compare(expected, actual);
+	}
+
+	public static void compare(Object expected, Object actual) {
 		if(actual instanceof Number && expected instanceof Number){
 			assert NumberUtil.toDouble(actual)==NumberUtil.toDouble(expected);
 		}else{
