@@ -17,6 +17,7 @@ import org.testng.annotations.Test;
 
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.context.Var;
 import com.greenpineyu.fel.interpreter.Interpreter;
 import com.greenpineyu.fel.optimizer.Interpreters;
 import com.greenpineyu.fel.parser.FelNode;
@@ -52,11 +53,12 @@ public class FelEngineImplTest {
 		jc.set("f",1.1f);
 		
 		
-		Map<String,String> m = new HashMap<String, String>();
+		Map<String,String> m = new HashMap<String,String>();
 		m.put("cpu", "AMD");
 		m.put("memory", "4G");
 		m.put(null, "test null key");
-		jc.set("pc", m);
+//		jc.set("pc", m);
+		jc.setVar(new Var("pc", m,Map.class));
 
 		Object[][] a = new Object[1000][];
 		AtomicInteger i = new AtomicInteger(-1);
@@ -180,12 +182,15 @@ public class FelEngineImplTest {
 
 		add(a, i, "foo.getFoo().foo", header );
 		add(a, i, "foo.getFoo().getFoo()", header );
+		add(a, i, "foo.getFoo().getFoo().getFooes()[1]", header.getFoo().getFoo().getFooes()[1] );
+		add(a, i, "foo.getFoo().getFoo().getFooes()[1].name", header.getFoo().getFoo().getFooes()[1].get("name") );
 
 		add(a, i, "foo.convertBoolean(true)",
 				header.convertBoolean(true) );
 		add(a, i, "pc.cpu",m.get("cpu"));
 		add(a, i, "pc.memory",m.get("memory"));
 		add(a, i, "pc.get(null)",m.get(null));
+		add(a,i,"pc.put('cpu','intel')",m.get("cpu"));
 		
 		/*
 		*//** **************** Dot operator end **************** */

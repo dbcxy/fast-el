@@ -33,7 +33,20 @@ public class EmptyContext implements FelContext{
 
 	@Override
 	public Class<?> getVarType(String varName) {
-		return null;
+		throw new UnsupportedOperationException("空Context");
+	}
+
+
+	@Override
+	public Var getVar(String name) {
+		throw new UnsupportedOperationException("空Context");
+	}
+
+
+	@Override
+	public void setVar(Var var) {
+		throw new UnsupportedOperationException("空Context");
+		
 	}
 
 }

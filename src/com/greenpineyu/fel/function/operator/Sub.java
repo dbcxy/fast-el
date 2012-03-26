@@ -49,7 +49,7 @@ public class Sub extends StableFunction {
 		sb.append("-");
 		SourceBuilder rm = right.toMethod(ctx);
 		appendArg(sb, rm,ctx,right);
-		FelMethod m = new FelMethod(Number.class, sb.toString());
+		FelMethod m = new FelMethod(Double.class, sb.toString());
 		return m;
 	}
 

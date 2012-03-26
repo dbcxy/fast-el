@@ -29,6 +29,10 @@ public interface FelContext {
 	 *            变量值
 	 */
 	void set(String name, Object value);
+	
+	 Var getVar(String name);
+	
+	 void setVar(Var var);
 
 	/**
 	 * 设置变量类型
