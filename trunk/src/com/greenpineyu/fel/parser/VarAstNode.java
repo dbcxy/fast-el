@@ -2,6 +2,7 @@ package com.greenpineyu.fel.parser;
 
 import org.antlr.runtime.Token;
 
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -38,8 +39,9 @@ public class VarAstNode extends AbstFelNode  {
 				boolean isNumber = Number.class.isAssignableFrom(type);
 				String getVarCode = "context.get(\""+node.getText()+"\")";
 				String typeName = type.getCanonicalName();
-				if(isNumber){
-					// 当float转double时，会丢失精度
+				if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
+					code = "(("+typeName+")"+getVarCode+")";
+				}else if(isNumber){
 					code = "(("+typeName+")"+getVarCode+").doubleValue()";
 				}else{
 					code = "((" + typeName + ")" + getVarCode + ")";
@@ -48,9 +50,9 @@ public class VarAstNode extends AbstFelNode  {
 			}
 			@Override
 			public Class<?> returnType(FelContext ctx, FelNode node) {
-				Class<?> type = InterpreterSourceBuilder.getInstance().returnType(ctx, node);
+				Class<?> type = ctx.getVarType(node.getText());
 				if(type == null){
-					type = ctx.getVarType(node.getText());
+				   type = InterpreterSourceBuilder.getInstance().returnType(ctx, node);
 				}
 				return type;
 			}

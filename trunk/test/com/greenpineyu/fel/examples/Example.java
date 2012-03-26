@@ -13,6 +13,7 @@ import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.ContextChain;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
+import com.greenpineyu.fel.context.Var;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.interpreter.ConstInterpreter;
@@ -99,6 +100,7 @@ public class Example {
 				}
 				return NOT_FOUND;
 			}
+
 		};
 		FelEngine fel = new FelEngineImpl(ctx);
 		Object eval = fel.eval("'天气:'+天气+';温度:'+温度");

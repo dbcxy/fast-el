@@ -248,7 +248,8 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		FelNode left = node.getChildren().get(0);
 		FelNode right = node.getChildren().get(1);
 		code = "("+left.toMethod(ctx).source(ctx, left)+")"+this.operator+"("+right.toMethod(ctx).source(ctx, right)+")";
-		FelMethod m = new FelMethod(Number.class, code);
+		//FIXME 要根据左边和右边的类型返回确定计算结果的类型，这里暂以Double代替。
+		FelMethod m = new FelMethod(Double.class, code);
 		return m;
 	}
 

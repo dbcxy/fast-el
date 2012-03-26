@@ -24,15 +24,8 @@ public class ContextChain implements FelContext{
 
 	@Override
 	public Object get(String name) {
-		Object object = current.get(name);
-		if(object != NOT_FOUND){
-			return object;
-		}
-		Object parentObj = parent.get(name);
-		if(parentObj!=NOT_FOUND){
-			return parentObj;
-		}
-		return NOT_FOUND;
+		Var var = this.getVar(name);
+		return var != null?var.getValue():null;
 	}
 
 	@Override
@@ -43,6 +36,20 @@ public class ContextChain implements FelContext{
 	@Override
 	public Class<?> getVarType(String varName) {
 		return AbstractConetxt.getVarType(varName, this);
+	}
+
+	@Override
+	public Var getVar(String name) {
+		Var object = current.getVar(name);
+		if(object != null){
+			return object;
+		}
+		return parent.getVar(name);
+	}
+
+	@Override
+	public void setVar(Var var) {
+		current.setVar(var);
 	}
 
 }

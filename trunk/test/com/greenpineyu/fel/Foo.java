@@ -10,6 +10,19 @@ public class Foo {
 	private final String name;
 
 	private Foo foo = null;
+	
+	
+	static private Foo[] f = new Foo[]{new Foo("array0"),new Foo("array1")};
+	
+	static private Foo[] fooes = f;
+
+	public Foo[] getFooes() {
+		return fooes;
+	}
+
+	public void setFooes(Foo[] fooes) {
+		this.fooes = fooes;
+	}
 
 	private boolean beenModified = false;
 	private String property1 = "some value";
