@@ -9,11 +9,10 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
-import com.greenpineyu.fel.context.AbstractConetxt;
+import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.ContextChain;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
-import com.greenpineyu.fel.context.Var;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.interpreter.ConstInterpreter;
@@ -89,7 +88,7 @@ public class Example {
 	 */
 	public static void context(){
 		// 负责提供气象服务的上下文环境
-		FelContext ctx = new AbstractConetxt() {
+		FelContext ctx = new AbstractContext() {
 			@Override
 			public Object get(String name) {
 				if ("天气".equals(name)) {
@@ -103,7 +102,8 @@ public class Example {
 
 		};
 		FelEngine fel = new FelEngineImpl(ctx);
-		Object eval = fel.eval("'天气:'+天气+';温度:'+温度");
+		String exp = "'天气:'+天气+';温度:'+温度";
+		Object eval = fel.compile(exp, ctx).eval(ctx);
 		System.out.println(eval);
 	}
 
@@ -190,7 +190,7 @@ public class Example {
 		final int[] price = new int[] { 2, 3, 4 };
 		// 数据库中数量列的记录
 		final double[] number = new double[] { 10.99, 20.99, 9.9 };
-		FelContext context = new AbstractConetxt() {
+		FelContext context = new AbstractContext() {
 
 			@Override
 			public Object get(String name) {

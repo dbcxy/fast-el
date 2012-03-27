@@ -3,7 +3,7 @@ package com.greenpineyu.fel.context;
 
 import com.greenpineyu.fel.common.ReflectUtil;
 
-public abstract class AbstractConetxt implements FelContext{
+public abstract class AbstractContext implements FelContext{
 	
 
 

@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.compile;
 
-import com.greenpineyu.fel.context.AbstractConetxt;
+import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
 import com.greenpineyu.fel.parser.FelNode;
@@ -24,7 +24,7 @@ public class InterpreterSourceBuilder implements SourceBuilder {
 	
 	@Override
 	public Class<?> returnType(FelContext ctx, FelNode node) {
-			return  AbstractConetxt.getVarType(node.getInterpreter().interpret(ctx, node));
+			return  AbstractContext.getVarType(node.getInterpreter().interpret(ctx, node));
 	}
 
 	/**
