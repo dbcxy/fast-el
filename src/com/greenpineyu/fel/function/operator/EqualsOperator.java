@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.ObjectUtils.Null;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
@@ -116,7 +117,10 @@ public class EqualsOperator extends StableFunction {
 
 		StringBuilder sb = new StringBuilder();
 		// 只要有一个是数值型，就将另一个也转成值型。
-		if (Number.class.isAssignableFrom(leftType)) {
+		if(ReflectUtil.isPrimitiveNumber(leftType)&&ReflectUtil.isPrimitiveNumber(leftType)){
+			//如果左右都是基本数值类型，直接==运算就行了。
+			sb.append(left).append(operator).append(right);
+		}else	if (Number.class.isAssignableFrom(leftType)) {
 			sb.append(left);
 			sb.append(operator);
 			appendNumber(rightType, right, sb);

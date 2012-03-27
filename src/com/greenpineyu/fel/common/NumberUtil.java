@@ -425,4 +425,47 @@ public class NumberUtil {
 		return result;
 	}
 	
+	/**
+	 * 两个类型进行四则运算的结果类型
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	public static Class<?> arithmeticClass(Class<?> left,Class<?> right){
+		if(isDoubleClass(left)||isDoubleClass(right)){
+			return double.class;
+		}
+		if(isLongClass(left)||isLongClass(right)){
+			return long.class;
+		}
+		return int.class;
+//		if(isIntClass(left)){
+//			return left;
+//		}
+//		if(isIntClass(right)){
+//			return right;
+//		}
+//		return int.class;
+//		return Double.class;
+	}
+	
+	public static boolean isDoubleClass(Class<?> type){
+		return type==Double.class||type == double.class;
+	}
+	public static boolean isLongClass(Class<?> type){
+		return type==Long.class||type == long.class;
+	}
+//	public static boolean isIntClass(Class<?> type){
+//		return type==Integer.class||type == int.class;
+//	}
+//	public static boolean isShortClass(Class<?> type){
+//		return type==Short.class||type == short.class;
+//	}
+//	public static boolean isCharClass(Class<?> type){
+//		return type==Character.class||type == int.class;
+//	}
+//	public static boolean isByteClass(Class<?> type){
+//		return type==Integer.class||type == int.class;
+//	}
+	
 }

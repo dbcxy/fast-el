@@ -87,25 +87,44 @@ public class Add extends StableFunction  {
 		Class<?> type = null;
 		List<FelNode> children = node.getChildren();
 		StringBuilder sb = new StringBuilder();
-		FelNode right = null;
 		if (children.size() == 2) {
 			FelNode left = children.get(0);
 			SourceBuilder lm = left.toMethod(ctx);
 			appendArg(sb, lm,ctx,left);
-			type = lm.returnType(ctx, left);
-			right = children.get(1);
+			Class<?> leftType = lm.returnType(ctx, left);
+			
+			FelNode right = children.get(1);
 			sb.append("+");
+			SourceBuilder rm = right.toMethod(ctx);
+			Class<?> rightType = rm.returnType(ctx, right);
+			if(CharSequence.class.isAssignableFrom(leftType)){
+				type = leftType;
+			} else if (CharSequence.class.isAssignableFrom(rightType)) {
+				type = rightType;
+			}else if(ReflectUtil.isPrimitiveOrWrapNumber(leftType)
+					&&ReflectUtil.isPrimitiveOrWrapNumber(rightType)){
+				type = NumberUtil.arithmeticClass(leftType, rightType);
+			}else {
+				//不支持的类型，返回字符串。
+				type = String.class;
+			}
+			appendArg(sb, rm,ctx,right);
+			
 		} else if (children.size() == 1) {
-			right = children.get(0);
+			FelNode right = children.get(0);
+			SourceBuilder rm = right.toMethod(ctx);
+			Class<?> rightType = rm.returnType(ctx, right);
+			if(ReflectUtil.isPrimitiveOrWrapNumber(rightType)){
+				appendArg(sb, rm,ctx,right);
+			}
+			type = rightType;
 		}
-		SourceBuilder rm = right.toMethod(ctx);
-		if(Character.class.isAssignableFrom(rm.returnType(ctx, right))){
-			type = rm.returnType(ctx, right);
-		}
-		appendArg(sb, rm,ctx,right);
+		
+//		appendArg(sb, rm,ctx,right);
 		FelMethod m = new FelMethod(type, sb.toString());
 		return m;
 	}
+	
 
 	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
 		Class<?> t = argMethod.returnType(ctx, node);

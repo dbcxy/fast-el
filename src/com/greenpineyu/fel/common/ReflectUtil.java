@@ -9,38 +9,75 @@ import org.apache.commons.lang3.ObjectUtils.Null;
 
 public class ReflectUtil {
 	
-	static final Map<Class<?>,Class<?>> cls;
+	/**
+	 * key为基本类型及其包装类型，value为包装类型
+	 */
+	static final Map<Class<?>,Class<?>> wrapperCls;
+	/**
+	 * key为基本类型及其包装类型，value为基本类型
+	 */
+	static final Map<Class<?>,Class<?>> primitiveCls;
+	
 	static final Map<Class<?>,Class<?>> numberClassMap;
 	static{
-		 numberClassMap = numberClassMap();
-		 cls = new HashMap<Class<?>, Class<?>>(numberClassMap());
-		 cls.put(boolean.class, Boolean.class);
-		 cls.put(Boolean.class, Boolean.class);
+		 numberClassMap = wrapperNumberCls();
+		 primitiveCls = new HashMap<Class<?>, Class<?>>(primitiveNumberCls());
+		 primitiveCls.put(boolean.class, boolean.class);
+		 primitiveCls.put(Boolean.class, boolean.class);
+		 
+		 wrapperCls = new HashMap<Class<?>, Class<?>>(wrapperNumberCls());
+		 wrapperCls.put(boolean.class, Boolean.class);
+		 wrapperCls.put(Boolean.class, Boolean.class);
+	}
+	
+	private static Map<Class<?>,Class<?>> primitiveNumberCls() {
+		Map<Class<?>,Class<?>> map = new HashMap<Class<?>, Class<?>>();
+		 map.put(byte.class, byte.class);
+		 map.put(Byte.class, byte.class);
+		 
+		 map.put(short.class, short.class);
+		 map.put(Short.class, short.class);
+		 
+		 map.put(int.class, int.class);
+		 map.put(Integer.class, int.class);
+		 
+		 map.put(long.class, long.class);
+		 map.put(Long.class, long.class);
+		 
+		 map.put(float.class, float.class);
+		 map.put(Float.class, float.class);
+		 
+		 map.put(double.class, double.class);
+		 map.put(Double.class, double.class);
+		 
+		 map.put(char.class, char.class);
+		 map.put(Character.class, char.class);
+		 return map;
 	}
 
-	private static Map<Class<?>,Class<?>> numberClassMap() {
-		Map<Class<?>,Class<?>> cls = new HashMap<Class<?>, Class<?>>();
-		 cls.put(byte.class, Byte.class);
-		 cls.put(Byte.class, Byte.class);
+	private static Map<Class<?>,Class<?>> wrapperNumberCls() {
+		Map<Class<?>,Class<?>> map = new HashMap<Class<?>, Class<?>>();
+		 map.put(byte.class, Byte.class);
+		 map.put(Byte.class, Byte.class);
 		 
-		 cls.put(short.class, Short.class);
-		 cls.put(Short.class, Short.class);
+		 map.put(short.class, Short.class);
+		 map.put(Short.class, Short.class);
 		 
-		 cls.put(int.class, Integer.class);
-		 cls.put(Integer.class, Integer.class);
+		 map.put(int.class, Integer.class);
+		 map.put(Integer.class, Integer.class);
 		 
-		 cls.put(long.class, Long.class);
-		 cls.put(Long.class, Long.class);
+		 map.put(long.class, Long.class);
+		 map.put(Long.class, Long.class);
 		 
-		 cls.put(float.class, Float.class);
-		 cls.put(Float.class, Float.class);
+		 map.put(float.class, Float.class);
+		 map.put(Float.class, Float.class);
 		 
-		 cls.put(double.class, Double.class);
-		 cls.put(Double.class, Double.class);
+		 map.put(double.class, Double.class);
+		 map.put(Double.class, Double.class);
 		 
-		 cls.put(char.class, Character.class);
-		 cls.put(Character.class, Character.class);
-		 return cls;
+		 map.put(char.class, Character.class);
+		 map.put(Character.class, Character.class);
+		 return map;
 	}
 	
 	/**
@@ -50,9 +87,19 @@ public class ReflectUtil {
 	public static boolean isPrimitiveOrWrapNumber(Class<?> c){
 		return numberClassMap.containsKey(c);
 	}
+	public static boolean isPrimitiveNumber(Class<?> c){
+		if(c == null){
+			return false;
+		}
+		return c.isPrimitive()&&(c!=boolean.class);
+//		return numberClassMap.containsKey(c);
+	}
 	
 	public static Class<?> toWrapperClass(Class<?> c){
-		return cls.get(c);
+		return wrapperCls.get(c);
+	}
+	public static Class<?> toPrimitiveClass(Class<?> c){
+		return primitiveCls.get(c);
 	}
 	
 /*
@@ -166,4 +213,13 @@ public class ReflectUtil {
 		//判断c2是不是c1的子类，如果是，返回true
 		return c1.isAssignableFrom(c2);
 	}
+	
+	static public String getClassName(Class<?> cls){
+		if(cls == null){
+			return "null";
+		}
+		return cls.getCanonicalName();
+	}
+	
+	
 }

@@ -31,10 +31,10 @@ public class EmptyContext implements FelContext{
 		throw new UnsupportedOperationException("空Context");
 	}
 
-	@Override
-	public Class<?> getVarType(String varName) {
-		throw new UnsupportedOperationException("空Context");
-	}
+//	@Override
+//	public Class<?> getVarType(String varName) {
+//		throw new UnsupportedOperationException("空Context");
+//	}
 
 
 	@Override

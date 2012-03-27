@@ -39,10 +39,10 @@ public class MapContext extends HashMap<String, Var> implements FelContext {
 //		return NOT_FOUND;
 	}
 
-	@Override
-	public Class<?> getVarType(String varName) {
-		return AbstractConetxt.getVarType(varName,this);
-	}
+//	@Override
+//	public Class<?> getVarType(String varName) {
+//		return AbstractConetxt.getVarType(varName,this);
+//	}
 
 
 	@Override

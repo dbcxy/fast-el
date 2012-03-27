@@ -3,7 +3,7 @@ package com.greenpineyu.fel.context;
 /**
  * 变量
  * @author yuqingsong
- * 
+ *
  * @param <T> 变量的类型
  */
 public class Var {
@@ -25,14 +25,14 @@ public class Var {
 	 * 变量名称
 	 */
 	private String name;
-
+	
 	/**
 	 * 变量值
 	 */
 	private Object value;
-
+	
 	/**
-	 * 变量类型
+	 * 变量值
 	 */
 	private Class<?> type;
 	

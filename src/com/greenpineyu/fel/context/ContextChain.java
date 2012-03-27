@@ -33,10 +33,10 @@ public class ContextChain implements FelContext{
 		current.set(name, value);
 	}
 
-	@Override
-	public Class<?> getVarType(String varName) {
-		return AbstractConetxt.getVarType(varName, this);
-	}
+//	@Override
+//	public Class<?> getVarType(String varName) {
+//		return AbstractConetxt.getVarType(varName, this);
+//	}
 
 	@Override
 	public Var getVar(String name) {

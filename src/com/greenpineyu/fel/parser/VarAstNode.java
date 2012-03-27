@@ -5,6 +5,7 @@ import org.antlr.runtime.Token;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.compile.SourceBuilder;
+import com.greenpineyu.fel.context.AbstractConetxt;
 import com.greenpineyu.fel.context.FelContext;
 
 public class VarAstNode extends AbstFelNode  {
@@ -42,6 +43,7 @@ public class VarAstNode extends AbstFelNode  {
 				if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
 					code = "(("+typeName+")"+getVarCode+")";
 				}else if(isNumber){
+					// 当float转double时，会丢失精度
 					code = "(("+typeName+")"+getVarCode+").doubleValue()";
 				}else{
 					code = "((" + typeName + ")" + getVarCode + ")";
@@ -50,7 +52,7 @@ public class VarAstNode extends AbstFelNode  {
 			}
 			@Override
 			public Class<?> returnType(FelContext ctx, FelNode node) {
-				Class<?> type = ctx.getVarType(node.getText());
+				Class<?> type = AbstractConetxt.getVarType(node.getText(),ctx);
 				if(type == null){
 				   type = InterpreterSourceBuilder.getInstance().returnType(ctx, node);
 				}
