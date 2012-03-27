@@ -5,8 +5,11 @@ import java.math.BigInteger;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
+import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.exception.CompileException;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
@@ -247,9 +250,21 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		String code = "";
 		FelNode left = node.getChildren().get(0);
 		FelNode right = node.getChildren().get(1);
-		code = "("+left.toMethod(ctx).source(ctx, left)+")"+this.operator+"("+right.toMethod(ctx).source(ctx, right)+")";
-		//FIXME 要根据左边和右边的类型返回确定计算结果的类型，这里暂以Double代替。
-		FelMethod m = new FelMethod(Double.class, code);
+		SourceBuilder lm = left.toMethod(ctx);
+		Class<?> leftType = lm.returnType(ctx, left);
+		
+		SourceBuilder rm = right.toMethod(ctx);
+		Class<?> rightType = lm.returnType(ctx, right);
+		Class<?> type = null;
+		if(ReflectUtil.isPrimitiveOrWrapNumber(leftType)
+				&&ReflectUtil.isPrimitiveOrWrapNumber(rightType)){
+			type = NumberUtil.arithmeticClass(leftType, rightType);
+		}else{
+			throw new CompileException("不支持的类型["+ReflectUtil.getClassName(leftType)
+					+"、"+ReflectUtil.getClassName(rightType)+"]。["+this.getName()+"]运算只支持数值类型");
+		}
+		code = "("+lm.source(ctx, left)+")"+this.operator+"("+rm.source(ctx, right)+")";
+		FelMethod m = new FelMethod(type, code);
 		return m;
 	}
 

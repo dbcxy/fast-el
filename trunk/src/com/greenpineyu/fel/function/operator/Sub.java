@@ -7,6 +7,7 @@ import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.exception.CompileException;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.parser.FelNode;
 
@@ -37,19 +38,43 @@ public class Sub extends StableFunction {
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
 		List<FelNode> children = node.getChildren();
 		StringBuilder sb = new StringBuilder();
-		FelNode right = null;
+		Class<?> type = null;
 		if (children.size() == 2) {
+			//left
 			FelNode left = children.get(0);
 			SourceBuilder lm = left.toMethod(ctx);
+			Class<?> leftType = lm.returnType(ctx, left);
 			appendArg(sb, lm,ctx,left);
-			right = children.get(1);
+			
+			//right
+			FelNode right = children.get(1);
+			SourceBuilder rm = right.toMethod(ctx);
+			Class<?> rightType = rm.returnType(ctx, right);
+			sb.append("-");
+			appendArg(sb, rm,ctx,right);
+			
+			//returnType
+			if(ReflectUtil.isPrimitiveOrWrapNumber(leftType)
+					&&ReflectUtil.isPrimitiveOrWrapNumber(rightType)){
+				type = NumberUtil.arithmeticClass(leftType, rightType);
+			}else{
+				throw new CompileException("不支持的类型["+ReflectUtil.getClassName(leftType)
+						+"、"+ReflectUtil.getClassName(rightType)+"]。减[-]运算只支持数值类型");
+			}
 		} else if (children.size() == 1) {
-			right = children.get(0);
+			FelNode right = children.get(0);
+			SourceBuilder rm = right.toMethod(ctx);
+			Class<?> rightType = rm.returnType(ctx, right);
+			sb.append("-");
+			appendArg(sb, rm,ctx,right);
+			if(ReflectUtil.isPrimitiveOrWrapNumber(rightType)){
+				type = rightType;
+			}
 		}
-		sb.append("-");
-		SourceBuilder rm = right.toMethod(ctx);
-		appendArg(sb, rm,ctx,right);
-		FelMethod m = new FelMethod(Double.class, sb.toString());
+//		sb.append("-");
+//		SourceBuilder rm = right.toMethod(ctx);
+//		appendArg(sb, rm,ctx,right);
+		FelMethod m = new FelMethod(type, sb.toString());
 		return m;
 	}
 

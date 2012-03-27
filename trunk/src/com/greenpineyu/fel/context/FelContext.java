@@ -48,6 +48,6 @@ public interface FelContext {
 	 * @param 变量名称
 	 * @return 如果变量值 为null或没有找到变量，请返回FelContext.NOT_FOUND.class
 	 */
-	Class<?> getVarType(String name);
+//	Class<?> getVarType(String name);
 
 }

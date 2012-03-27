@@ -42,14 +42,15 @@ public class FelEngineImplTest {
 		jc.set("foo", header);
 		jc.set("a", Boolean.TRUE);
 		jc.set("b", Boolean.FALSE);
-		jc.set("num", new Integer(5));
+		Integer num = new Integer(5);
+		jc.set("num", num);
 		jc.set("now", Calendar.getInstance().getTime());
 		GregorianCalendar gc = new GregorianCalendar(5000, 11, 20);
 		jc.set("now2", gc.getTime());
 		jc.set("bdec", "7");
 		jc.set("bint", "7");
 		jc.set("A4", new Integer(4));
-		jc.set("B5", new Integer(5));
+		jc.set("B5", num);
 		jc.set("f",1.1f);
 		
 		
@@ -63,10 +64,12 @@ public class FelEngineImplTest {
 		Object[][] a = new Object[1000][];
 		AtomicInteger i = new AtomicInteger(-1);
 
-				add(a, i, "foo.getCount()", new Integer(header.getCount()));
 				
 		// 算术运算
 				add(a, i, "+1", new Integer(1));
+				add(a, i, "+num", num);
+				add(a, i, "+num+num", +num+num);
+				add(a, i, "-num--num", -num-(-num));
 		//		if(true){
 		//			return subarray(object, i);
 		//		}

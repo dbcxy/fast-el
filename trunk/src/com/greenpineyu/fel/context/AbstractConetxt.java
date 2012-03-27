@@ -23,10 +23,10 @@ public abstract class AbstractConetxt implements FelContext{
 		this.setVar(new Var(name,value));
 	}
 
-	@Override
-	public Class<?> getVarType(String name) {
-		return getVarType(name,this);
-	}
+//	@Override
+//	public Class<?> getVarType(String name) {
+//		return getVarType(name,this);
+//	}
 	
 	@Override
 	public Var getVar(String name) {

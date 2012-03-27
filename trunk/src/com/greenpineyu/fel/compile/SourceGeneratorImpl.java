@@ -10,14 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.runtime.tree.CommonTree;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.mutable.MutableInt;
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.Callable;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.optimizer.ConstExpOpti;
 import com.greenpineyu.fel.optimizer.ConstOpti;
 import com.greenpineyu.fel.optimizer.Optimizer;
@@ -82,7 +84,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			src = buildsource(exp, className);
 			this.localvars.clear();
 		}
-		// System.out.println("****************\n" + src);
+//		 System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
@@ -198,7 +200,25 @@ public class SourceGeneratorImpl implements SourceGenerator {
 	public static final	Callable<Boolean, FelNode> varsFilter = new Callable<Boolean, FelNode>() {
 		@Override
 		public Boolean call(FelNode... node) {
-			return node[0] instanceof VarAstNode;
+			FelNode n = node[0];
+			if(n == null){
+				return false;
+			}
+			boolean isVar = n instanceof VarAstNode;
+			if(isVar){
+				if (n instanceof CommonTree) {
+					CommonTree treeNode = (CommonTree) n;
+					CommonTree p = treeNode.parent;
+					if(p!=null){
+						if(Dot.DOT.equals(p.getText())){
+							//点运算符后的变量节点不是真正意义上的变量节点。
+							isVar = p.getChildren().get(0)==n;
+						}
+					}
+					
+				}
+			}
+			return isVar;
 		}
 	};
 
@@ -213,22 +233,31 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			public FelNode call(FelContext ctx, FelNode node) {
 				List<FelNode> nodes = AbstFelNode.getNodes(node,varsFilter);
 				// 多次出现的变量
-				List<FelNode> repeatNodes = new ArrayList<FelNode>();
+//				List<FelNode> repeatNodes = new ArrayList<FelNode>();
 				
-				Map<String,MutableInt> varCount = new HashMap<String, MutableInt>();
+				Map<String,List<FelNode>> repeatNodeMap = new HashMap<String, List<FelNode>>();
 				for (FelNode n : nodes) {
 					String name = n.getText();
-					MutableInt count = varCount.get(name);
-					if(count != null){
-						repeatNodes.add(n);
-						count.increment();
-					}else{
-						count = new MutableInt(1);
-						varCount.put(name, count);
+					List<FelNode> repeatNodes = repeatNodeMap.get(name);
+					if(repeatNodes == null){
+						repeatNodes = new ArrayList<FelNode>();
+						repeatNodeMap.put(name, repeatNodes);
 					}
+					repeatNodes.add(n);
+//					if(count != null){
+//						repeatNodes.add(n);
+//						count.increment();
+//					}else{
+//						count = new MutableInt(1);
+//						varCount.put(name, count);
+//					}
 				}
-				for (FelNode n : repeatNodes) {
-					n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
+				for (List<FelNode> repeatNodes : repeatNodeMap.values()) {
+					if(repeatNodes.size()>1){
+						for (FelNode n : repeatNodes) {
+							n.setSourcebuilder(getVarSrcBuilder(n.toMethod(ctx)));
+						}
+					}
 				}
 				
 				return node;
@@ -270,9 +299,13 @@ public class SourceGeneratorImpl implements SourceGenerator {
 						Class<?> type = this.returnType(ctx, node);
 						String declare = "";
 						String typeDeclare = type.getName();
-						if (Number.class.isAssignableFrom(type)) {
+						if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
+							Class<?> primitiveClass = ReflectUtil.toPrimitiveClass(type);
+							typeDeclare = primitiveClass.getSimpleName();
+						}else	if (Number.class.isAssignableFrom(type)) {
 							typeDeclare = "double";
 						}
+						
 						declare = typeDeclare + " " + varName + " = "
 								+ old.source(ctx, node) + ";   //" + text;
 						StringKeyValue kv = new StringKeyValue(varName, declare);
