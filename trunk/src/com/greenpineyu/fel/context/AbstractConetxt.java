@@ -6,15 +6,16 @@ import com.greenpineyu.fel.common.ReflectUtil;
 public abstract class AbstractConetxt implements FelContext{
 	
 
-	@Override
-	public Object get(String name) {
-		Var var = this.getVar(name);
-		return var==null?null:var.getValue();
-	}
+
+	// @Override
+	// public Object get(String name) {
+	// Var var = this.getVar(name);
+	// return var==null?null:var.getValue();
+	// }
 	
 	@Override
 	public void setVar(Var var) {
-		//设置变量值
+		// 设置变量值
 		throw new UnsupportedOperationException(this.getClass().getSimpleName() + "不能存储变量");
 	}
 
@@ -30,7 +31,8 @@ public abstract class AbstractConetxt implements FelContext{
 	
 	@Override
 	public Var getVar(String name) {
-		throw new UnsupportedOperationException(this.getClass().getSimpleName() + "不能存储变量");
+		Object value = get(name);
+		return new Var(name, value, getVarType(value));
 	}
 
 //	public static Class<?> getVarType(String varName, FelContext ctx) {
