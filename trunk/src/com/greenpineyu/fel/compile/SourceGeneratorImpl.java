@@ -84,7 +84,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 			src = buildsource(exp, className);
 			this.localvars.clear();
 		}
-//		 System.out.println("****************\n" + src);
+		// System.out.println("****************\n" + src);
 		JavaSource returnMe = new JavaSource();
 		returnMe.setSimpleName(className);
 		returnMe.setSource(src);
@@ -211,7 +211,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 					CommonTree p = treeNode.parent;
 					if(p!=null){
 						if(Dot.DOT.equals(p.getText())){
-							//点运算符后的变量节点不是真正意义上的变量节点。
+							// 点运算符后的变量节点不是真正意义上的变量节点。
 							isVar = p.getChildren().get(0)==n;
 						}
 					}

@@ -10,8 +10,7 @@ import java.util.concurrent.FutureTask;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
 
-import com.googlecode.aviator.AviatorEvaluator;
-import com.greenpineyu.fel.context.AbstractConetxt;
+import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
 
@@ -123,15 +122,15 @@ public class PerformanceTest {
 	}
 
 	private static void aviator(String exp, Map<String, Object> vars, int times) {
-		com.googlecode.aviator.Expression e = AviatorEvaluator.compile(exp);
-		Object result = null;
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < times; i++) {
-			result = e.execute(vars);
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("--------cost[ " + (end - start) + " ] ------exp="
-				+ result);
+//		com.googlecode.aviator.Expression e = AviatorEvaluator.compile(exp);
+//		Object result = null;
+//		long start = System.currentTimeMillis();
+//		for (int i = 0; i < times; i++) {
+//			result = e.execute(vars);
+//		}
+//		long end = System.currentTimeMillis();
+//		System.out.println("--------cost[ " + (end - start) + " ] ------exp="
+//				+ result);
 	}
 
 	public static void testConcurrent(){
@@ -151,7 +150,7 @@ public class PerformanceTest {
 		exps[i++] =  "pi*d+b-(1000-d*b/pi)/(pi+99-i*d)-i*pi*d/b";
 		exps[i++] =  "'hello world'.substring(1).substring(2).indexOf('world')";
 	    final int times = 1*1000*1000;
-		final FelContext ctx = new AbstractConetxt() {
+		final FelContext ctx = new AbstractContext() {
 			int index = 0;
 			int size = 10;
 			Object[] vars = new Object[size];

@@ -5,7 +5,7 @@ import org.antlr.runtime.Token;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.compile.SourceBuilder;
-import com.greenpineyu.fel.context.AbstractConetxt;
+import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.FelContext;
 
 public class VarAstNode extends AbstFelNode  {
@@ -52,7 +52,7 @@ public class VarAstNode extends AbstFelNode  {
 			}
 			@Override
 			public Class<?> returnType(FelContext ctx, FelNode node) {
-				Class<?> type = AbstractConetxt.getVarType(node.getText(),ctx);
+				Class<?> type = AbstractContext.getVarType(node.getText(),ctx);
 				if(type == null){
 				   type = InterpreterSourceBuilder.getInstance().returnType(ctx, node);
 				}
