@@ -72,7 +72,11 @@ public class NodeAdaptor extends CommonTreeAdaptor {
 				break;
 			case FelParser.HexLiteral:
 			// 数字-16进制
-				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(text, 16)));
+				String num = text;
+				if(text.startsWith("0x")||text.startsWith("0X")){
+					num = text.substring(2);
+				}
+				returnMe =  NumberUtil.parseNumber(new Long(Long.parseLong(num, 16)));
 				break;
 			case FelParser.OctalLiteral:
 			// 数字-8进制

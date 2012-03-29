@@ -6,6 +6,7 @@ import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.AbstractContext;
+import com.greenpineyu.fel.context.ArrayCtx;
 import com.greenpineyu.fel.context.FelContext;
 
 public class VarAstNode extends AbstFelNode  {
@@ -38,7 +39,13 @@ public class VarAstNode extends AbstFelNode  {
 				String code = "";
 				Class<?> type = returnType(ctx, node);
 				boolean isNumber = Number.class.isAssignableFrom(type);
-				String getVarCode = "context.get(\""+node.getText()+"\")";
+				String varName = node.getText();
+				String getVarCode = "context.get(\""+varName+"\")";
+				if (ctx instanceof ArrayCtx) {
+					ArrayCtx c = (ArrayCtx) ctx;
+					getVarCode = "((ArrayCtx)context).get("+c.getIndex(varName)+")";
+				}
+					
 				String typeName = type.getCanonicalName();
 				if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
 					code = "(("+typeName+")"+getVarCode+")";
