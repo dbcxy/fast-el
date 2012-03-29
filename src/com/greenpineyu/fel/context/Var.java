@@ -12,10 +12,14 @@ public class Var {
 		this.name = name;
 		this.value = value;
 		this.type = type;
-		if(type == null){
-			// 如果没有指定type,将type设置成value.getClass。
-			this.type = value!=null?value.getClass():FelContext.NULL.getClass();
-		}
+//		if(type == null){
+//			// 如果没有指定type,将type设置成value.getClass。
+////			setTypeByValue(value);
+//		}
+	}
+	private Class<?> getTypeByValue() {
+		return  value!=null?value.getClass():FelContext.NULL.getClass();
+//		this.type = getTypeByValue;
 	}
 	public Var(String name,Object value){
 		this(name,value,null);
@@ -38,7 +42,7 @@ public class Var {
 	
 	
 	public Class<?> getType() {
-		return type;
+		return type!=null?type:getTypeByValue();
 	}
 
 	public void setType(Class<?> type) {

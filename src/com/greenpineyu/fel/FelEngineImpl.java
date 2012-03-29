@@ -1,8 +1,8 @@
 package com.greenpineyu.fel;
 
 import com.greenpineyu.fel.compile.CompileService;
+import com.greenpineyu.fel.context.ArrayCtxImpl;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.FunctionFactory;
 import com.greenpineyu.fel.optimizer.Optimizer;
@@ -32,7 +32,8 @@ public class FelEngineImpl implements FelEngine {
 	}
 
 	public FelEngineImpl() {
-		this(new MapContext());
+		this(new ArrayCtxImpl());
+//		this(new MapContext());
 	}
 
 	public FelNode parse(String exp) {
