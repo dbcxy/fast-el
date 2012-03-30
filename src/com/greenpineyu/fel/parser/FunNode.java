@@ -9,7 +9,7 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.EvalException;
 import com.greenpineyu.fel.function.Function;
-import com.greenpineyu.fel.function.FunctionFactory;
+import com.greenpineyu.fel.function.FunMgr;
 
 /**
  * 函数节点
@@ -51,9 +51,9 @@ public  class FunNode extends AbstFelNode {
 
 	}
 
-	{
-		initFun();
-	}
+//	{
+//		initFun();
+//	}
 
 	@Override
 	public Object interpret(FelContext context, FelNode node) {
@@ -61,8 +61,8 @@ public  class FunNode extends AbstFelNode {
 	}
 
 
-	private void initFun() {
-		fun = FunctionFactory.getInstance().getFun(getText());
+	public void initFun(FunMgr funMgr) {
+		fun = funMgr.getFun(getText());
 		if (fun == null) {
 			fun = NOT_FOUND_FUN;
 		}

@@ -4,7 +4,7 @@ import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.ArrayCtxImpl;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
-import com.greenpineyu.fel.function.FunctionFactory;
+import com.greenpineyu.fel.function.FunMgr;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.AntlrParser;
 import com.greenpineyu.fel.parser.FelNode;
@@ -18,18 +18,23 @@ import com.greenpineyu.fel.parser.Parser;
  */
 public class FelEngineImpl implements FelEngine {
 
-	private final FelContext context;
+	private FelContext context;
 
-	private final CompileService compiler;
+	private CompileService compiler;
 
-	private final Parser parser;
+	private Parser parser;
+	
+	private FunMgr funMgr;
+	
 
 	public FelEngineImpl(FelContext context) {
 		this.context = context;
 		compiler = new CompileService();
-		parser = new AntlrParser();
-
+		parser = new AntlrParser(this);
+		this.funMgr=new FunMgr();
+		
 	}
+	
 
 	public FelEngineImpl() {
 		this(new ArrayCtxImpl());
@@ -91,22 +96,47 @@ public class FelEngineImpl implements FelEngine {
 		System.out.println(eval);
 	}
 
+
+	public void addFun(Function fun) {
+		this.funMgr.add(fun);
+	}
+	
 	public FelContext getContext() {
 		return this.context;
 	}
+	
+	public CompileService getCompiler() {
+		return compiler;
+	}
 
-	public boolean addFun(Function fun) {
-		if (fun != null) {
-			String name = fun.getName();
-			if (name != null) {
-				FunctionFactory instance = FunctionFactory.getInstance();
-				if (instance.getFun(name) != null) {
-					return false;
-				}
-				instance.add(fun);
-			}
-		}
-		return true;
+
+	public void setCompiler(CompileService compiler) {
+		this.compiler = compiler;
+	}
+
+
+	public Parser getParser() {
+		return parser;
+	}
+
+
+	public void setParser(Parser parser) {
+		this.parser = parser;
+	}
+
+
+	public FunMgr getFunMgr() {
+		return funMgr;
+	}
+
+
+	public void setFunMgr(FunMgr funMgr) {
+		this.funMgr = funMgr;
+	}
+
+
+	public void setContext(FelContext context) {
+		this.context = context;
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.greenpineyu.fel;
 
+import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.function.FunMgr;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.FelNode;
+import com.greenpineyu.fel.parser.Parser;
 
 /**
  * 表达式引擎
@@ -58,11 +61,59 @@ public interface FelEngine {
 	FelContext getContext();
 
 	/**
-	 * 添加函数到全局函数库中（所有的引擎实例共享一个函数库）
+	 * 添加函数到用户函数库中（执行表达式时，优先从用户函数库中获取函数）
 	 * 
 	 * @param fun
 	 * @return
 	 */
-	boolean addFun(Function fun);
+	void addFun(Function fun);
+	
+	/**
+	 * 获取编译器
+	 * @return
+	 */
+	CompileService getCompiler() ;
+
+
+	/**
+	 * 设置编译器
+	 * @param compiler
+	 */
+	void setCompiler(CompileService compiler); 
+
+
+	/**
+	 * 获取解析器
+	 * @return
+	 */
+	Parser getParser();
+
+
+	/**
+	 * 设置解析器
+	 * @param parser
+	 */
+	void setParser(Parser parser);
+
+
+	/**
+	 * 获取函数管理器
+	 * @return
+	 */
+	FunMgr getFunMgr();
+
+
+	/**
+	 * 设置函数管理器
+	 * @param funMgr
+	 */
+	void setFunMgr(FunMgr funMgr); 
+
+
+	/**
+	 * 设置Context
+	 * @param context
+	 */
+	void setContext(FelContext context);
 
 }
