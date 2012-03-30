@@ -18,6 +18,8 @@ import org.testng.annotations.Test;
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.Var;
+import com.greenpineyu.fel.function.CommonFunction;
+import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.interpreter.Interpreter;
 import com.greenpineyu.fel.optimizer.Interpreters;
 import com.greenpineyu.fel.parser.FelNode;
@@ -307,6 +309,47 @@ public class FelEngineImplTest {
 			isPassed = false;
 		}
 		assert isPassed == new Boolean(expected).booleanValue();
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public static void testUserFunction(){
+		// 定义hello函数
+		Function fun = new CommonFunction() {
+
+			@Override
+			public String getName() {
+				return "hello";
+			}
+
+			/* 
+			 * 调用hello("xxx")时执行的代码
+			 */
+			@Override
+			public Object call(Object[] arguments) {
+				Object msg = null;
+				if(arguments!= null && arguments.length>0){
+					msg = arguments[0];
+				}
+				return ObjectUtils.toString(msg);
+			}
+
+		};
+		FelEngine e = FelEngine.instance;
+		// 添加函数到引擎中。
+		e.addFun(fun);
+		String expected = "fel";
+		String exp = "hello('"+expected+"')";
+		
+		// 解释执行
+		Object eval = e.eval(exp);
+		assert expected.equals(eval);
+		// 编译执行
+		Expression compile = e.compile(exp, null);
+		eval = compile.eval(null);
+		assert expected.equals(eval);
 	}
 	/**
 	 * 

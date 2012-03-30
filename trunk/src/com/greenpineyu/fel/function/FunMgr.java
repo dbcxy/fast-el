@@ -14,31 +14,29 @@ import com.greenpineyu.fel.function.operator.NotOper;
 import com.greenpineyu.fel.function.operator.RelationalOperator;
 import com.greenpineyu.fel.function.operator.Sub;
 
-public class FunctionFactory {
+public class FunMgr {
 
-	private static FunctionFactory instance = new FunctionFactory();
+//	private static FunMgr instance = new FunMgr();
 
-	private FunctionFactory() {
+	public FunMgr() {
+		userFunMap = new HashMap<String,Function>();
 	}
+	
+	/**
+	 * 用户函数
+	 */
+	private Map<String, Function> userFunMap;
 
-	private Map<String, Function> funcMap;
+	/**
+	 * 共用函数
+	 */
+	static private Map<String, Function> funcMap;
 
-	{
+	static {
 		funcMap = new HashMap<String, Function>();
 
-
-		// // 统计类(重载)
-//		funcMap.put("sum", new Sum());
-//		funcMap.put("count", new Count());
-//		funcMap.put("avg", new Avg());
-//		funcMap.put("max", new Max());
-//		funcMap.put("min", new Min());
-//		
-//
 		// // 操作符函数
 		funcMap.put(".", new Dot());
-		// //单元格区域函数
-//		funcMap.put(":", new Colon());
 		
 		funcMap.put(CollectionGet.instance.getName(), CollectionGet.instance);
 		
@@ -67,49 +65,59 @@ public class FunctionFactory {
 		funcMap.put(LogicalOperator.OR2_STR, LogicalOperator.OR2);// ||
 //		funcMap.put(Like.getInstance().getName(), Like.getInstance());// like
 //		funcMap.put(In.getInstance().getName(), In.getInstance());// in
-//		
-//		
 
-		// //字符串函数
-//		funcMap.put("find", Find.getInstance());
-//		funcMap.put("left", Left.getInstance());
-//		funcMap.put("len", Len.getInstance());
-//		funcMap.put("lower", Lower.getInstance());
-//		funcMap.put("ltrim", Ltrim.getInstance());
-//		funcMap.put("mid", Mid.getInstance());
-//		funcMap.put("replace", Replace.getInstance());
-//		funcMap.put("right", Right.getInstance());
-//		funcMap.put("rmb", RMB.getInstance());
-//		funcMap.put("rtrim", Rtrim.getInstance());
-//		funcMap.put("search", Search.getInstance());
-//		funcMap.put("split", Split.getInstance());
-//		funcMap.put("str", Str.getInstance());
-//		funcMap.put("trim", Trim.getInstance());
-//		funcMap.put("upper", Upper.getInstance());
-//		
-
-		// // 数学函数
-//		funcMap.put("abs", new Abs());
-//		funcMap.put("cos", new Cos());
-//		funcMap.put("round", new Round());
-//		funcMap.put("pi", new Pi());
-//		funcMap.put("sqrt", new Sqrt());
-		//		funcMap.put("number", new .script.function.math.Number());
+		
 		
 
 	}
 
+	/**
+	 * 获取函数。先从用户函数中取，如没有获取到，再从共用函数中获取。
+	 * @param funName
+	 * @return
+	 */
 	public Function getFun(String funName) {
-		return funcMap.get(funName.toLowerCase());
+		if(funName!=null) {
+			String newFunName = getLowerCaseName(funName);
+			Function userFun = userFunMap.get(newFunName);
+			if(userFun != null){
+				return userFun;
+			}
+			return funcMap.get(newFunName);
+		}
+		return null;
 	}
 
+	private String getLowerCaseName(String funName) {
+		return funName.toLowerCase();
+	}
+
+	/**
+	 * 添加函数到用户函数库中
+	 * @param fun
+	 */
 	public void add(Function fun) {
 		if (fun != null) {
-			funcMap.put(fun.getName(), fun);
+			String name = fun.getName();
+			if(name==null || "".equals(name)){
+				throw new IllegalArgumentException("函数名称不能为空");
+			}else{
+				userFunMap.put(name, fun);
+			}
+		}
+	}
+	
+	/**
+	 * 移除用户函数
+	 * @param name
+	 */
+	public void remove(String name){
+		if (name != null) {
+			userFunMap.remove(getLowerCaseName(name));
 		}
 	}
 
-	static public FunctionFactory getInstance() {
-		return instance;
-	}
+//	static public FunMgr getInstance() {
+//		return instance;
+//	}
 }
