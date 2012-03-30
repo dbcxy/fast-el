@@ -12,7 +12,7 @@
 ||CPU 	||Intel(R) Core(TM) i3-2310M CPU@2.10GHz||
 ||内存 	||4G ddr3-1333 ||
 ||JDK 	||java version "1.6.0_26"||
-||Fel   ||0.5||
+||Fel   ||0.7.1||
 ||Jvm参数||-server||
 ||表达式执行次数||1亿次||
 
