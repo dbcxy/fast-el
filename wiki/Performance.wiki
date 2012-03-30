@@ -102,4 +102,4 @@ s.substring(1).substring(2).indexOf('world')
 
 *字符串访问：Fel比Java快。
 
-总结：Fel不比Java慢。
+*总结：Fel不比Java慢。
