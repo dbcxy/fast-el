@@ -102,10 +102,11 @@ public class FunMgr {
 			if(name==null || "".equals(name)){
 				throw new IllegalArgumentException("函数名称不能为空");
 			}else{
-				userFunMap.put(name, fun);
+				userFunMap.put(getLowerCaseName(name), fun);
 			}
 		}
 	}
+	
 	
 	/**
 	 * 移除用户函数

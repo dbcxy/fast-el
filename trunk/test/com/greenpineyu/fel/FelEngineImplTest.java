@@ -321,7 +321,7 @@ public class FelEngineImplTest {
 
 			@Override
 			public String getName() {
-				return "hello";
+				return "helloFel";
 			}
 
 			/* 
@@ -341,7 +341,7 @@ public class FelEngineImplTest {
 		// 添加函数到引擎中。
 		e.addFun(fun);
 		String expected = "fel";
-		String exp = "hello('"+expected+"')";
+		String exp = "helloFel('"+expected+"')";
 		
 		// 解释执行
 		Object eval = e.eval(exp);
