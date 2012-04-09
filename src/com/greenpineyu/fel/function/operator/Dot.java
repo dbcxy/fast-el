@@ -56,11 +56,11 @@ public class Dot implements Function {
 		FelNode right = children.get(1);
 			FelNode exp = right;
 			Class<?>[] argsType = new Class<?>[0];
-			if(getParamNodes(right) == null){
-				if(right.getChildren()!=null){				
-					right.getChildren().clear();
-				}
-			}
+//			if(clearNullNode(right) == null){
+//				if(right.getChildren()!=null){				
+//					right.getChildren().clear();
+//				}
+//			}
 			Object[] args = CommonFunction.evalArgs(right, context);
 			if (!ArrayUtils.isEmpty(args)) {
 				argsType = new Class[args.length];
@@ -86,7 +86,7 @@ public class Dot implements Function {
 //				returnMe = callGet(left, exp.getText());
 			}
 			if(method != null){
-				method.setAccessible(true);
+//				method.setAccessible(true);
 				return invoke(left, method, args);
 			}
 			return null;
@@ -150,7 +150,7 @@ public class Dot implements Function {
 	 * @param args
 	 * @return
 	 */
-	private static Object invoke(Object obj, Method method, Object[] args) {
+	public static Object invoke(Object obj, Method method, Object[] args) {
 		try {
 			return method.invoke(obj, args);
 		} catch (IllegalArgumentException e) {
@@ -200,7 +200,7 @@ public class Dot implements Function {
 		sb.append(".");
 		Method method  = null;
 		FelNode rightNode = children.get(1);
-		List<FelNode> params = getParamNodes(rightNode);
+		List<FelNode> params = rightNode.getChildren();
 		List<SourceBuilder> paramMethods = new ArrayList<SourceBuilder>();
 		Class<?>[] paramValueTypes = null;
 		boolean hasParam = params!= null && !params.isEmpty();
@@ -300,7 +300,7 @@ public class Dot implements Function {
 	 * @param paramMethod
 	 * @return
 	 */
-	private String getParamCode(Class<?> paramType,FelNode node,FelContext ctx) {
+	public static String getParamCode(Class<?> paramType,FelNode node,FelContext ctx) {
 		// 如果类型相等（包装类型与基本类型（int和Integer)也认为是相等 ），直接添加参数。
 		String paramCode = "";
 		 SourceBuilder paramMethod = node.toMethod(ctx);
@@ -322,19 +322,23 @@ public class Dot implements Function {
 	}
 
 	/**
-	 * 如果只有一个空参数，将其去掉
+	 * 如果只有一个空参数(AbstFelNode.NULL_NODE)，将其去掉。
+	 * （在支持abc(,,,)这样的语法时，需要添加空参数作为占位符。当只有一个空参数时，可以将其去掉）
 	 * 
 	 * @param rightNode
 	 * @return
+	 * @deprecated,由于语法文件改变，不需要再清除空节点。
 	 */
-	private List<FelNode> getParamNodes(FelNode rightNode) {
-		List<FelNode> params = rightNode.getChildren();
-		if(params!=null && params.size()==1&&params.get(0)== AbstFelNode.NULL_NODE){
-			// 如果只有一个空参数，视为null
-				params = null;
-		}
-		return params;
-	}
+//	public static List<FelNode> clearNullNode(FelNode rightNode) {
+//		List<FelNode> params = rightNode.getChildren();
+//		if(params!=null){
+//			if(params.size()==1&&params.get(0)== AbstFelNode.NULL_NODE){
+//				// 如果只有一个空参数，视为null
+//				params.clear();
+//			}
+//		}
+//		return params;
+//	}
 	
 	static void  b(Integer a){}
 	static void  c(int a){}
