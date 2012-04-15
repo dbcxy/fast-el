@@ -24,21 +24,12 @@ public abstract class AbstractContext implements FelContext{
 		this.setVar(new Var(name,value));
 	}
 
-//	@Override
-//	public Class<?> getVarType(String name) {
-//		return getVarType(name,this);
-//	}
-	
 	@Override
 	public Var getVar(String name) {
 		Object value = get(name);
 		return new Var(name, value, getVarType(value));
 	}
 
-//	public static Class<?> getVarType(String varName, FelContext ctx) {
-//		Object var = ctx.get(varName);
-//		return getVarType(var);
-//	}
 	
 	public static Class<?> getVarType(String varName, FelContext ctx) {
 		Var var = ctx.getVar(varName);

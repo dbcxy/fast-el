@@ -112,7 +112,7 @@ public class ArrayCtxImpl implements ArrayCtx{
 			return newIndex;
 		}
 	}
-	
+/*	
 	public static void main(String[] args) {
 //		int times = 10000*10000;
 //		ac(times);
@@ -174,7 +174,7 @@ public class ArrayCtxImpl implements ArrayCtx{
 		long end = System.currentTimeMillis();
 		System.out.println("map:"+(end-begin));
 	}
-	
+	*/
 	
 	
 

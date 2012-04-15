@@ -8,7 +8,7 @@ import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**
- * 当表达式是常量表达式，对表达式进行优化（目前未使用）
+ * 当表达式是常量表达式，对表达式进行优化。
  * 
  * @author yuqingsong
  * 

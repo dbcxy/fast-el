@@ -9,7 +9,7 @@ import java.util.Map;
  * 
  */
 /*
- * 更合适的实现方式是使用组合，而不是继承，这里继承HashMap是为了提供get方法的效率。
+ * 更合适的实现方式是使用组合，而不是继承，这里继承HashMap是为了提高get方法的效率。
  */
 @SuppressWarnings("serial")
 public class MapContext extends HashMap<String, Var> implements FelContext {
