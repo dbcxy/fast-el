@@ -191,7 +191,7 @@ public class Example {
 				if ("温度".equals(name)) {
 					return 25;
 				}
-				return NOT_FOUND;
+				return null;
 			}
 
 		};
@@ -294,7 +294,7 @@ public class Example {
 				if ("数量".equals(name)) {
 					return number[index.intValue()];
 				}
-				return NOT_FOUND;
+				return null;
 			}
 		};
 		Expression compExp = fel.compile(exp, context);

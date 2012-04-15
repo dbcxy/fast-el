@@ -3,8 +3,8 @@ package com.greenpineyu.fel;
 import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.ArrayCtxImpl;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.FunMgr;
+import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.optimizer.Optimizer;
 import com.greenpineyu.fel.parser.AntlrParser;
 import com.greenpineyu.fel.parser.FelNode;
@@ -68,7 +68,7 @@ public class FelEngineImpl implements FelEngine {
 
 	@Override
 	public String toString() {
-		return "FelEngine[ANTLR]";
+		return "FelEngine";
 	}
 
 	public static void main(String[] args) {

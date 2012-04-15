@@ -125,16 +125,15 @@ public class CollectionGet extends StableFunction{
 			throw new IndexOutOfBoundsException("Index cannot be negative: "
 					+ index);
 		}
-		if (object instanceof Map) {
-			@SuppressWarnings("rawtypes")
-			Map map = (Map) object;
+		if (object instanceof Map<?,?>) {
+			Map<?,?> map = (Map<?,?>) object;
 			Iterator<?> iterator = map.entrySet().iterator();
 			return get(iterator, index);
-		} else if (object instanceof List) {
+		} else if (object instanceof List<?>) {
 			return ((List<?>) object).get(index);
 		} else if (object instanceof Object[]) {
 			return ((Object[]) object)[index];
-		} else if (object instanceof Iterator) {
+		} else if (object instanceof Iterator<?>) {
 			Iterator<?> it = (Iterator<?>) object;
 			while (it.hasNext()) {
 				index--;
@@ -146,10 +145,10 @@ public class CollectionGet extends StableFunction{
 			}
 			throw new IndexOutOfBoundsException("Entry does not exist: "
 					+ index);
-		} else if (object instanceof Collection) {
+		} else if (object instanceof Collection<?>) {
 			Iterator<?> iterator = ((Collection<?>) object).iterator();
 			return get(iterator, index);
-		} else if (object instanceof Enumeration) {
+		} else if (object instanceof Enumeration<?>) {
 			Enumeration<?> it = (Enumeration<?>) object;
 			while (it.hasMoreElements()) {
 				index--;

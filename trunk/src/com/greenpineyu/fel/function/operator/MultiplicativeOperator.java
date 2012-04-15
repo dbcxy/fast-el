@@ -1,7 +1,5 @@
 package com.greenpineyu.fel.function.operator;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
@@ -11,9 +9,7 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.CompileException;
 import com.greenpineyu.fel.exception.EvalException;
-import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.parser.FelNode;
-import com.greenpineyu.fel.parser.Stable;
 
 /**
  * 包名				.script.function.operator
@@ -22,7 +18,7 @@ import com.greenpineyu.fel.parser.Stable;
  * 作者				
  * 版权				
  */
-public class MultiplicativeOperator extends CommonFunction implements Stable{
+public class MultiplicativeOperator  extends StableFunction{
 
 	private String operator;
 	
@@ -48,7 +44,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		MOD = new MultiplicativeOperator(MOD_STR);
 	}
 	
-	public Object call(Object[] arguments) {
+	/*public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 2){
 			Object left = arguments[0];
 			Object right = arguments[1];
@@ -61,7 +57,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 			}
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");
-	}
+	}*/
 	
 	@Override
 	public Object call(FelNode node, FelContext context) {
@@ -87,7 +83,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 			}
 			throw new EvalException("执行"+this.operator+"出错，参数必须是数值型");
 		}
-		return super.call(node, context);
+		throw new EvalException("执行"+this.operator+"出错，参数数量必须为2。");
 	}
 
 	/**
@@ -96,7 +92,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 	 * @param right
 	 * @return
 	 */
-	public static Object multiply(Object left, Object right) {
+	/*public static Object multiply(Object left, Object right) {
         if (left == null || right == null) {
 			throw new NullPointerException("调用multiply()方法出错！,原因：当前参数为空");
         }
@@ -132,7 +128,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		} catch (Exception e) {
 			throw new NumberFormatException("调用multiply()方法出错！,原因：解析参数对象出错！");
 		}
-    }
+    }*/
 
 	/**
 	 * 除法
@@ -140,7 +136,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 	 * @param right
 	 * @return
 	 */
-	public static Object divide(Object left, Object right) {
+	/*public static Object divide(Object left, Object right) {
         if (left == null || right == null) {
 			throw new NullPointerException("调用divide()方法出错！,原因：当前参数为空");
         }
@@ -192,7 +188,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		} catch (Exception e) {
 			throw new EvalException(left + "/" + right + "运算出错", e);
 		}
-    }
+    }*/
 
 	/**
 	 * 除于
@@ -200,7 +196,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 	 * @param right
 	 * @return
 	 */
-	private Object mod(Object left, Object right) {
+	/*private Object mod(Object left, Object right) {
         if (left == null || right == null) {
 			throw new NullPointerException("调用mod()方法出错！,原因：当前参数为空");
         }
@@ -240,7 +236,7 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 		} catch (Exception e) {
 			throw new NumberFormatException("调用mod()方法出错！,原因：解析参数对象出错！");
 		}
-    }
+    }*/
 
 	public String getName() {
 		return this.operator;
@@ -271,5 +267,6 @@ public class MultiplicativeOperator extends CommonFunction implements Stable{
 	public boolean stable() {
 		return true;
 	}
+
 
 }

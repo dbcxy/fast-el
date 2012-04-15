@@ -71,7 +71,7 @@ public class RelationalOperator extends CommonFunction implements Stable {
 	 * @param right
 	 * @return
 	 */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public static boolean lessThan(Object left, Object right) {
     	if(left != null && right != null){
     		if ((left == right)) {

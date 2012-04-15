@@ -6,6 +6,7 @@ package com.greenpineyu.fel.context;
  * @author yuqingsong
  * 
  */
+/*
 public class EmptyContext implements FelContext{
 	
 	private static final FelContext instance;
@@ -50,3 +51,4 @@ public class EmptyContext implements FelContext{
 	}
 
 }
+*/

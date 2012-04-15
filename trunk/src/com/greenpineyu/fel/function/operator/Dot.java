@@ -19,7 +19,6 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.CommonFunction;
 import com.greenpineyu.fel.function.Function;
-import com.greenpineyu.fel.parser.AbstFelNode;
 import com.greenpineyu.fel.parser.FelNode;
 
 public class Dot implements Function {
@@ -73,7 +72,7 @@ public class Dot implements Function {
 				}
 			}
 			Method method = null;
-		Class<?> cls = left instanceof Class ? (Class<?>) left : left
+		Class<?> cls = left instanceof Class<?> ? (Class<?>) left : left
 				.getClass();
 
 				method = ReflectUtil.findMethod(cls, right.getText(),argsType);
