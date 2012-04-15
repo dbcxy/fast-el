@@ -3,8 +3,7 @@ package com.greenpineyu.fel.function.operator;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
-
+import com.greenpineyu.fel.common.Null;
 import com.greenpineyu.fel.common.NumberUtil;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;

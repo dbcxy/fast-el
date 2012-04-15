@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.runtime.tree.CommonTree;
-import org.apache.commons.lang3.StringUtils;
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.Callable;
 import com.greenpineyu.fel.common.ReflectUtil;
+import com.greenpineyu.fel.common.StringUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.optimizer.ConstExpOpti;

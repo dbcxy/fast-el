@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils.Null;
-
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
+import com.greenpineyu.fel.common.ArrayUtils;
+import com.greenpineyu.fel.common.Null;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;

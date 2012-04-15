@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
@@ -188,7 +189,7 @@ public class Add extends StableFunction  {
 			BigInteger result = l.add(r);
 			return NumberUtil.narrowBigInteger(left, right, result);
 		} catch (Exception e) {
-			return NumberUtil.toString(left).concat(NumberUtil.toString(right));
+			return ObjectUtils.toString(left).concat(ObjectUtils.toString(right));
 		}
 	}
 

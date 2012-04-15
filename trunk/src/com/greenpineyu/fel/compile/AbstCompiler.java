@@ -15,9 +15,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.greenpineyu.fel.Expression;
+import com.greenpineyu.fel.common.StringUtils;
 
 public abstract class AbstCompiler implements FelCompiler {
 	/*

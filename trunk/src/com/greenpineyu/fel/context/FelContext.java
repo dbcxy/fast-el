@@ -1,11 +1,13 @@
 package com.greenpineyu.fel.context;
 
+import com.greenpineyu.fel.common.Null;
+
 
 
 public interface FelContext {
 
 	
-	Object NULL = new Object();
+	Null NULL = new Null();
 
 	/**
 	 * 获取变量值
