@@ -1,8 +1,7 @@
 package com.greenpineyu.fel.function;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.greenpineyu.fel.FelEngine;
+import com.greenpineyu.fel.common.StringUtils;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;

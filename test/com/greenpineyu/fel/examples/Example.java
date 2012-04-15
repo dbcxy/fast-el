@@ -8,14 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.mutable.MutableInt;
-
 
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.Foo;
+import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.ContextChain;
 import com.greenpineyu.fel.context.FelContext;
@@ -432,3 +430,24 @@ class ColumnInterpreter implements Interpreter {
 		return records[index.intValue()];
 	}
 }
+
+class MutableInt {
+	private int value;
+
+	public MutableInt(int i) {
+		this.value = i;
+	}
+
+	public int intValue() {
+		return value;
+	}
+
+	public void setValue(int i) {
+		this.value = i;
+	}
+
+	public void increment() {
+		value++;
+	}
+}
+

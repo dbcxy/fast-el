@@ -10,12 +10,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.greenpineyu.fel.common.ArrayUtils;
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.Var;
 import com.greenpineyu.fel.function.CommonFunction;
@@ -58,6 +58,10 @@ public class FelEngineImplTest {
 		m.put(null, "test null key");
 		// jc.set("pc", m);
 		jc.setVar(new Var("pc", m, Map.class));
+		
+		Map<String, Integer> indexMap = new HashMap<String, Integer>();
+		indexMap.put("index", 6);
+		jc.set("indexMap",indexMap);
 
 		Object[][] a = new Object[1000][];
 		AtomicInteger i = new AtomicInteger(-1);
@@ -214,6 +218,8 @@ public class FelEngineImplTest {
 	private void addStringTest(Object[][] object, AtomicInteger i) {
 		object[i.incrementAndGet()] = new Object[] { "'abc'.indexOf('bc')", 1 };
 		object[i.incrementAndGet()] = new Object[] { "'abc'.substring(1)", "bc" };
+		object[i.incrementAndGet()] = new Object[] { "'hello world'.substring(indexMap.index)", "world"};
+		
 	}
 
 	/**

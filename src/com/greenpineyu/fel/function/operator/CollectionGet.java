@@ -8,12 +8,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
 import com.greenpineyu.fel.common.NumberUtil;
+import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
 import com.greenpineyu.fel.compile.SourceBuilder;

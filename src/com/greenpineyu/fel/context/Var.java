@@ -1,5 +1,7 @@
 package com.greenpineyu.fel.context;
 
+import com.greenpineyu.fel.common.Null;
+
 /**
  * 变量
  * @author yuqingsong
@@ -18,7 +20,7 @@ public class Var {
 //		}
 	}
 	private Class<?> getTypeByValue() {
-		return  value!=null?value.getClass():FelContext.NULL.getClass();
+		return  value!=null?value.getClass():Null.class;
 //		this.type = getTypeByValue;
 	}
 	public Var(String name,Object value){

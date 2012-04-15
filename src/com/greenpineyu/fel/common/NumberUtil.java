@@ -3,9 +3,6 @@ package com.greenpineyu.fel.common;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ObjectUtils;
-
 import com.greenpineyu.fel.function.operator.Add;
 
 /**
@@ -192,19 +189,19 @@ public class NumberUtil {
 	 * @param val
 	 * @return
 	 */
-	public static String toString(Object val) {
-        if (val == null) {
-            val = "";
-        }
-        if(val.getClass().isArray()){
-			Object[] array = (Object[]) val;
-			if (array.length == 1) {
-				return ObjectUtils.toString(array[0]);
-			}
-			return ArrayUtils.toString(array);
-        }
-        return val.toString();
-    }
+//	public static String toString(Object val) {
+//        if (val == null) {
+//            val = "";
+//        }
+//        if(val.getClass().isArray()){
+//			Object[] array = (Object[]) val;
+//			if (array.length == 1) {
+//				return ObjectUtils.toString(array[0]);
+//			}
+//			return ArrayUtils.toString(array);
+//        }
+//        return val.toString();
+//    }
 	
 	public static Number narrow(Number original) {
         if (original == null) {
