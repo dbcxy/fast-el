@@ -6,11 +6,18 @@ import java.util.Map;
 import com.greenpineyu.fel.function.operator.Add;
 import com.greenpineyu.fel.function.operator.CollectionGet;
 import com.greenpineyu.fel.function.operator.CondOperator;
+import com.greenpineyu.fel.function.operator.Div;
 import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.function.operator.EqualsOperator;
+import com.greenpineyu.fel.function.operator.GreaterThan;
+import com.greenpineyu.fel.function.operator.GreaterThenEqual;
+import com.greenpineyu.fel.function.operator.LessThenEqual;
 import com.greenpineyu.fel.function.operator.LogicalOperator;
+import com.greenpineyu.fel.function.operator.Mod;
 import com.greenpineyu.fel.function.operator.MultiplicativeOperator;
+import com.greenpineyu.fel.function.operator.NotEqual;
 import com.greenpineyu.fel.function.operator.NotOper;
+import com.greenpineyu.fel.function.operator.Or;
 import com.greenpineyu.fel.function.operator.RelationalOperator;
 import com.greenpineyu.fel.function.operator.Sub;
 
@@ -46,29 +53,44 @@ public class FunMgr {
 		
 		funcMap.put(Add.getInstance().getName(), Add.getInstance());// +
 		funcMap.put(Sub.getInstance().getName(), Sub.getInstance());// -
-		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
-		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
-		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *
-		funcMap.put(MultiplicativeOperator.DIV_STR, MultiplicativeOperator.DIV);// /
-		funcMap.put(MultiplicativeOperator.MOD_STR, MultiplicativeOperator.MOD);// %
-		funcMap.put(RelationalOperator.LESSTHEN_STR,
-				RelationalOperator.LESSTHEN);// <
-		funcMap.put(RelationalOperator.GREATERTHAN_STR,
-				RelationalOperator.GREATERTHAN);// >
-		funcMap.put(RelationalOperator.LESSTHENOREQUALS_STR,
-				RelationalOperator.LESSTHENOREQUALS);// <=
-		funcMap.put(RelationalOperator.GREATERTHANOREQUALS_STR,
-				RelationalOperator.GREATERTHANOREQUALS);// >=
+//		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
+		addFun(new EqualsOperator());//==
+		addFun(new NotEqual());//!=
+//		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
+		addFun(new MultiplicativeOperator());// *
+		addFun(new Div());// /
+		addFun(new Mod());// %
+//		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *
+//		funcMap.put(MultiplicativeOperator.DIV_STR, MultiplicativeOperator.DIV);// /
+//		funcMap.put(MultiplicativeOperator.MOD_STR, MultiplicativeOperator.MOD);// %
+		addFun(new RelationalOperator());// <
+		addFun(new LessThenEqual());// <=
+		addFun(new GreaterThan());// >
+		addFun(new GreaterThenEqual());// >=
+//		funcMap.put(RelationalOperator.LESSTHEN_STR,
+//				RelationalOperator.LESSTHEN);// <
+//		funcMap.put(RelationalOperator.GREATERTHAN_STR,
+//				RelationalOperator.GREATERTHAN);// >
+//		funcMap.put(RelationalOperator.LESSTHENOREQUALS_STR,
+//				RelationalOperator.LESSTHENOREQUALS);// <=
+//		funcMap.put(RelationalOperator.GREATERTHANOREQUALS_STR,
+//				RelationalOperator.GREATERTHANOREQUALS);// >=
 //		funcMap.put(LogicalOperator.AND_STR.toLowerCase(), LogicalOperator.AND);// AND
-		funcMap.put(LogicalOperator.AND2_STR, LogicalOperator.AND2);// &&
+		addFun(new LogicalOperator());// &&
+		addFun(new Or());// ||
+//		funcMap.put(LogicalOperator.AND2_STR, LogicalOperator.AND2);// &&
 //		funcMap.put(LogicalOperator.OR_STR.toLowerCase(), LogicalOperator.OR);// OR
-		funcMap.put(LogicalOperator.OR2_STR, LogicalOperator.OR2);// ||
+//		funcMap.put(LogicalOperator.OR2_STR, LogicalOperator.OR2);// ||
 //		funcMap.put(Like.getInstance().getName(), Like.getInstance());// like
 //		funcMap.put(In.getInstance().getName(), In.getInstance());// in
 
 		
 		
 
+	}
+
+	private static void addFun(Function notEqual) {
+		funcMap.put(notEqual.getName(), notEqual);
 	}
 
 	/**

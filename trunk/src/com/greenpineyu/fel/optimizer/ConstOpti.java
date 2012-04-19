@@ -9,6 +9,7 @@ import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.operator.LogicalOperator;
+import com.greenpineyu.fel.function.operator.Or;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.FunNode;
@@ -41,8 +42,7 @@ public class ConstOpti implements Optimizer {
 						List<FelNode> args = node.getChildren();
 						FelNode left = args.get(0);
 						FelNode right = args.get(1);
-						boolean isOr = logic == LogicalOperator.OR
-								|| logic == LogicalOperator.OR2;
+						boolean isOr = fun instanceof Or;
 						// 短路的判断值，or使用True来判断，and使用false来判断
 						Boolean result = isOr;
 						// if (isOr) {

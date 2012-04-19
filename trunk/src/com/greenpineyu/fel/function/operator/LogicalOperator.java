@@ -16,36 +16,36 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class LogicalOperator extends StableFunction {
 
-	private final String operator;
-
-	private LogicalOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public static final String AND_STR = "AND";
-	public static final String AND2_STR = "&&";
-	public static final String OR_STR = "OR";
-	public static final String OR2_STR = "||";
-
-	public static final LogicalOperator AND;
-	public static final LogicalOperator AND2;
-	public static final LogicalOperator OR;
-	public static final LogicalOperator OR2;
-
-	static {
-		AND = new LogicalOperator(AND_STR);
-		AND2 = new LogicalOperator(AND2_STR);
-		OR = new LogicalOperator(OR_STR);
-		OR2 = new LogicalOperator(OR2_STR);
-	}
+//	private final String operator;
+//
+//	private LogicalOperator(String operator) {
+//		this.operator = operator;
+//	}
+//
+//	public static final String AND_STR = "AND";
+//	public static final String AND2_STR = "&&";
+//	public static final String OR_STR = "OR";
+//	public static final String OR2_STR = "||";
+//
+//	public static final LogicalOperator AND;
+//	public static final LogicalOperator AND2;
+//	public static final LogicalOperator OR;
+//	public static final LogicalOperator OR2;
+//
+//	static {
+//		AND = new LogicalOperator(AND_STR);
+//		AND2 = new LogicalOperator(AND2_STR);
+//		OR = new LogicalOperator(OR_STR);
+//		OR2 = new LogicalOperator(OR2_STR);
+//	}
 
 	public String toJavaOper() {
-		if (AND_STR.equals(this.getName())) {
-			return AND2_STR;
-		}
-		if (OR_STR.equals(this.getName())) {
-			return OR2_STR;
-		}
+//		if (AND_STR.equals(this.getName())) {
+//			return AND2_STR;
+//		}
+//		if (OR_STR.equals(this.getName())) {
+//			return OR2_STR;
+//		}
 		return this.getName();
 	}
 
@@ -53,13 +53,14 @@ public class LogicalOperator extends StableFunction {
 	public Object call(FelNode node, FelContext context) {
 		List<FelNode> children = node.getChildren();
 		if (children != null && children.size() == 2) {
-			Object[] c = children.toArray();
-			if (this == AND || this == AND2) {
-				return and(context, c);
-			} else if (this == OR || this == OR2) {
-				return or(context, c);
-			}
-			throw new EvalException("未知的逻辑操作符");
+			return logic(context,children);
+//			Object[] c = children.toArray();
+//			if (this == AND || this == AND2) {
+//				return and(context, c);
+//			} else if (this == OR || this == OR2) {
+//				return or(context, c);
+//			}
+//			throw new EvalException("未知的逻辑操作符");
 		}
 		throw new EvalException("传入参数数组为空或者参数个数不正确!");
 	}
@@ -71,26 +72,39 @@ public class LogicalOperator extends StableFunction {
 	 * @param right
 	 * @return
 	 */
-	private Boolean and(FelContext context, Object[] children) {
-		Boolean leftValue = toBoolean(context, children[0]);
+//	private Boolean and(FelContext context, Object[] children) {
+//		Boolean leftValue = toBoolean(context, children[0]);
+//		if (!leftValue.booleanValue()) {
+//			return leftValue;
+//		}
+//		return toBoolean(context, children[1]);
+//	}
+	
+	/**
+	 * 求逻辑与(&&)
+	 * @param context
+	 * @param children
+	 * @return
+	 */
+	Boolean logic(FelContext context, List<FelNode> children) {
+		Boolean leftValue = toBoolean(context, children.get(0));
 		if (!leftValue.booleanValue()) {
 			return leftValue;
 		}
-		return toBoolean(context, children[1]);
+		return toBoolean(context, children.get(1));
 	}
 
-	private Boolean or(FelContext context, Object[] children) {
-		Boolean leftValue = toBoolean(context, children[0]);
-		if (leftValue.booleanValue()) {
-			return leftValue;
-		}
-		return toBoolean(context, children[1]);
-	}
+//	Boolean or(FelContext context, Object[] children) {
+//		Boolean leftValue = toBoolean(context, children[0]);
+//		if (leftValue.booleanValue()) {
+//			return leftValue;
+//		}
+//		return toBoolean(context, children[1]);
+//	}
 
-	private Boolean toBoolean(FelContext context, Object left) {
-		left = TolerantFunction.eval(context, left);
-		Boolean leftValue = NumberUtil.toBooleanObj(left);
-		return leftValue;
+	Boolean toBoolean(FelContext context, Object node) {
+		node = TolerantFunction.eval(context, node);
+		return  NumberUtil.toBooleanObj(node);
 	}
 
 	/**
@@ -121,7 +135,7 @@ public class LogicalOperator extends StableFunction {
 
 	@Override
 	public String getName() {
-		return this.operator;
+		return "&&";
 	}
 
 	@Override

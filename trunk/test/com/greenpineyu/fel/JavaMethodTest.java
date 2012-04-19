@@ -2,6 +2,7 @@ package com.greenpineyu.fel;
 
 import java.lang.reflect.Method;
 
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,11 +16,10 @@ public class JavaMethodTest {
 
 	FelEngine engine;
 	FelContext ctx;
-	{
+	
+	@BeforeTest
+	public void init(){
 		engine = FelEngine.instance;
-		ctx = engine.getContext();
-		ctx.set("a", a);
-		ctx.set("b", b);
 	}
 
 	 @Test(dataProvider = "dp")
@@ -32,9 +32,17 @@ public class JavaMethodTest {
 		Expression expObj = engine.compile(exp, ctx);
 		FelEngineImplTest.compare(expObj.eval(ctx), actual);
 	}
+	
+//public Object eval(FelContext context) {
+//        
+//        return com.greenpineyu.fel.JavaMethodTest.staticWithParam((java.lang.Integer)((java.lang.Boolean)((ArrayCtx)context).get(0)),(java.lang.Integer)((java.lang.Boolean)((ArrayCtx)context).get(1)));
+//    }
 
 	@DataProvider
 	public Object[][] dp() {
+		ctx = engine.getContext();
+		ctx.set("a", a);
+		ctx.set("b", b);
 		try {
 			
 			Class<?>[] paramTypes = new Class<?>[]{int.class,int.class};
