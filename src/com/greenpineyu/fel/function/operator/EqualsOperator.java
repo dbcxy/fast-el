@@ -14,27 +14,8 @@ import com.greenpineyu.fel.parser.FelNode;
 
 public class EqualsOperator extends StableFunction {
 
-	private final String operator;
-
-	private EqualsOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public static final String EQUAL_STR = "==";
-
-	public static final String NOEQUAL_STR = "!=";
-
-	public static final EqualsOperator EQUAL;
-
-	public static final EqualsOperator NOEQUAL;
-
-	static {
-		EQUAL = new EqualsOperator(EQUAL_STR);
-		NOEQUAL = new EqualsOperator(NOEQUAL_STR);
-	}
-
 	public String getName() {
-		return this.operator;
+		return "==";
 	}
 
 	public Object call(FelNode node, FelContext context) {
@@ -42,13 +23,13 @@ public class EqualsOperator extends StableFunction {
 		if (children != null && children.size() == 2) {
 			Object left = TolerantFunction.eval(context, children.get(0));
 			Object right = TolerantFunction.eval(context, children.get(1));
-			if (this == EQUAL) {
-				return Boolean.valueOf(equals(left, right));
-			} else if (this == NOEQUAL) {
-				return Boolean.valueOf(!equals(left, right));
-			}
+			return Boolean.valueOf(compare(left, right));
 		}
 		throw new NullPointerException("传入参数数组为空或者参数个数不正确!");
+	}
+
+	boolean compare(Object left, Object right) {
+		return equals(left, right);
 	}
 
 	public static boolean equals(Object left, Object right) {
@@ -85,13 +66,14 @@ public class EqualsOperator extends StableFunction {
 		if(sb.length()==0){
 			String left = getChildCode(node, ctx,0);
 			String right = getChildCode(node, ctx, 1);
-			if (this == EQUAL) {
-				sb.append("ObjectUtils.equals(" + left + "," + right + ")");
-			} else {
-				sb.append("ObjectUtils.notEqual(" + left + "," + right + ")");
-			}
+			String toMethod = toMethod(left, right);
+			sb.append(toMethod);
 		}
 		return new FelMethod(Boolean.class, sb.toString());
+	}
+
+	String toMethod(String left, String right) {
+		return "ObjectUtils.equals(" + left + "," + right + ")";
 	}
 
 	public static String getChildCode(FelNode node, FelContext ctx,int index) {

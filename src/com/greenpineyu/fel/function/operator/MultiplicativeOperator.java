@@ -20,29 +20,31 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class MultiplicativeOperator  extends StableFunction{
 
-	private String operator;
+//	private String operator;
+//	
+//	private MultiplicativeOperator(String operator) {
+//		this.operator = operator;
+//	}
 	
-	private MultiplicativeOperator(String operator) {
-		this.operator = operator;
-	}
 	
-	public static final String MUL_STR = "*";
 	
-	public static final String DIV_STR = "/";
+//	public static final String MUL_STR = "*";
+//	
+//	public static final String DIV_STR = "/";
+//	
+//	public static final String MOD_STR = "%";
+//	
+//	public static final MultiplicativeOperator MUL;
+//	
+//	public static final MultiplicativeOperator DIV;
+//	
+//	public static final MultiplicativeOperator MOD;
 	
-	public static final String MOD_STR = "%";
-	
-	public static final MultiplicativeOperator MUL;
-	
-	public static final MultiplicativeOperator DIV;
-	
-	public static final MultiplicativeOperator MOD;
-	
-	static {
-		MUL = new MultiplicativeOperator(MUL_STR);
-		DIV = new MultiplicativeOperator(DIV_STR);
-		MOD = new MultiplicativeOperator(MOD_STR);
-	}
+//	static {
+//		MUL = new MultiplicativeOperator(MUL_STR);
+//		DIV = new MultiplicativeOperator(DIV_STR);
+//		MOD = new MultiplicativeOperator(MOD_STR);
+//	}
 	
 	/*public Object call(Object[] arguments) {
 		if(arguments != null && arguments.length == 2){
@@ -70,20 +72,17 @@ public class MultiplicativeOperator  extends StableFunction{
 			if (leftValue instanceof Number && rightValue instanceof Number) {
 				double l = NumberUtil.toDouble(leftValue);
 				double r = NumberUtil.toDouble(rightValue);
-				if(this == MUL){
-					return NumberUtil.parseNumber(l * r);
-				}
-				if(this == DIV){
-					return NumberUtil.parseNumber(l / r);
-				}
-				if(this == MOD){
-					return NumberUtil.parseNumber(l % r);
-				}
-				throw new EvalException("执行"+this.operator+"出错，未知的操作符");
+//				Object calc = null;
+				return calc(l, r);
+//				throw new EvalException("执行"+this.operator+"出错，未知的操作符");
 			}
-			throw new EvalException("执行"+this.operator+"出错，参数必须是数值型");
+			throw new EvalException("执行"+this.getName()+"出错，参数必须是数值型");
 		}
-		throw new EvalException("执行"+this.operator+"出错，参数数量必须为2。");
+		throw new EvalException("执行"+this.getName()+"出错，参数数量必须为2。");
+	}
+
+	Object calc(double l, double r) {
+			return NumberUtil.parseNumber(l * r);
 	}
 
 	/**
@@ -239,7 +238,7 @@ public class MultiplicativeOperator  extends StableFunction{
     }*/
 
 	public String getName() {
-		return this.operator;
+		return "*";
 	}
 
 	public FelMethod toMethod(FelNode node, FelContext ctx) {
@@ -259,7 +258,7 @@ public class MultiplicativeOperator  extends StableFunction{
 			throw new CompileException("不支持的类型["+ReflectUtil.getClassName(leftType)
 					+"、"+ReflectUtil.getClassName(rightType)+"]。["+this.getName()+"]运算只支持数值类型");
 		}
-		code = "("+lm.source(ctx, left)+")"+this.operator+"("+rm.source(ctx, right)+")";
+		code = "("+lm.source(ctx, left)+")"+this.getName()+"("+rm.source(ctx, right)+")";
 		FelMethod m = new FelMethod(type, code);
 		return m;
 	}
