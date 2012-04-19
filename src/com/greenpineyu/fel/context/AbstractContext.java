@@ -27,7 +27,7 @@ public abstract class AbstractContext implements FelContext{
 	@Override
 	public Var getVar(String name) {
 		Object value = get(name);
-		return new Var(name, value, getVarType(value));
+		return new Var(name, value, null);
 	}
 
 	
