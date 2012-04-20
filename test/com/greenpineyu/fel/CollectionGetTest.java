@@ -14,18 +14,10 @@ public class CollectionGetTest {
 
 	FelEngine engine;
 	FelContext ctx;
-	int[] pa = {
-			1, 2, 3 };
-	int[][] pa2 = {
-			{
-					10, 20 }, {
-					30, 40 } };
-	Integer[] wa = {
-			11, 22, 33 };
-	Integer[][] wa2 = {
-			{
-					100, 200 }, {
-					300, 400 } };
+	int[] pa = { 1, 2, 3 };
+	int[][] pa2 = { { 10, 20 }, { 30, 40 } };
+	Integer[] wa = { 11, 22, 33 };
+	Integer[][] wa2 = { { 100, 200 }, { 300, 400 } };
 	List<String> l = new ArrayList<String>();
 	List<List<String>> ll = new ArrayList<List<String>>();
 	{
@@ -51,10 +43,10 @@ public class CollectionGetTest {
 		ctx.set("ll", ll);
 	}
 
-	// @Test(dataProvider = "dp")
-	// public void eval(String exp, Object actual) {
-	// FelEngineImplTest.compare(engine.eval(exp), actual);
-	// }
+	@Test(dataProvider = "dp")
+	public void eval(String exp, Object actual) {
+		FelEngineImplTest.compare(engine.eval(exp), actual);
+	}
 
 	@Test(dataProvider = "dp")
 	public void compile(String exp, Object actual) {
@@ -64,20 +56,10 @@ public class CollectionGetTest {
 
 	@DataProvider
 	public Object[][] dp() {
-		return new Object[][] {
-				{
-						"wa[index]", wa[index] }, {
-						"pa[1]", pa[1] }, {
-						"pa2[1]", pa2[1] }, {
-						"wa2[index]", wa2[index] },{
-						"l[index]", l.get(1) }, {
-						"l[1]", l.get(1) }, {
-						"ll[1][1]", ll.get(1).get(1) },
-						};
-	}
-
-	static void set(String name, Object value, Object... valueAttr) {
-		set(null, new Object());
+		return new Object[][] { { "wa[index]", wa[index] }, { "pa[1]", pa[1] },
+				{ "pa2[1]", pa2[1] }, { "wa2[index]", wa2[index] },
+				{ "l[index]", l.get(1) }, { "l[1]", l.get(1) },
+				{ "ll[1][1]", ll.get(1).get(1) }, };
 	}
 
 }
