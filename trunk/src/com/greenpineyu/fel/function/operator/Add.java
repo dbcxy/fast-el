@@ -19,16 +19,9 @@ import com.greenpineyu.fel.parser.FelNode;
 
 public class Add extends StableFunction  {
 
-	private static Add instance;
-
-	static {
-		instance = new Add();
-	}
 
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-	private Add() {
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -72,10 +65,6 @@ public class Add extends StableFunction  {
 			return NumberUtil.parseNumber(returnMe.toString());
 		}
 		return returnMe;
-	}
-
-	public static Add getInstance() {
-		return instance;
 	}
 
 	@Override

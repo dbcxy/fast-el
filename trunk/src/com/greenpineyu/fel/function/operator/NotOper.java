@@ -13,9 +13,6 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class NotOper extends StableFunction {
 	
-	public static NotOper instance = new NotOper();
-	
-	private NotOper(){}
 
 	@Override
 	public Object call(FelNode node, FelContext context) {

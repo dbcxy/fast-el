@@ -43,16 +43,23 @@ public class FunMgr {
 		funcMap = new HashMap<String, Function>();
 
 		// // 操作符函数
-		funcMap.put(".", new Dot());
+		addFun(new Dot());
+//		funcMap.put(".", new Dot());
 		
-		funcMap.put(CollectionGet.instance.getName(), CollectionGet.instance);
+		addFun(new CollectionGet());
+//		funcMap.put(new CollectionGet().instance.getName(), CollectionGet.instance);
 		
-		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
-		funcMap.put(Dollar.instance.getName(), Dollar.instance);
-		funcMap.put(NotOper.instance.getName(), NotOper.instance);
+		addFun(new CondOperator());
+//		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
+		addFun(new Dollar());
+//		funcMap.put(Dollar.instance.getName(), Dollar.instance);
+		addFun(new NotOper());
+//		funcMap.put(NotOper.instance.getName(), NotOper.instance);
 		
-		funcMap.put(Add.getInstance().getName(), Add.getInstance());// +
-		funcMap.put(Sub.getInstance().getName(), Sub.getInstance());// -
+		addFun(new Add());//+
+		addFun(new Sub());//-
+//		funcMap.put(Add.getInstance().getName(), Add.getInstance());// +
+//		funcMap.put(Sub.getInstance().getName(), Sub.getInstance());// -
 //		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
 		addFun(new EqualsOperator());//==
 		addFun(new NotEqual());//!=
@@ -89,8 +96,8 @@ public class FunMgr {
 
 	}
 
-	private static void addFun(Function notEqual) {
-		funcMap.put(notEqual.getName(), notEqual);
+	private static void addFun(Function fun) {
+		funcMap.put(fun.getName(), fun);
 	}
 
 	/**

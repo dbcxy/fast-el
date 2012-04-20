@@ -13,15 +13,6 @@ import com.greenpineyu.fel.parser.FelNode;
 
 public class Sub extends StableFunction {
 
-	private static Sub instance;
-
-	public static Sub getInstance() {
-		return instance;
-	}
-
-	static {
-		instance = new Sub();
-	}
 
 	private void appendArg(StringBuilder sb, SourceBuilder argMethod,FelContext ctx,FelNode node) {
 		Class<?> t = argMethod.returnType(ctx, node);
