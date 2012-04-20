@@ -15,11 +15,6 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class Dollar implements Function {
 
-	public static Dollar instance = new Dollar();
-
-	private Dollar() {
-
-	}
 
 	@Override
 	public String getName() {

@@ -27,16 +27,6 @@ import com.greenpineyu.fel.parser.FelNode;
  * 
  */
 public class CollectionGet extends StableFunction{
-	public static CollectionGet instance;
-
-	static {
-		instance = new CollectionGet();
-	}
-
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-	private CollectionGet() {
-	}
 
 	@Override
 	public Object call(FelNode node, FelContext context) {

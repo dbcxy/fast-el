@@ -17,11 +17,6 @@ import com.greenpineyu.fel.parser.FelNode;
  */
 public class CondOperator extends StableFunction {
 	
-    public static CondOperator instance = new CondOperator();
-	
-	private CondOperator(){
-		
-	}
 
 	@Override
 	public Object call(FelNode node, FelContext context) {
