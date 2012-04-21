@@ -1,7 +1,6 @@
 package com.greenpineyu.fel.function.operator;
 
 import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -24,6 +23,7 @@ import com.greenpineyu.fel.parser.FelNode;
 /**
  * 根据索引获取某个集合的值,相当于List.get(i)方法和array[i]方法。 用于处理array[i],list[i]等表达式，
  * 同时也可以处理支持实现了iterator的类，如Set。
+ * 
  * @author yuqingsong
  * 
  */
@@ -82,8 +82,10 @@ public class CollectionGet extends StableFunction{
 
 	/**
 	 * 获取索引的java代码，如果索引不是int类型，要转换成int类型
+	 * 
 	 * @param ctx
-	 * @param right 索引对应的节点
+	 * @param right
+	 *            索引对应的节点
 	 * @param rightMethod
 	 * @param rightType
 	 * @return
