@@ -112,7 +112,8 @@ public class FelEngineImplTest {
 		add(a, i, "1.5-1", 0.5);
 		add(a, i, "1/3", 1.0 / 3);
 		add(a, i, "2*(4+3)", 14);
-
+		add(a, i, "2*(4+3)+5*num", 2*(4+3)+5*num);
+		
 		add(a, i, "2 < 3", Boolean.TRUE);
 		add(a, i, "num < 5", Boolean.FALSE);
 		add(a, i, "num < num", Boolean.FALSE);
