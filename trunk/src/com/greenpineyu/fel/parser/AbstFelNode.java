@@ -9,8 +9,6 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
 import com.greenpineyu.fel.common.Callable;
-import com.greenpineyu.fel.common.Null;
-import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.interpreter.Interpreter;
@@ -101,16 +99,10 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 	//	abstract public Object evalWithoutCache(FelContext context);
 
-	static final Callable<Boolean,FelNode> empty = new Callable<Boolean, FelNode>() {
-		@Override
-		public Boolean call(FelNode... arg) {
-			return Boolean.TRUE;
-		}
-	};
 
 	public static List<FelNode> getNodes(FelNode node) {
 		List<FelNode> returnMe = new ArrayList<FelNode>();
-		getNodes(node, returnMe,empty);
+		getNodes(node, returnMe,null);
 		return returnMe;
 	}
 	
@@ -122,7 +114,9 @@ public abstract class AbstFelNode extends CommonTree implements FelNode, Interpr
 
 	public static void getNodes(FelNode node, List<FelNode> returnMe,Callable<Boolean, FelNode> filter) {
 		if (node != null) {
-			if (filter.call(node)) {
+			if(filter==null){
+				returnMe.add(node);
+			}else if (filter.call(node)) {
 				returnMe.add(node);
 			}
 			List<FelNode> nodeChildren = node.getChildren();
