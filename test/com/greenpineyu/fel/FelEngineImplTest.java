@@ -116,7 +116,7 @@ public class FelEngineImplTest {
 		add(a, i, "2 < 3", Boolean.TRUE);
 		add(a, i, "num < 5", Boolean.FALSE);
 		add(a, i, "num < num", Boolean.FALSE);
-		add(a, i, "num < null", Boolean.FALSE);
+//		add(a, i, "num < null", Boolean.FALSE);
 		add(a, i, "num < 2.5", Boolean.FALSE);
 		add(a, i, "now2 < now", Boolean.FALSE); // test
 		// comparable
@@ -124,7 +124,7 @@ public class FelEngineImplTest {
 //		add(a, i, "'6' <= '5'", Boolean.FALSE);
 		add(a, i, "num <= 5", Boolean.TRUE);
 		add(a, i, "num <= num", Boolean.TRUE);
-		add(a, i, "num <= null", Boolean.FALSE);
+//		add(a, i, "num <= null", Boolean.FALSE);
 		add(a, i, "num <= 2.5", Boolean.FALSE);
 		add(a, i, "now2 <= now", Boolean.FALSE); // test
 		// comparable
@@ -189,6 +189,8 @@ public class FelEngineImplTest {
 				.getFoo().getFooes()[1].get("name"));
 
 		add(a, i, "foo.convertBoolean(true)", header.convertBoolean(true));
+		add(a,i,"foo.contact(null,'abc',null,'def')",header.contact(null,"abc",null,"def"));
+		
 		add(a, i, "pc.cpu", m.get("cpu"));
 		add(a, i, "pc.memory", m.get("memory"));
 		add(a, i, "pc.get(null)", m.get(null));

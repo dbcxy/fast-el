@@ -61,6 +61,20 @@ public class Foo {
 	public int getCount() {
 		return 5;
 	}
+	
+	public String contact(String a,String b ,String c,String d){
+		return a+b+c+c;
+	}
+//	public String contact(String... strs){
+//		if(strs!=null){
+//			StringBuilder sb = new StringBuilder();
+//			for (String s : strs) {
+//				sb.append(s);
+//			}
+//			return sb.toString();
+//		}
+//		return "";
+//	}
 
 	public List<String> getCheeseList() {
 		ArrayList<String> answer = new ArrayList<String>();
@@ -110,6 +124,7 @@ public class Foo {
 	public void setFoo(Foo foo) {
 		this.foo = foo;
 	}
+	
 
 	@Override
 	public String toString() {
