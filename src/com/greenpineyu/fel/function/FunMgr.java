@@ -11,14 +11,14 @@ import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.function.operator.EqualsOperator;
 import com.greenpineyu.fel.function.operator.GreaterThan;
 import com.greenpineyu.fel.function.operator.GreaterThenEqual;
+import com.greenpineyu.fel.function.operator.LessThen;
 import com.greenpineyu.fel.function.operator.LessThenEqual;
-import com.greenpineyu.fel.function.operator.LogicalOperator;
+import com.greenpineyu.fel.function.operator.And;
 import com.greenpineyu.fel.function.operator.Mod;
 import com.greenpineyu.fel.function.operator.Mul;
 import com.greenpineyu.fel.function.operator.NotEqual;
 import com.greenpineyu.fel.function.operator.NotOper;
 import com.greenpineyu.fel.function.operator.Or;
-import com.greenpineyu.fel.function.operator.RelationalOperator;
 import com.greenpineyu.fel.function.operator.Sub;
 
 public class FunMgr {
@@ -70,7 +70,7 @@ public class FunMgr {
 //		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *
 //		funcMap.put(MultiplicativeOperator.DIV_STR, MultiplicativeOperator.DIV);// /
 //		funcMap.put(MultiplicativeOperator.MOD_STR, MultiplicativeOperator.MOD);// %
-		addFun(new RelationalOperator());// <
+		addFun(new LessThen());// <
 		addFun(new LessThenEqual());// <=
 		addFun(new GreaterThan());// >
 		addFun(new GreaterThenEqual());// >=
@@ -83,7 +83,7 @@ public class FunMgr {
 //		funcMap.put(RelationalOperator.GREATERTHANOREQUALS_STR,
 //				RelationalOperator.GREATERTHANOREQUALS);// >=
 //		funcMap.put(LogicalOperator.AND_STR.toLowerCase(), LogicalOperator.AND);// AND
-		addFun(new LogicalOperator());// &&
+		addFun(new And());// &&
 		addFun(new Or());// ||
 //		funcMap.put(LogicalOperator.AND2_STR, LogicalOperator.AND2);// &&
 //		funcMap.put(LogicalOperator.OR_STR.toLowerCase(), LogicalOperator.OR);// OR
