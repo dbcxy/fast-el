@@ -2,7 +2,6 @@ package com.greenpineyu.fel.function.operator;
 
 import static com.greenpineyu.fel.function.operator.EqualsOperator.appendNumber;
 
-import java.util.Date;
 import java.util.List;
 
 import com.greenpineyu.fel.FelEngine;
@@ -19,7 +18,7 @@ import com.greenpineyu.fel.parser.Stable;
  * 包名 .script.function.operator 类名 RelationalOperator.java 创建日期 Oct 26,
  * 20103:04:25 PM 作者 版权
  */
-public class RelationalOperator  implements Stable,Function {
+public class LessThen  implements Stable,Function {
 
 //	private final String operator;
 	

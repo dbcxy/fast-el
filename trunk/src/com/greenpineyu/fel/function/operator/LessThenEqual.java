@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import com.greenpineyu.fel.common.NumberUtil;
 
-public class LessThenEqual extends RelationalOperator {
+public class LessThenEqual extends LessThen {
 	
 	@Override
 	public String getName() {

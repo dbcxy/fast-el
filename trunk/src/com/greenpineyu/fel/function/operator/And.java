@@ -14,7 +14,7 @@ import com.greenpineyu.fel.parser.FelNode;
 /**
  * 逻辑操作符
  */
-public class LogicalOperator extends StableFunction {
+public class And extends StableFunction {
 
 //	private final String operator;
 //
