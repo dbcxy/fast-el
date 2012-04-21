@@ -15,7 +15,7 @@ import com.greenpineyu.fel.parser.FelNode;
  * @author Administrator
  * 
  */
-public class CondOperator extends StableFunction {
+public class Cond extends StableFunction {
 	
 
 	@Override

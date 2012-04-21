@@ -12,7 +12,7 @@ import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.TolerantFunction;
 import com.greenpineyu.fel.parser.FelNode;
 
-public class EqualsOperator extends StableFunction {
+public class Equal extends StableFunction {
 
 	public String getName() {
 		return "==";

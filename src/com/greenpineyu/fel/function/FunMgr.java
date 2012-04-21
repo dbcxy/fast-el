@@ -5,10 +5,10 @@ import java.util.Map;
 
 import com.greenpineyu.fel.function.operator.Add;
 import com.greenpineyu.fel.function.operator.CollectionGet;
-import com.greenpineyu.fel.function.operator.CondOperator;
+import com.greenpineyu.fel.function.operator.Cond;
 import com.greenpineyu.fel.function.operator.Div;
 import com.greenpineyu.fel.function.operator.Dot;
-import com.greenpineyu.fel.function.operator.EqualsOperator;
+import com.greenpineyu.fel.function.operator.Equal;
 import com.greenpineyu.fel.function.operator.GreaterThan;
 import com.greenpineyu.fel.function.operator.GreaterThenEqual;
 import com.greenpineyu.fel.function.operator.LessThen;
@@ -49,7 +49,7 @@ public class FunMgr {
 		addFun(new CollectionGet());
 //		funcMap.put(new CollectionGet().instance.getName(), CollectionGet.instance);
 		
-		addFun(new CondOperator());
+		addFun(new Cond());
 //		funcMap.put(CondOperator.instance.getName(), CondOperator.instance);
 		addFun(new Dollar());
 //		funcMap.put(Dollar.instance.getName(), Dollar.instance);
@@ -61,7 +61,7 @@ public class FunMgr {
 //		funcMap.put(Add.getInstance().getName(), Add.getInstance());// +
 //		funcMap.put(Sub.getInstance().getName(), Sub.getInstance());// -
 //		funcMap.put(EqualsOperator.EQUAL_STR, EqualsOperator.EQUAL);// ==
-		addFun(new EqualsOperator());//==
+		addFun(new Equal());//==
 		addFun(new NotEqual());//!=
 //		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
 		addFun(new Mul());// *

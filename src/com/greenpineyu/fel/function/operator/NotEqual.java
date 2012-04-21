@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.operator;
 
-public class NotEqual extends EqualsOperator {
+public class NotEqual extends Equal {
 	
 	@Override
 	boolean compare(Object left, Object right) {

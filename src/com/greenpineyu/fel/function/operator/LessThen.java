@@ -1,6 +1,6 @@
 package com.greenpineyu.fel.function.operator;
 
-import static com.greenpineyu.fel.function.operator.EqualsOperator.appendNumber;
+import static com.greenpineyu.fel.function.operator.Equal.appendNumber;
 
 import java.util.List;
 
