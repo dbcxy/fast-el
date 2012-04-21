@@ -18,7 +18,7 @@ import com.greenpineyu.fel.parser.FelNode;
  * 作者				
  * 版权				
  */
-public class MultiplicativeOperator  extends StableFunction{
+public class Mul  extends StableFunction{
 
 //	private String operator;
 //	

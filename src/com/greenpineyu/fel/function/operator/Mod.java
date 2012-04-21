@@ -2,7 +2,7 @@ package com.greenpineyu.fel.function.operator;
 
 import com.greenpineyu.fel.common.NumberUtil;
 
-public class Mod extends MultiplicativeOperator {
+public class Mod extends Mul {
 
 	@Override
 	Object calc(double l, double r) {

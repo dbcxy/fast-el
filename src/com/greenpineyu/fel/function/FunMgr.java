@@ -14,7 +14,7 @@ import com.greenpineyu.fel.function.operator.GreaterThenEqual;
 import com.greenpineyu.fel.function.operator.LessThenEqual;
 import com.greenpineyu.fel.function.operator.LogicalOperator;
 import com.greenpineyu.fel.function.operator.Mod;
-import com.greenpineyu.fel.function.operator.MultiplicativeOperator;
+import com.greenpineyu.fel.function.operator.Mul;
 import com.greenpineyu.fel.function.operator.NotEqual;
 import com.greenpineyu.fel.function.operator.NotOper;
 import com.greenpineyu.fel.function.operator.Or;
@@ -64,7 +64,7 @@ public class FunMgr {
 		addFun(new EqualsOperator());//==
 		addFun(new NotEqual());//!=
 //		funcMap.put(EqualsOperator.NOEQUAL_STR, EqualsOperator.NOEQUAL);// !=
-		addFun(new MultiplicativeOperator());// *
+		addFun(new Mul());// *
 		addFun(new Div());// /
 		addFun(new Mod());// %
 //		funcMap.put(MultiplicativeOperator.MUL_STR, MultiplicativeOperator.MUL);// *
