@@ -3,9 +3,11 @@ package com.greenpineyu.fel.parser;
 import org.antlr.runtime.Token;
 
 import com.greenpineyu.fel.common.Null;
+import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.FelMethod;
-import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
+import com.greenpineyu.fel.compile.SourceBuilder;
+import com.greenpineyu.fel.compile.VarBuffer;
 import com.greenpineyu.fel.context.FelContext;
 
 /**
@@ -28,11 +30,11 @@ public class ConstNode extends AbstFelNode {
 	}
 
 	public SourceBuilder toMethod(FelContext ctx) {
-		if(this.builder!=null){
+		if (this.builder != null) {
 			return this.builder;
 		}
-		if(!this.isDefaultInterpreter()){
-			return InterpreterSourceBuilder.getInstance();  
+		if (!this.isDefaultInterpreter()) {
+			return InterpreterSourceBuilder.getInstance();
 		}
 		return new FelMethod(this.getValueType(), this.toJavaSrc(ctx));
 	}
@@ -48,17 +50,16 @@ public class ConstNode extends AbstFelNode {
 	}
 
 	public String toJavaSrc(FelContext ctx) {
-//		if(value == null){
-//			return "null";
-//		}
-		if (value !=null && value instanceof String) {
+		if (value == null) {
+			return "null";
+		}
+		if (value instanceof String) {
 			return "\"" + value + "\"";
 		}
-		if(token!=null){
-			return token.getText();
+		if (ReflectUtil.isPrimitiveOrWrapNumber(getValueType())) {
+			return value.toString();
 		}
-		//token也为空，一般是用于点位的null节点。
-		return "null";
+		return VarBuffer.push(value);
 	}
 
 	public boolean stable() {
