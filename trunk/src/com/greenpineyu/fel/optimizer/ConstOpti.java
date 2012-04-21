@@ -8,7 +8,7 @@ import org.antlr.runtime.Token;
 import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
-import com.greenpineyu.fel.function.operator.LogicalOperator;
+import com.greenpineyu.fel.function.operator.And;
 import com.greenpineyu.fel.function.operator.Or;
 import com.greenpineyu.fel.parser.ConstNode;
 import com.greenpineyu.fel.parser.FelNode;
@@ -37,8 +37,8 @@ public class ConstOpti implements Optimizer {
 				if (node instanceof FunNode) {
 					FunNode n = (FunNode) node;
 					Function fun = n.getFun();
-					if (fun instanceof LogicalOperator) {
-						LogicalOperator logic = (LogicalOperator) fun;
+					if (fun instanceof And) {
+						And logic = (And) fun;
 						List<FelNode> args = node.getChildren();
 						FelNode left = args.get(0);
 						FelNode right = args.get(1);
