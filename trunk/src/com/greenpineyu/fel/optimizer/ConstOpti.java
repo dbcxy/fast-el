@@ -118,7 +118,7 @@ public class ConstOpti implements Optimizer {
 
 	private FelNode newConstNode(FelNode node, Object value) {
 		Token token = new ConstOptToken(node);
-		token.setText(ObjectUtils.toString(value));
+		token.setText(node.getText());
 		return new ConstNode(token, value);
 	}
 

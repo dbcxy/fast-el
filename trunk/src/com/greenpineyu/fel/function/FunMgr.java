@@ -37,9 +37,9 @@ public class FunMgr {
 	/**
 	 * 共用函数
 	 */
-	static private Map<String, Function> funcMap;
+	private Map<String, Function> funcMap;
 
-	static {
+	{
 		funcMap = new HashMap<String, Function>();
 
 		// // 操作符函数
@@ -96,7 +96,7 @@ public class FunMgr {
 
 	}
 
-	private static void addFun(Function fun) {
+	private void addFun(Function fun) {
 		funcMap.put(fun.getName(), fun);
 	}
 
