@@ -7,6 +7,7 @@ import com.greenpineyu.fel.compile.FelMethod;
 import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.exception.ParseException;
+import com.greenpineyu.fel.function.StableFunction;
 import com.greenpineyu.fel.parser.FelNode;
 
 /**

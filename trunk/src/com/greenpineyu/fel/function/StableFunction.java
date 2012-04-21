@@ -1,6 +1,5 @@
-package com.greenpineyu.fel.function.operator;
+package com.greenpineyu.fel.function;
 
-import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.parser.Stable;
 
 public abstract class StableFunction implements Function, Stable {
