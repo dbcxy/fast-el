@@ -1,8 +1,8 @@
 package com.greenpineyu.fel;
 
 import com.greenpineyu.fel.compile.CompileService;
-import com.greenpineyu.fel.context.ArrayCtxImpl;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.context.MapContext;
 import com.greenpineyu.fel.function.FunMgr;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.optimizer.Optimizer;
@@ -37,22 +37,26 @@ public class FelEngineImpl implements FelEngine {
 	
 
 	public FelEngineImpl() {
-		this(new ArrayCtxImpl());
-//		this(new MapContext());
+		// this(new ArrayCtxImpl());
+		this(new MapContext());
 	}
 
+	@Override
 	public FelNode parse(String exp) {
 		return parser.parse(exp);
 	}
 
+	@Override
 	public Object eval(String exp) {
 		return this.eval(exp, this.context);
 	}
 
+	@Override
 	public Object eval(String exp, FelContext ctx) {
 		return parse(exp).eval(ctx);
 	}
 
+	@Override
 	public Expression compile(String exp, FelContext ctx, Optimizer... opts) {
 		if (ctx == null) {
 			ctx = this.context;
@@ -60,10 +64,12 @@ public class FelEngineImpl implements FelEngine {
 		FelNode node = parse(exp);
 		if (opts != null) {
 			for (Optimizer opt : opts) {
-				node = opt.call(ctx, node);
+				if (opt != null) {
+					node = opt.call(ctx, node);
+				}
 			}
 		}
-		return compiler.compile(ctx, node);
+		return compiler.compile(ctx, node, exp);
 	}
 
 	@Override
@@ -71,70 +77,53 @@ public class FelEngineImpl implements FelEngine {
 		return "FelEngine";
 	}
 
-	public static void main(String[] args) {
-		FelEngineImpl engine = new FelEngineImpl();
-		temp(engine);
-	}
-
-	private static void temp(FelEngineImpl engine) {
-		Object eval = engine.eval("1+2");
-		Object e = engine.eval("-1.23-1");
-		System.out.println(e);
-		e = engine.eval("123*(-123)");
-		System.out.println(e);
-		Expression expr = engine.compile("1+(2-(5+6))", engine.context);
-
-		int count = 1000 * 1000 * 100;
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < count; i++) {
-			eval = expr.eval(engine.getContext());
-		}
-		long end = System.currentTimeMillis();
-		long cost = end - start;
-		System.out.println(cost);
-		System.out.println("result:" + eval + ",每秒执行：" + (count / 10 / cost));
-		System.out.println(eval);
-	}
-
-
+	@Override
 	public void addFun(Function fun) {
 		this.funMgr.add(fun);
 	}
 	
+	@Override
 	public FelContext getContext() {
 		return this.context;
 	}
 	
+	@Override
 	public CompileService getCompiler() {
 		return compiler;
 	}
 
 
+	@Override
 	public void setCompiler(CompileService compiler) {
 		this.compiler = compiler;
 	}
 
 
+	@Override
 	public Parser getParser() {
 		return parser;
 	}
 
 
+	@Override
 	public void setParser(Parser parser) {
 		this.parser = parser;
 	}
 
 
+	@Override
 	public FunMgr getFunMgr() {
 		return funMgr;
 	}
 
 
+	@Override
 	public void setFunMgr(FunMgr funMgr) {
 		this.funMgr = funMgr;
 	}
 
 
+	@Override
 	public void setContext(FelContext context) {
 		this.context = context;
 	}

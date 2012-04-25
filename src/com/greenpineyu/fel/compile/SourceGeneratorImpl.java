@@ -295,7 +295,8 @@ public class SourceGeneratorImpl implements SourceGenerator {
 							StringKeyValue kv = localvars.get(text);
 							return kv.key;
 						}
-						String varName = getLocalVarName();
+						// String varName = getLocalVarName();
+						String varName = text;
 						Class<?> type = this.returnType(ctx, node);
 						String declare = "";
 						String typeDeclare = type.getName();

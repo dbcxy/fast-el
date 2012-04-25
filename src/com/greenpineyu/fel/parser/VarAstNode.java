@@ -36,27 +36,21 @@ public class VarAstNode extends AbstFelNode  {
 					// 用户自定义解析器
 					return InterpreterSourceBuilder.getInstance().source(ctx, node);
 				}
-				String code = "";
 				Class<?> type = returnType(ctx, node);
-				boolean isNumber = Number.class.isAssignableFrom(type);
 				String varName = node.getText();
 				String getVarCode = "context.get(\""+varName+"\")";
 				if (ctx instanceof ArrayCtx) {
 					ArrayCtx c = (ArrayCtx) ctx;
-					getVarCode = "((ArrayCtx)context).get("+c.getIndex(varName)+")";
+					getVarCode = "((context instanceof ArrayCtx)?((ArrayCtx)context).get("
+							+ c.getIndex(varName)
+							+ "):context.get(\""
+							+ varName + "\"))";
 				}
 					
-				String typeName = type.getCanonicalName();
-				if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
-					code = "(("+typeName+")"+getVarCode+")";
-				}else if(isNumber){
-					// 当float转double时，会丢失精度
-					code = "(("+typeName+")"+getVarCode+").doubleValue()";
-				}else{
-					code = "((" + typeName + ")" + getVarCode + ")";
-				}
+				String code = getVarFullCode(type, getVarCode);
 				return code;
 			}
+
 			@Override
 			public Class<?> returnType(FelContext ctx, FelNode node) {
 				Class<?> type = AbstractContext.getVarType(node.getText(),ctx);
@@ -66,5 +60,20 @@ public class VarAstNode extends AbstFelNode  {
 				return type;
 			}
 		};
+	}
+
+	public static String getVarFullCode(Class<?> type, String getVarCode) {
+		String typeName = type.getCanonicalName();
+		boolean isNumber = Number.class.isAssignableFrom(type);
+		String code = "";
+		if (ReflectUtil.isPrimitiveOrWrapNumber(type)) {
+			code = "((" + typeName + ")" + getVarCode + ")";
+		} else if (isNumber) {
+			// 当float转double时，会丢失精度
+			code = "((" + typeName + ")" + getVarCode + ").doubleValue()";
+		} else {
+			code = "((" + typeName + ")" + getVarCode + ")";
+		}
+		return code;
 	}
 }

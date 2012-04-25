@@ -47,7 +47,13 @@ public class MapContext extends HashMap<String, Var> implements FelContext {
 
 	@Override
 	public void set(String name, Object value) {
-		this.put(name, new Var(name, value));
+		// 如果变量已经存在，就不再重复创建变量。
+		Var var = getVar(name);
+		if (var != null) {
+			var.setValue(value);
+		} else {
+			this.put(name, new Var(name, value));
+		}
 	}
 
 	public static String toString(Object var) {
