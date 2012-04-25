@@ -65,14 +65,7 @@ public class VarVisitOpti implements Optimizer {
 		return new Interpreter() {
 			@Override
 			public Object interpret(FelContext context, FelNode node) {
-				Var var = null;
-				if (varMap != null) {
-					var = varMap.get(node.getText());
-				}
-				if (var == null) {
-					// 如果varMap中没有节点，从context中取。
-					var = context.getVar(node.getText());
-				}
+				Var var = getVar(context, node);
 				return var != null ? var.getValue() : null;
 			}
 		};
@@ -87,8 +80,8 @@ public class VarVisitOpti implements Optimizer {
 			@Override
 			public String source(FelContext ctx, FelNode node) {
 				if (src == null) {
-					String varFieldName = VarBuffer.push(ctx
-							.getVar(n.getText()));
+					Var var = getVar(ctx, node);
+					String varFieldName = VarBuffer.push(var);
 					Class<?> type = returnType(ctx, node);
 					src = VarAstNode.getVarFullCode(type, varFieldName
 							+ ".getValue()");
@@ -105,6 +98,18 @@ public class VarVisitOpti implements Optimizer {
 				return returnType; 
 			}
 		};
+	}
+
+	private Var getVar(FelContext context, FelNode node) {
+		Var var = null;
+		if (varMap != null) {
+			var = varMap.get(node.getText());
+		}
+		if (var == null) {
+			// 如果varMap中没有节点，从context中取。
+			var = context.getVar(node.getText());
+		}
+		return var;
 	}
 
 }
