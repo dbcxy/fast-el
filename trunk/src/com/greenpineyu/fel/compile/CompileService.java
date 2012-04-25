@@ -60,13 +60,15 @@ public class CompileService {
 		return compileClassName;
 	}
 	
-	public Expression compile(FelContext ctx,FelNode node){
+	public Expression compile(FelContext ctx, FelNode node, String originalExp) {
 		try {
 			JavaSource src = srcGen.getSource(ctx, node);
 			if (src instanceof ConstExpSrc) {
 				ConstExpSrc s = (ConstExpSrc) src;
 				return s.getValue();
 			}
+			src.setSource("// 表达式:" + originalExp + "\n" + src.getSource());
+			// System.out.println("****************\n" + src.getSource());
 			return complier.compile(src);
 		} catch (Exception e) {
 			e.printStackTrace();
