@@ -3,9 +3,11 @@ package com.greenpineyu.fel;
 import com.greenpineyu.fel.compile.CompileService;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.context.MapContext;
+import com.greenpineyu.fel.context.Var;
 import com.greenpineyu.fel.function.FunMgr;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.optimizer.Optimizer;
+import com.greenpineyu.fel.optimizer.VarVisitOpti;
 import com.greenpineyu.fel.parser.AntlrParser;
 import com.greenpineyu.fel.parser.FelNode;
 import com.greenpineyu.fel.parser.Parser;
@@ -51,9 +53,20 @@ public class FelEngineImpl implements FelEngine {
 		return this.eval(exp, this.context);
 	}
 
+	public Object eval(String exp, Var... vars) {
+		FelNode node = parse(exp);
+		Optimizer opt = new VarVisitOpti(vars);
+		node = opt.call(context, node);
+		return node.eval(context);
+	}
+
 	@Override
 	public Object eval(String exp, FelContext ctx) {
 		return parse(exp).eval(ctx);
+	}
+
+	public Expression compile(String exp, Var... vars) {
+		return compile(exp, null, new VarVisitOpti(vars));
 	}
 
 	@Override

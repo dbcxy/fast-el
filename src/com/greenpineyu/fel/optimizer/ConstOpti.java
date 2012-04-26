@@ -5,7 +5,6 @@ import java.util.List;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
-import com.greenpineyu.fel.common.ObjectUtils;
 import com.greenpineyu.fel.context.FelContext;
 import com.greenpineyu.fel.function.Function;
 import com.greenpineyu.fel.function.operator.And;
@@ -38,7 +37,6 @@ public class ConstOpti implements Optimizer {
 					FunNode n = (FunNode) node;
 					Function fun = n.getFun();
 					if (fun instanceof And) {
-						And logic = (And) fun;
 						List<FelNode> args = node.getChildren();
 						FelNode left = args.get(0);
 						FelNode right = args.get(1);

@@ -147,15 +147,13 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		}
 	}
 
-	private int localVarCount = 0;
+	// private final int localVarCount = 0;
 
-	private String getLocalVarName() {
-		String varName = null;
-		synchronized (SourceGeneratorImpl.class) {
-			varName = "var_" + localVarCount++;
-		}
-		return varName;
-	}
+	/*
+	 * private String getLocalVarName() { String varName = null; synchronized
+	 * (SourceGeneratorImpl.class) { varName = "var_" + localVarCount++; }
+	 * return varName; }
+	 */
 
 	class StringKeyValue {
 		String key;
