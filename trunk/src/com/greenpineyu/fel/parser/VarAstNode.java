@@ -1,6 +1,7 @@
 package com.greenpineyu.fel.parser;
 
 import org.antlr.runtime.Token;
+import org.antlr.runtime.tree.CommonTree;
 
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.compile.InterpreterSourceBuilder;
@@ -8,6 +9,7 @@ import com.greenpineyu.fel.compile.SourceBuilder;
 import com.greenpineyu.fel.context.AbstractContext;
 import com.greenpineyu.fel.context.ArrayCtx;
 import com.greenpineyu.fel.context.FelContext;
+import com.greenpineyu.fel.function.operator.Dot;
 
 public class VarAstNode extends AbstFelNode  {
 	private final String text;
@@ -27,6 +29,27 @@ public class VarAstNode extends AbstFelNode  {
 		return context.get(text);
 	}
 	
+	public static boolean isVar(FelNode n) {
+		if (n == null) {
+			return false;
+		}
+		boolean isVar = n instanceof VarAstNode;
+		if (isVar) {
+			if (n instanceof CommonTree) {
+				CommonTree treeNode = (CommonTree) n;
+				CommonTree p = treeNode.parent;
+				if (p != null) {
+					if (Dot.DOT.equals(p.getText())) {
+						// 点运算符后的变量节点不是真正意义上的变量节点。
+						isVar = p.getChildren().get(0) == n;
+					}
+				}
+
+			}
+		}
+		return isVar;
+	}
+
 	{
 		this.builder = new SourceBuilder() {
 			
