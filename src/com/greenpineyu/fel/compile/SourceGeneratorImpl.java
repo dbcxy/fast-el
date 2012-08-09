@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.antlr.runtime.tree.CommonTree;
-
 import com.greenpineyu.fel.Expression;
 import com.greenpineyu.fel.FelEngine;
 import com.greenpineyu.fel.FelEngineImpl;
@@ -19,7 +17,6 @@ import com.greenpineyu.fel.common.Callable;
 import com.greenpineyu.fel.common.ReflectUtil;
 import com.greenpineyu.fel.common.StringUtils;
 import com.greenpineyu.fel.context.FelContext;
-import com.greenpineyu.fel.function.operator.Dot;
 import com.greenpineyu.fel.optimizer.ConstExpOpti;
 import com.greenpineyu.fel.optimizer.ConstOpti;
 import com.greenpineyu.fel.optimizer.Optimizer;
@@ -199,24 +196,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 		@Override
 		public Boolean call(FelNode... node) {
 			FelNode n = node[0];
-			if(n == null){
-				return false;
-			}
-			boolean isVar = n instanceof VarAstNode;
-			if(isVar){
-				if (n instanceof CommonTree) {
-					CommonTree treeNode = (CommonTree) n;
-					CommonTree p = treeNode.parent;
-					if(p!=null){
-						if(Dot.DOT.equals(p.getText())){
-							// 点运算符后的变量节点不是真正意义上的变量节点。
-							isVar = p.getChildren().get(0)==n;
-						}
-					}
-					
-				}
-			}
-			return isVar;
+			return VarAstNode.isVar(n);
 		}
 	};
 
@@ -297,7 +277,7 @@ public class SourceGeneratorImpl implements SourceGenerator {
 						String varName = text;
 						Class<?> type = this.returnType(ctx, node);
 						String declare = "";
-						String typeDeclare = type.getName();
+						String typeDeclare = type.getCanonicalName();
 						if(ReflectUtil.isPrimitiveOrWrapNumber(type)){
 							Class<?> primitiveClass = ReflectUtil.toPrimitiveClass(type);
 							typeDeclare = primitiveClass.getSimpleName();
